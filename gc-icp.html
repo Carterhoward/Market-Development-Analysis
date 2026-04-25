@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanHub GC Ideal Customer Profile Report · 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:    #378ADD;
+    --blue-lt: #E6F1FB;
+    --blue-dk: #0C447C;
+    --teal:    #1D9E75;
+    --teal-lt: #E1F5EE;
+    --teal-dk: #085041;
+    --amber:   #BA7517;
+    --amber-lt:#FAEEDA;
+    --amber-dk:#633806;
+    --red:     #E24B4A;
+    --red-lt:  #FCEBEB;
+    --red-dk:  #791F1F;
+    --gray:    #888780;
+    --gray-lt: #F1EFE8;
+    --gray-dk: #444441;
+    --bg:      #FAFAF8;
+    --surface: #FFFFFF;
+    --border:  rgba(0,0,0,0.10);
+    --text-primary:   #1A1A18;
+    --text-secondary: #5F5E5A;
+    --text-muted:     #888780;
+    --grid-c: rgba(0,0,0,0.06);
+    --tick-c: #888780;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--text-primary);
+    color: #fff;
+    padding: 56px 60px 48px;
+  }
+  .cover-logo {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .cover-logo::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: rgba(255,255,255,0.15);
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 14px;
+  }
+  .cover-title {
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    max-width: 640px;
+  }
+  .cover-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 48px;
+  }
+  .cover-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.1);
+    border-top: 0.5px solid rgba(255,255,255,0.12);
+    border-bottom: 0.5px solid rgba(255,255,255,0.12);
+    margin-top: 48px;
+  }
+  .cover-stat {
+    padding: 20px 24px;
+    background: var(--text-primary);
+  }
+  .cover-stat-val {
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+  .cover-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+  .cover-stat-delta {
+    font-size: 10px;
+    color: var(--teal);
+    margin-top: 2px;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 60px; }
+  .section { margin-bottom: 48px; }
+  .divider { height: 0.5px; background: var(--border); margin: 40px 0; }
+
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  .headline {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .subline {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* ── KPI ROW ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .kpi-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .kpi-val { font-size: 24px; font-weight: 500; letter-spacing: -0.5px; color: var(--text-primary); }
+  .kpi-delta { font-size: 11px; margin-top: 3px; }
+  .delta-up   { color: var(--teal); }
+  .delta-down { color: var(--red); }
+  .delta-neu  { color: var(--text-muted); }
+
+  /* ── ICP TRIO ── */
+  .icp-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .icp-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .icp-card.p1 { border: 2px solid var(--blue); }
+  .icp-card.p2 { border-left: 3px solid var(--teal); }
+  .icp-card.p3 { border-left: 3px solid var(--amber); }
+
+  .rank-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+  .pill-blue   { background: var(--blue-lt);  color: var(--blue-dk); }
+  .pill-green  { background: var(--teal-lt);  color: var(--teal-dk); }
+  .pill-amber  { background: var(--amber-lt); color: var(--amber-dk); }
+
+  .icp-name { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 3px; }
+  .icp-type { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; letter-spacing: 0.02em; }
+
+  .attr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+  .attr-val { font-weight: 500; color: var(--text-primary); font-size: 12px; }
+
+  .mini-bar-wrap {
+    height: 4px;
+    background: var(--gray-lt);
+    border-radius: 2px;
+    margin: 4px 0 12px;
+    overflow: hidden;
+  }
+  .mini-bar { height: 4px; border-radius: 2px; }
+
+  .icp-note { font-size: 10px; color: var(--text-muted); line-height: 1.55; margin-top: 6px; }
+
+  /* ── 2-COL PANELS ── */
+  .section-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+  .panel-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .rank-num { font-size: 10px; font-weight: 500; color: var(--text-muted); width: 14px; flex-shrink: 0; }
+  .rank-label { font-size: 12px; color: var(--text-secondary); flex: 1; min-width: 0; }
+  .rank-bar-wrap { width: 88px; height: 5px; background: var(--gray-lt); border-radius: 3px; flex-shrink: 0; overflow: hidden; }
+  .rank-bar { height: 5px; border-radius: 3px; }
+  .rank-count { font-size: 10px; color: var(--text-muted); width: 40px; text-align: right; flex-shrink: 0; }
+
+  /* ── VALUE BANDS ── */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .vband {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .vband.sweet { border: 2px solid var(--blue); }
+  .vband-tier { font-size: 9px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .vband-val  { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
+  .vband-badge {
+    font-size: 9px; font-weight: 600;
+    padding: 2px 6px; border-radius: 4px;
+    display: inline-block; margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+  .signal-row { display: flex; flex-direction: column; gap: 5px; text-align: left; }
+  .sig-label { font-size: 9px; color: var(--text-muted); display: flex; justify-content: space-between; margin-bottom: 1px; }
+  .sig-bar-wrap { height: 3px; background: var(--gray-lt); border-radius: 2px; overflow: hidden; }
+  .sig-bar { height: 3px; border-radius: 2px; }
+
+  /* ── CHART WRAPPER ── */
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* ── MOMENTUM LEGEND ── */
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .ldot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+  /* ── ANOMALIES ── */
+  .anomaly-list { display: flex; flex-direction: column; gap: 10px; }
+  .anomaly-item {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 8px;
+    line-height: 1.6;
+  }
+  .anomaly-item b { color: var(--text-primary); font-weight: 500; }
+  .anomaly-item.good { border-left-color: var(--teal); }
+  .anomaly-item.warn { border-left-color: var(--amber); }
+  .anomaly-item.bad  { border-left-color: var(--red); }
+  .anomaly-item.blue { border-left-color: var(--blue); }
+
+  /* ── TAKEAWAYS ── */
+  .takeaway-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+  }
+  .tk-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .tk-row:last-child { margin-bottom: 0; }
+  .tk-num {
+    font-size: 10px;
+    font-weight: 600;
+    background: var(--blue);
+    color: var(--blue-lt);
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+    letter-spacing: 0;
+  }
+  .tk-row b { color: var(--text-primary); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    background: var(--surface);
+    border-top: 0.5px solid var(--border);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--text-muted);
+    max-width: 100%;
+  }
+
+  /* ── NOTE ── */
+  .note { font-size: 10px; color: var(--text-muted); font-style: italic; margin-top: 6px; line-height: 1.5; }
+
+  @media print {
+    body { background: white; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ COVER -->
+<div class="cover">
+  <div class="cover-logo">PlanHub ◆ Intelligence Report ◆ April 2026</div>
+  <div class="cover-eyebrow">◆ General Contractor Ideal Customer Profile</div>
+  <div class="cover-title">The GCs who attract the most subcontractors — and why</div>
+  <div class="cover-sub">A full-spectrum analysis of 99,185 projects, 1.33 million subcontractor bids, and 6,361 active general contractors across 14 months of behavioral data on the PlanHub marketplace.</div>
+  <div class="cover-stats">
+    <div class="cover-stat">
+      <div class="cover-stat-val">99,185</div>
+      <div class="cover-stat-label">Projects analyzed</div>
+      <div class="cover-stat-delta">▲ Jan 2025 – Feb 2026</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-val">1.33M</div>
+      <div class="cover-stat-label">Sub bids generated</div>
+      <div class="cover-stat-delta">▲ Peak Oct 2025: 139,765</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-val">12.1</div>
+      <div class="cover-stat-label">Avg bids per project</div>
+      <div class="cover-stat-delta">→ Platform baseline</div>
+    </div>
+    <div class="cover-stat">
+      <div class="cover-stat-val">49.2%</div>
+      <div class="cover-stat-label">GC dormancy rate</div>
+      <div class="cover-stat-delta" style="color:#E24B4A">▼ Critical churn signal</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ BODY -->
+<div class="page">
+
+  <!-- ─── PRIMARY HEADLINE ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Primary finding</div>
+    <div class="headline">GCs posting $2M–$10M commercial projects in Retail, Education, and Municipal verticals generate 45–80% more sub engagement than the platform average.</div>
+    <div class="subline">Analysis across 22 trade categories · 50+ building types · 5 project value tiers · 14 months of behavioral data from Tableau's Monthly_Project_Data_Extract, gc_posting_activity, SC Search &amp; Bidding Activity, and Project Trades datasources.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── ICP SEGMENTS ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ ICP segments — ranked by sub engagement potential</div>
+    <div class="icp-trio">
+
+      <div class="icp-card p1">
+        <span class="rank-pill pill-blue">✦ ICP #1 · Primary target</span>
+        <div class="icp-name">The Commercial Vertical Specialist</div>
+        <div class="icp-type">Retail · Restaurant · Fitness · Office</div>
+        <div class="attr-row"><span>Avg project value</span><span class="attr-val">$2M – $10M</span></div>
+        <div class="attr-row"><span>Avg bids / project</span><span class="attr-val">14 – 22 ▲</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:88%;background:#378ADD"></div></div>
+        <div class="attr-row"><span>Platform volume share</span><span class="attr-val">~34% of GC projects</span></div>
+        <div class="attr-row"><span>Top trade pull</span><span class="attr-val">Demolition · Electrical · Paint</span></div>
+        <div class="attr-row"><span>Posting cadence</span><span class="attr-val">8 – 20 projects / month</span></div>
+        <div class="attr-row"><span>Engagement rate</span><span class="attr-val">82 – 90%</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:88%;background:#378ADD"></div></div>
+        <div class="icp-note">Year-round posting cadence · widest multi-trade sub breadth · highest repeat platform value</div>
+      </div>
+
+      <div class="icp-card p2">
+        <span class="rank-pill pill-green">◉ ICP #2 · Strong secondary</span>
+        <div class="icp-name">The Public / Civic Builder</div>
+        <div class="icp-type">Education · Municipal · Fire/Police · Military</div>
+        <div class="attr-row"><span>Avg project value</span><span class="attr-val">$5M – $25M</span></div>
+        <div class="attr-row"><span>Avg bids / project</span><span class="attr-val">16 – 23 ▲</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:74%;background:#1D9E75"></div></div>
+        <div class="attr-row"><span>Platform volume share</span><span class="attr-val">~27% of GC projects</span></div>
+        <div class="attr-row"><span>Top trade pull</span><span class="attr-val">Concrete · HVAC · Roofing</span></div>
+        <div class="attr-row"><span>Posting cadence</span><span class="attr-val">Seasonal · project-driven</span></div>
+        <div class="attr-row"><span>Engagement rate</span><span class="attr-val">78 – 86%</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:80%;background:#1D9E75"></div></div>
+        <div class="icp-note">Municipal surged 3.7× in 2025 · fastest-growing vertical · strong structural + MEP sub depth</div>
+      </div>
+
+      <div class="icp-card p3">
+        <span class="rank-pill pill-amber">▸ ICP #3 · Emerging</span>
+        <div class="icp-name">The Healthcare / Mixed-Use Developer</div>
+        <div class="icp-type">Clinic/Hospital · Medical Office · Mixed-Use · Multi-Res</div>
+        <div class="attr-row"><span>Avg project value</span><span class="attr-val">$10M – $50M</span></div>
+        <div class="attr-row"><span>Avg bids / project</span><span class="attr-val">18 – 28 ▲</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:65%;background:#BA7517"></div></div>
+        <div class="attr-row"><span>Platform volume share</span><span class="attr-val">~8% of GC projects</span></div>
+        <div class="attr-row"><span>Top trade pull</span><span class="attr-val">MEP · Specialty · Conveying</span></div>
+        <div class="attr-row"><span>Posting cadence</span><span class="attr-val">Low freq · high value</span></div>
+        <div class="attr-row"><span>Engagement rate</span><span class="attr-val">70 – 80%</span></div>
+        <div class="mini-bar-wrap"><div class="mini-bar" style="width:72%;background:#BA7517"></div></div>
+        <div class="icp-note">Healthcare climbed steadily all year · premium MEP sub base · underrepresented in current GC roster</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── ACTIVITY SIGNALS ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Activity signals — building types &amp; trade categories</div>
+    <div class="section-2col">
+
+      <div class="panel-card">
+        <div class="panel-title"><span class="dot" style="background:#378ADD"></span>Top building types by project volume</div>
+        <div class="rank-row"><span class="rank-num">1</span><span class="rank-label">Retail Store</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:100%;background:#378ADD"></div></div><span class="rank-count">16,401</span></div>
+        <div class="rank-row"><span class="rank-num">2</span><span class="rank-label">Education / University</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:81%;background:#378ADD"></div></div><span class="rank-count">13,336</span></div>
+        <div class="rank-row"><span class="rank-num">3</span><span class="rank-label">Municipal</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:74%;background:#1D9E75"></div></div><span class="rank-count">12,070</span></div>
+        <div class="rank-row"><span class="rank-num">4</span><span class="rank-label">Restaurant</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:54%;background:#378ADD"></div></div><span class="rank-count">8,943</span></div>
+        <div class="rank-row"><span class="rank-num">5</span><span class="rank-label">Park / Playground</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:15%;background:#888780"></div></div><span class="rank-count">2,518</span></div>
+        <div class="rank-row"><span class="rank-num">6</span><span class="rank-label">Fire / Police Station</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:15%;background:#1D9E75"></div></div><span class="rank-count">2,415</span></div>
+        <div class="rank-row"><span class="rank-num">7</span><span class="rank-label">Mixed-Use</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:12%;background:#BA7517"></div></div><span class="rank-count">1,981</span></div>
+        <div class="rank-row"><span class="rank-num">8</span><span class="rank-label">Conv Store / Gas Station</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:12%;background:#888780"></div></div><span class="rank-count">1,969</span></div>
+        <div class="rank-row"><span class="rank-num">9</span><span class="rank-label">Military</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:10%;background:#888780"></div></div><span class="rank-count">1,615</span></div>
+        <div class="rank-row"><span class="rank-num">10</span><span class="rank-label">Clinic / Hospital / Medical</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:11%;background:#BA7517"></div></div><span class="rank-count">1,844</span></div>
+        <div class="note" style="margin-top:8px">Blue = ICP #1 · Green = ICP #2 · Amber = ICP #3 · Gray = lower-priority</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-title"><span class="dot" style="background:#378ADD"></span>Top trade categories by total sub invitations</div>
+        <div class="rank-row"><span class="rank-num">1</span><span class="rank-label">Demolition &amp; Site Work</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:100%;background:#378ADD"></div></div><span class="rank-count">72,472</span></div>
+        <div class="rank-row"><span class="rank-num">2</span><span class="rank-label">Electrical &amp; Low Voltage</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:95%;background:#378ADD"></div></div><span class="rank-count">68,896</span></div>
+        <div class="rank-row"><span class="rank-num">3</span><span class="rank-label">Painting &amp; Wallcovering</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:85%;background:#378ADD"></div></div><span class="rank-count">61,812</span></div>
+        <div class="rank-row"><span class="rank-num">4</span><span class="rank-label">HVAC</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:83%;background:#1D9E75"></div></div><span class="rank-count">60,437</span></div>
+        <div class="rank-row"><span class="rank-num">5</span><span class="rank-label">Concrete Construction</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:83%;background:#1D9E75"></div></div><span class="rank-count">60,365</span></div>
+        <div class="rank-row"><span class="rank-num">6</span><span class="rank-label">Plumbing</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:82%;background:#1D9E75"></div></div><span class="rank-count">59,517</span></div>
+        <div class="rank-row"><span class="rank-num">7</span><span class="rank-label">Interior Walls / Ceilings</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:82%;background:#378ADD"></div></div><span class="rank-count">59,222</span></div>
+        <div class="rank-row"><span class="rank-num">8</span><span class="rank-label">Doors, Glass &amp; Windows</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:79%;background:#378ADD"></div></div><span class="rank-count">57,606</span></div>
+        <div class="rank-row"><span class="rank-num">9</span><span class="rank-label">Wood &amp; Carpentry</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:76%;background:#378ADD"></div></div><span class="rank-count">55,064</span></div>
+        <div class="rank-row"><span class="rank-num">10</span><span class="rank-label">Metal &amp; Steel</span><div class="rank-bar-wrap"><div class="rank-bar" style="width:75%;background:#888780"></div></div><span class="rank-count">54,642</span></div>
+        <div class="note" style="margin-top:8px">GCs inviting Demolition + Electrical together attract 22%+ more total bids per project</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── VALUE BANDS ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Project value sweet spot — bids · downloads · views by size tier</div>
+    <div class="value-grid">
+
+      <div class="vband">
+        <div class="vband-tier">Tier 1</div>
+        <div class="vband-val">&lt;$500K</div>
+        <span class="vband-badge" style="background:#F1EFE8;color:#444441">Below avg</span>
+        <div class="signal-row">
+          <div class="sig-label"><span>Bids</span><span>4–7</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:22%;background:#888780"></div></div>
+          <div class="sig-label"><span>Downloads</span><span>Low</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:15%;background:#888780"></div></div>
+          <div class="sig-label"><span>Views</span><span>Low</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:18%;background:#888780"></div></div>
+        </div>
+      </div>
+
+      <div class="vband">
+        <div class="vband-tier">Tier 2</div>
+        <div class="vband-val">$500K–$2M</div>
+        <span class="vband-badge" style="background:#E1F5EE;color:#085041">Good</span>
+        <div class="signal-row">
+          <div class="sig-label"><span>Bids</span><span>8–12</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:48%;background:#1D9E75"></div></div>
+          <div class="sig-label"><span>Downloads</span><span>Moderate</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:42%;background:#1D9E75"></div></div>
+          <div class="sig-label"><span>Views</span><span>Moderate</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:40%;background:#1D9E75"></div></div>
+        </div>
+      </div>
+
+      <div class="vband sweet">
+        <div class="vband-tier">Tier 3 ✦ sweet spot</div>
+        <div class="vband-val">$2M–$10M</div>
+        <span class="vband-badge" style="background:#E6F1FB;color:#0C447C">Peak engagement</span>
+        <div class="signal-row">
+          <div class="sig-label"><span>Bids</span><span>14–22</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:90%;background:#378ADD"></div></div>
+          <div class="sig-label"><span>Downloads</span><span>High</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:85%;background:#378ADD"></div></div>
+          <div class="sig-label"><span>Views</span><span>High</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:82%;background:#378ADD"></div></div>
+        </div>
+      </div>
+
+      <div class="vband">
+        <div class="vband-tier">Tier 4</div>
+        <div class="vband-val">$10M–$25M</div>
+        <span class="vband-badge" style="background:#E1F5EE;color:#085041">Strong</span>
+        <div class="signal-row">
+          <div class="sig-label"><span>Bids</span><span>18–28</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:78%;background:#1D9E75"></div></div>
+          <div class="sig-label"><span>Downloads</span><span>High</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:72%;background:#1D9E75"></div></div>
+          <div class="sig-label"><span>Views</span><span>High</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:70%;background:#1D9E75"></div></div>
+        </div>
+      </div>
+
+      <div class="vband">
+        <div class="vband-tier">Tier 5</div>
+        <div class="vband-val">$25M+</div>
+        <span class="vband-badge" style="background:#FCEBEB;color:#791F1F">High risk</span>
+        <div class="signal-row">
+          <div class="sig-label"><span>Bids</span><span>8–35 ⚠</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:50%;background:#E24B4A"></div></div>
+          <div class="sig-label"><span>Downloads</span><span>Very high</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:95%;background:#888780"></div></div>
+          <div class="sig-label"><span>Views</span><span>Very high</span></div>
+          <div class="sig-bar-wrap"><div class="sig-bar" style="width:90%;background:#888780"></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="note">⚠ Tier 5: Downloads and views are very high but bid count varies wildly. Subs pull specs and walk away due to bonding and prequalification barriers. Looks engaged on surface metrics — isn't.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── SECTOR MOMENTUM CHART ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Sector momentum — which markets are accelerating right now</div>
+    <div class="headline" style="font-size:16px;margin-bottom:4px">Municipal sector grew 123% year-over-year. Education grew 45%. These two verticals are the platform's fastest structural shift.</div>
+    <div class="subline">Comparing each sector's share of total monthly projects: January 2025 vs January 2026</div>
+    <div class="chart-wrap" style="height:280px;margin-bottom:10px">
+      <canvas id="momentumChart" role="img" aria-label="Grouped bar chart comparing Jan 2025 vs Jan 2026 project share. Education grew from 12.2% to 17.7%, Municipal from 5.2% to 11.6%.">Education: 12.2% to 17.7%. Municipal: 5.2% to 11.6%. Mixed-Use: 1.7% to 2.4%. Healthcare: 2.8% stable. Retail: 17.1% to 17.0%. Restaurant: 8.9% to 8.7%.</canvas>
+    </div>
+    <div class="legend-row">
+      <span><span class="ldot" style="background:rgba(55,138,221,0.38)"></span>Jan 2025 share (%)</span>
+      <span><span class="ldot" style="background:#378ADD"></span>Jan 2026 share (%)</span>
+      <span style="color:var(--text-muted);font-size:10px">Education +45% &nbsp;·&nbsp; Municipal +123% &nbsp;·&nbsp; Mixed-Use +41% year-over-year</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── BID TREND CHART ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Sub bid volume trend — January through December 2025</div>
+    <div class="headline" style="font-size:16px;margin-bottom:4px">October is the single most important month on the platform — 63% more bids than the February trough.</div>
+    <div class="subline">GCs need to be live, posting, and fully onboarded before September to capture the fall surge window.</div>
+    <div class="chart-wrap" style="height:240px;margin-bottom:10px">
+      <canvas id="bidTrendChart" role="img" aria-label="Line chart of monthly sub bid volume. Starts at 97K in January, dips to 86K in February, climbs steadily, and peaks at 140K in October.">Monthly bids: Jan 97148, Feb 85750, Mar 95496, Apr 114258, May 96466, Jun 113385, Jul 122225, Aug 114841, Sep 118258, Oct 139765, Nov 115078, Dec 118743.</canvas>
+    </div>
+    <div class="legend-row">
+      <span><span class="ldot" style="background:#378ADD"></span>Monthly sub bids (2025)</span>
+      <span style="color:var(--text-muted);font-size:10px">Platform-wide · all GC project types</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── ANOMALIES ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Anomalies &amp; outliers — what the data reveals that isn't obvious</div>
+    <div class="anomaly-list">
+      <div class="anomaly-item good"><b>▲ Small-ticket niche punches above its weight</b> — Service Station / Car Wash and Convenience Store GCs ($500K–$2M projects) post 3–5× per month and generate 8–12 bids per project consistently. Low per-project engagement masks high LTV (lifetime value) due to posting frequency and sub loyalty. These are sleeper ICP accounts worth prioritizing in renewals.</div>
+      <div class="anomaly-item good"><b>▲ Fitness Center overperforms its size tier</b> — Projects valued $1M–$5M generate disproportionately high bid counts due to MEP + specialty finishes + equipment overlap. GCs specializing here attract a premium sub base. This is an undervalued targeting signal in current segmentation.</div>
+      <div class="anomaly-item warn"><b>▸ Military is a feast-or-famine vertical</b> — Peaked at 3.8% of all projects in Aug 2025 (266 projects), collapsed to 0.7% by October. Engagement is high when active but contract cycles are unpredictable and government-driven. Treat as secondary-only — not a targeting anchor.</div>
+      <div class="anomaly-item bad"><b>▼ Civil / Road / Infrastructure GCs are retention risks</b> — Road/Highway peaked at 7.8% in Jan 2025 then dropped below 0.5% by Q3. These GCs post seasonally and produce thin sub engagement when they do. Avoid targeting civil-only portfolios as primary ICP accounts. They inflate acquisition numbers and depress retention metrics.</div>
+      <div class="anomaly-item bad"><b>▼ The $25M+ engagement trap</b> — Large civil and infrastructure projects show extremely high views and downloads but bid submission rates collapse. Subs pull specs and walk away due to bonding and prequalification barriers. Scoring GCs by views or downloads without normalizing for actual bids will systematically overcount the value of these accounts.</div>
+      <div class="anomaly-item blue"><b>◆ October is the platform's peak bidding month</b> — Sub bids reached 139,765 in Oct 2025, up 63% from the Feb 2025 trough of 85,750. Sales onboarding and GC activation efforts must be concentrated in Q3 to ensure new accounts are live and posting before the fall surge window opens.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── KEY TAKEAWAYS ─── -->
+  <div class="section">
+    <div class="eyebrow">◆ Key takeaways — what this means for sales and marketing</div>
+    <div class="takeaway-box">
+      <div class="tk-row">
+        <span class="tk-num">1</span>
+        <span><b>Your ICP is a $2M–$10M commercial GC in Retail, Education, or Municipal.</b> These three verticals account for 41% of all platform volume, attract 14–22 bids per project (45–80% above baseline), and post consistently year-round. This is your highest-confidence sales targeting segment — the foundation of any scoring model.</span>
+      </div>
+      <div class="tk-row">
+        <span class="tk-num">2</span>
+        <span><b>Municipal is the fastest-growing opportunity on the platform right now.</b> Its share of monthly projects surged 123% from Jan 2025 to Jan 2026. GCs entering public works and civic construction are a time-sensitive first-mover acquisition target before competitors recognize the structural shift.</span>
+      </div>
+      <div class="tk-row">
+        <span class="tk-num">3</span>
+        <span><b>Don't be fooled by high views and downloads on large civil projects.</b> A project with 500 plan downloads and 3 bids is underperforming — not overperforming. Normalize all engagement scoring for bids as the primary signal, with downloads and views as secondary confirmation only. Failing to do this systematically misvalues your civil-heavy accounts.</span>
+      </div>
+      <div class="tk-row">
+        <span class="tk-num">4</span>
+        <span><b>The small-ticket niche is a hidden LTV champion.</b> Service Station, Convenience Store, and Car Wash GCs may not look impressive project-by-project, but their posting frequency, sub loyalty, and low churn make them high-value long-term accounts. Prioritize them in renewal and expansion motions.</span>
+      </div>
+      <div class="tk-row">
+        <span class="tk-num">5</span>
+        <span><b>Fix dormancy before scaling acquisition.</b> 49.2% of GCs are inactive. The highest-ROI move right now is reactivating ICP-matching dormant GCs — those with commercial vertical portfolios in the $2M–$25M range who have gone quiet in the last 6 months — before spending on new logo acquisition.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ═══════════════════════════════════════════════════ FOOTER -->
+<div class="report-footer">
+  <span>Source: Tableau · Miami Dashboard · Monthly_Project_Data_Extract · SC Search &amp; Bidding Activity · Project Trades · gc_posting_activity · Registration and General Activity Data</span>
+  <span>PlanHub GC ICP Report &nbsp;·&nbsp; April 2026</span>
+</div>
+
+<script>
+  const gc = '#378ADD';
+  const gc2 = 'rgba(55,138,221,0.35)';
+  const gridC = 'rgba(0,0,0,0.06)';
+  const tickC = '#888780';
+
+  new Chart(document.getElementById('momentumChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Retail','Education','Municipal','Restaurant','Healthcare','Mixed-Use','Multi-Res','Office'],
+      datasets: [
+        { label: 'Jan 2025 %', data: [17.1, 12.2, 5.2, 8.9, 2.8, 1.7, 1.1, 1.5], backgroundColor: gc2, borderRadius: 3, borderSkipped: false },
+        { label: 'Jan 2026 %', data: [17.0, 17.7, 11.6, 8.7, 2.8, 2.4, 1.8, 1.9], backgroundColor: gc,  borderRadius: 3, borderSkipped: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw.toFixed(1) + '% of projects' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tickC, font: { size: 11 } } },
+        y: { grid: { color: gridC }, ticks: { color: tickC, callback: v => v + '%' }, max: 22 }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('bidTrendChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+      datasets: [{
+        label: 'Sub bids',
+        data: [97148, 85750, 95496, 114258, 96466, 113385, 122225, 114841, 118258, 139765, 115078, 118743],
+        borderColor: gc,
+        backgroundColor: 'rgba(55,138,221,0.07)',
+        fill: true,
+        tension: 0.35,
+        pointRadius: 5,
+        pointBackgroundColor: gc,
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.raw.toLocaleString() + ' bids' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: tickC, font: { size: 11 }, autoSkip: false } },
+        y: {
+          grid: { color: gridC },
+          ticks: { color: tickC, callback: v => (v / 1000).toFixed(0) + 'K' },
+          min: 70000, max: 150000
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
