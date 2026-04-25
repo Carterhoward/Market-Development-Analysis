@@ -7,771 +7,629 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #1a1a18; --ink-2: #4a4a46; --ink-3: #8a8a84;
+  --paper: #faf9f6; --paper-2: #f2f0eb; --paper-3: #e8e5de;
+  --accent: #c84b2f; --accent-2: #e8a020; --green: #2d6a4f; --blue: #1a4a7a;
+  --rule: rgba(26,26,24,0.12);
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); font-weight: 300; line-height: 1.7; max-width: 960px; margin: 0 auto; padding: 0 2rem 6rem; }
 
-  :root {
-    --ink: #1a1a18;
-    --ink-2: #4a4a46;
-    --ink-3: #8a8a84;
-    --paper: #faf9f6;
-    --paper-2: #f2f0eb;
-    --paper-3: #e8e5de;
-    --accent: #c84b2f;
-    --accent-2: #e8a020;
-    --green: #2d6a4f;
-    --blue: #1a4a7a;
-    --rule: rgba(26,26,24,0.12);
-  }
+/* COVER */
+.cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 4rem 0 5rem; border-bottom: 1px solid var(--rule); position: relative; margin-bottom: 5rem; }
+.cover::before { content: ''; position: absolute; top: 0; left: -2rem; right: -2rem; height: 6px; background: var(--accent); }
+.cover-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 2rem; font-weight: 500; }
+.cover h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.8rem, 5vw, 4.2rem); line-height: 1.1; margin-bottom: 1.5rem; max-width: 700px; }
+.cover h1 em { font-style: italic; color: var(--accent); }
+.cover-sub { font-size: 1.1rem; color: var(--ink-2); max-width: 580px; margin-bottom: 3rem; font-weight: 300; }
+.cover-meta { display: flex; gap: 2.5rem; font-size: 13px; color: var(--ink-3); padding-top: 2rem; border-top: 1px solid var(--rule); flex-wrap: wrap; }
+.cover-meta strong { display: block; color: var(--ink); font-weight: 500; font-size: 14px; margin-bottom: 2px; }
 
-  html { font-size: 16px; scroll-behavior: smooth; }
+/* SECTIONS */
+section { margin-bottom: 5rem; }
+.section-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 12px; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.2; margin-bottom: 1rem; }
+h3 { font-family: 'DM Serif Display', serif; font-size: 1.25rem; margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; color: var(--ink-2); }
+p:last-child { margin-bottom: 0; }
+strong { font-weight: 500; color: var(--ink); }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--paper);
-    color: var(--ink);
-    font-weight: 300;
-    line-height: 1.7;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 2rem 6rem;
-  }
+/* DATA VIEW TOGGLE */
+.view-toggle { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1px solid var(--rule); width: fit-content; }
+.view-btn { padding: 0.5rem 1.25rem; font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; border: none; background: var(--paper); color: var(--ink-3); transition: all 0.15s; }
+.view-btn.active { background: var(--ink); color: var(--paper); }
+.view-btn:hover:not(.active) { background: var(--paper-2); color: var(--ink); }
 
-  /* COVER */
-  .cover {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 4rem 0 5rem;
-    border-bottom: 1px solid var(--rule);
-    position: relative;
-    margin-bottom: 5rem;
-  }
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 2rem 0; }
+.stat { background: var(--paper); padding: 1.5rem; }
+.stat-value { font-family: 'DM Serif Display', serif; font-size: 2.4rem; line-height: 1; margin-bottom: 0.25rem; }
+.stat-label { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+.stat-delta { font-size: 11px; margin-top: 0.4rem; font-weight: 500; }
+.delta-neg { color: var(--accent); } .delta-pos { color: var(--green); } .delta-neu { color: var(--ink-3); }
 
-  .cover::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -2rem; right: -2rem;
-    height: 6px;
-    background: var(--accent);
-  }
+/* DUAL TABLE */
+.dual-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr; gap: 0; margin-bottom: 0; }
+.market-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.86rem; }
+.market-table th { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; text-align: right; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.market-table th:first-child { text-align: left; }
+.market-table th.group-mar { border-bottom: 2px solid var(--ink-3); }
+.market-table th.group-3mo { border-bottom: 2px solid var(--blue); color: var(--blue); }
+.market-table td { padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--rule); text-align: right; color: var(--ink-2); font-size: 0.84rem; }
+.market-table td:first-child { text-align: left; color: var(--ink); }
+.market-table tr:last-child td { border-bottom: none; }
+.market-table tr:hover td { background: var(--paper-2); }
+.market-table .sep { border-right: 1px solid var(--rule); }
 
-  .cover-label {
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    margin-bottom: 2rem;
-    font-weight: 500;
-  }
+.badge { display: inline-block; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; padding: 1px 5px; border-radius: 2px; margin-left: 5px; vertical-align: middle; }
+.badge-p { background: #dce8f5; color: #1a4a7a; }
+.badge-h { background: #d4edd9; color: #2d6a4f; }
+.badge-n { background: #fef3dc; color: #7a4a00; }
 
-  .cover h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.8rem, 5vw, 4.2rem);
-    line-height: 1.1;
-    color: var(--ink);
-    margin-bottom: 1.5rem;
-    max-width: 700px;
-  }
+.ret-high { color: var(--green); font-weight: 500; }
+.ret-mid  { color: var(--ink); }
+.ret-low  { color: var(--accent); font-weight: 500; }
+.delta-up { color: var(--green); font-weight: 500; }
+.delta-dn { color: var(--accent); font-weight: 500; }
+.delta-fl { color: var(--ink-3); }
 
-  .cover h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
+/* CORRELATIONS */
+.corr-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.corr-table th { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--rule); }
+.corr-table td { padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--rule); font-size: 0.88rem; vertical-align: middle; }
+.corr-table tr:last-child td { border-bottom: none; }
+.bar-wrap { width: 120px; background: var(--paper-3); height: 8px; border-radius: 2px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 6px; }
+.bar-fill { height: 100%; border-radius: 2px; display: block; }
+.bar-pos-strong { background: var(--blue); }
+.bar-pos-weak   { background: #7aaad4; }
+.bar-neg-strong { background: var(--accent); }
+.bar-neg-weak   { background: #dea090; }
+.stronger-tag { font-size: 10px; font-weight: 500; color: var(--blue); background: #dce8f5; padding: 1px 6px; border-radius: 2px; margin-left: 6px; }
+.newsig-tag   { font-size: 10px; font-weight: 500; color: var(--green); background: #d4edd9; padding: 1px 6px; border-radius: 2px; margin-left: 6px; }
+.sig-star { color: var(--accent); }
 
-  .cover-sub {
-    font-size: 1.1rem;
-    color: var(--ink-2);
-    max-width: 560px;
-    margin-bottom: 3rem;
-    font-weight: 300;
-  }
+/* SIGNAL CHAIN */
+.signal-chain { display: flex; align-items: stretch; gap: 0; margin: 2rem 0; flex-wrap: wrap; }
+.signal-step { background: var(--paper-2); border: 1px solid var(--rule); padding: 1.25rem 1.25rem; flex: 1; min-width: 150px; }
+.signal-step-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; margin-bottom: 0.3rem; }
+.signal-step-metric { font-family: 'DM Serif Display', serif; font-size: 1rem; margin-bottom: 0.3rem; }
+.signal-step-def { font-size: 11px; color: var(--ink-3); line-height: 1.4; }
+.signal-step-r { font-size: 11px; color: var(--blue); font-weight: 500; margin-top: 0.4rem; }
+.signal-arrow { font-size: 1.6rem; color: var(--accent); padding: 0 0.4rem; display: flex; align-items: center; flex-shrink: 0; }
+.signal-outcome { background: #d4edd9; border-color: #2d6a4f40; }
+.signal-outcome .signal-step-metric { color: var(--green); }
+.signal-outcome .signal-step-label { color: var(--green); }
 
-  .cover-meta {
-    display: flex;
-    gap: 3rem;
-    font-size: 13px;
-    color: var(--ink-3);
-    padding-top: 2rem;
-    border-top: 1px solid var(--rule);
-  }
+/* FINDINGS */
+.finding { border-left: 3px solid var(--paper-3); padding: 1.5rem 1.5rem 1.5rem 2rem; margin-bottom: 1.5rem; background: var(--paper-2); }
+.finding.critical { border-left-color: var(--accent); }
+.finding.warning  { border-left-color: var(--accent-2); }
+.finding.positive { border-left-color: var(--green); }
+.finding.info     { border-left-color: var(--blue); }
+.finding-num { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; margin-bottom: 0.4rem; }
+.finding h3 { margin-bottom: 0.6rem; font-size: 1.05rem; }
+.finding p  { font-size: 0.9rem; margin-bottom: 0; }
 
-  .cover-meta strong {
-    display: block;
-    color: var(--ink);
-    font-weight: 500;
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
+/* THRESHOLD TABLE */
+.threshold-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.threshold-table th { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; padding: 0.5rem 1rem; border-bottom: 1px solid var(--rule); text-align: left; }
+.threshold-table td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--rule); font-size: 0.88rem; color: var(--ink-2); }
+.threshold-table tr:last-child td { border-bottom: none; }
+.threshold-table td:first-child { color: var(--ink); font-weight: 500; }
 
-  /* SECTIONS */
-  section { margin-bottom: 5rem; }
+.note-box { background: var(--paper-2); border: 1px solid var(--rule); padding: 1.25rem 1.5rem; margin-top: 1.5rem; }
+.note-box p { font-size: 0.88rem; margin: 0; }
 
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+.chart-wrap { position: relative; width: 100%; margin: 2rem 0; }
+.chart-caption { font-size: 12px; color: var(--ink-3); margin-top: 0.5rem; font-style: italic; }
 
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
+footer { padding-top: 3rem; border-top: 1px solid var(--rule); font-size: 12px; color: var(--ink-3); display: flex; justify-content: space-between; align-items: flex-end; }
 
-  h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
-    line-height: 1.2;
-    margin-bottom: 1rem;
-    color: var(--ink);
-  }
-
-  h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    color: var(--ink);
-  }
-
-  p { margin-bottom: 1rem; color: var(--ink-2); }
-  p:last-child { margin-bottom: 0; }
-
-  /* STAT GRID */
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--rule);
-    border: 1px solid var(--rule);
-    margin: 2rem 0;
-  }
-
-  .stat {
-    background: var(--paper);
-    padding: 1.5rem;
-  }
-
-  .stat-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 2.4rem;
-    line-height: 1;
-    color: var(--ink);
-    margin-bottom: 0.25rem;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--ink-3);
-    font-weight: 400;
-    line-height: 1.4;
-  }
-
-  .stat-delta {
-    font-size: 11px;
-    margin-top: 0.4rem;
-    font-weight: 500;
-  }
-
-  .delta-neg { color: var(--accent); }
-  .delta-pos { color: var(--green); }
-  .delta-neu { color: var(--ink-3); }
-
-  /* FINDINGS */
-  .finding {
-    border-left: 3px solid var(--paper-3);
-    padding: 1.5rem 1.5rem 1.5rem 2rem;
-    margin-bottom: 1.5rem;
-    background: var(--paper-2);
-  }
-
-  .finding.critical { border-left-color: var(--accent); }
-  .finding.warning  { border-left-color: var(--accent-2); }
-  .finding.positive { border-left-color: var(--green); }
-  .finding.info     { border-left-color: var(--blue); }
-
-  .finding-num {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-  }
-
-  .finding h3 { margin-bottom: 0.6rem; font-size: 1.1rem; }
-  .finding p  { font-size: 0.92rem; margin-bottom: 0; }
-
-  /* CORRELATIONS */
-  .corr-table { width: 100%; margin: 1.5rem 0; border-collapse: collapse; }
-  .corr-table th {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    font-weight: 500;
-    text-align: left;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .corr-table td {
-    padding: 0.75rem;
-    border-bottom: 1px solid var(--rule);
-    font-size: 0.9rem;
-    vertical-align: middle;
-  }
-  .corr-table tr:last-child td { border-bottom: none; }
-
-  .bar-cell { width: 180px; }
-  .bar-wrap { background: var(--paper-3); height: 8px; border-radius: 2px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 2px; }
-  .bar-pos { background: var(--blue); }
-  .bar-neg { background: var(--accent); }
-  .bar-ns  { background: var(--paper-3); }
-
-  .sig-star { color: var(--accent); font-size: 12px; }
-
-  /* MARKET TABLE */
-  .market-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.88rem; }
-  .market-table th {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    font-weight: 500;
-    text-align: right;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .market-table th:first-child { text-align: left; }
-  .market-table td {
-    padding: 0.6rem 0.75rem;
-    border-bottom: 1px solid var(--rule);
-    text-align: right;
-    color: var(--ink-2);
-  }
-  .market-table td:first-child { text-align: left; color: var(--ink); font-weight: 400; }
-  .market-table tr:last-child td { border-bottom: none; }
-  .market-table tr:hover td { background: var(--paper-2); }
-
-  .badge {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 500;
-    padding: 2px 6px;
-    border-radius: 2px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-  .badge-p { background: #dce8f5; color: #1a4a7a; }
-  .badge-h { background: #d4edd9; color: #2d6a4f; }
-
-  .ret-high { color: var(--green); font-weight: 500; }
-  .ret-mid  { color: var(--ink); }
-  .ret-low  { color: var(--accent); font-weight: 500; }
-
-  /* CHART */
-  .chart-wrap { position: relative; width: 100%; margin: 2rem 0; }
-  .chart-caption {
-    font-size: 12px;
-    color: var(--ink-3);
-    margin-top: 0.5rem;
-    font-style: italic;
-  }
-
-  /* SIGNAL CHAIN */
-  .signal-chain {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-  }
-
-  .signal-step {
-    background: var(--paper-2);
-    border: 1px solid var(--rule);
-    padding: 1rem 1.25rem;
-    flex: 1;
-    min-width: 160px;
-  }
-
-  .signal-step-label {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-  }
-
-  .signal-step-metric {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1rem;
-    color: var(--ink);
-    margin-bottom: 0.2rem;
-  }
-
-  .signal-step-def {
-    font-size: 11px;
-    color: var(--ink-3);
-    line-height: 1.4;
-  }
-
-  .signal-arrow {
-    font-size: 1.4rem;
-    color: var(--accent);
-    padding: 0 0.5rem;
-    flex-shrink: 0;
-  }
-
-  /* THRESHOLD TABLE */
-  .threshold-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-  .threshold-table th {
-    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-3); font-weight: 500; padding: 0.5rem 1rem;
-    border-bottom: 1px solid var(--rule); text-align: left;
-  }
-  .threshold-table td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--rule);
-    font-size: 0.9rem;
-    color: var(--ink-2);
-  }
-  .threshold-table tr:last-child td { border-bottom: none; }
-  .threshold-table td:first-child { color: var(--ink); font-weight: 500; }
-
-  /* FOOTER */
-  footer {
-    padding-top: 3rem;
-    border-top: 1px solid var(--rule);
-    font-size: 12px;
-    color: var(--ink-3);
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-
-  footer a { color: var(--ink-3); }
-
-  @media (max-width: 700px) {
-    body { padding: 0 1rem 4rem; }
-    .stat-grid { grid-template-columns: repeat(2, 1fr); }
-    .signal-chain { flex-direction: column; }
-    .signal-arrow { transform: rotate(90deg); }
-  }
-
-  @media print {
-    body { max-width: 100%; padding: 0 1.5cm; }
-    .cover { min-height: auto; padding: 2cm 0; }
-    section { page-break-inside: avoid; }
-  }
+@media (max-width: 700px) {
+  body { padding: 0 1rem 4rem; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .signal-chain { flex-direction: column; }
+  .cover-meta { gap: 1.5rem; }
+}
+@media print { body { max-width: 100%; padding: 0 1.5cm; } .cover { min-height: auto; padding: 2cm 0; } section { page-break-inside: avoid; } .view-toggle { display: none; } }
 </style>
 </head>
 <body>
 
 <!-- COVER -->
 <div class="cover">
-  <p class="cover-label">Internal — for review</p>
+  <p class="cover-label">Internal — for team review</p>
   <h1>Marketplace Retention:<br><em>What the data says</em></h1>
-  <p class="cover-sub">A pattern analysis across 75 markets identifying which KPI movements precede positive retention outcomes — and which don't.</p>
+  <p class="cover-sub">A pattern analysis across 75+ markets identifying which KPI movements precede positive retention outcomes — compared across a single-month snapshot and a smoothed 3-month average to validate signal strength.</p>
   <div class="cover-meta">
-    <div><strong>Data source</strong>Marketplace Monthly Performance<br>March 2026 snapshot</div>
-    <div><strong>Markets analyzed</strong>75 CBSAs total<br>20 priority, 5 healthy</div>
+    <div><strong>Data source</strong>Marketplace Monthly Performance<br>April 2026 workbook</div>
+    <div><strong>Views compared</strong>March 2026 (single month)<br>Jan–Mar 2026 (3-mo avg)</div>
     <div><strong>Retention definition</strong>% of paid subs<br>still paying, YoY</div>
+    <div><strong>Markets analyzed</strong>75–76 CBSAs<br>16–20 priority</div>
     <div><strong>Prepared</strong>April 2026</div>
   </div>
 </div>
 
-<!-- SECTION 1: STATE OF RETENTION -->
+<!-- SECTION 1: WHY TWO VIEWS -->
 <section>
   <p class="section-label">01</p>
-  <h2>Where retention stands today</h2>
-  <p>Priority markets averaged <strong>68.3% retention</strong> in March 2026. The five markets formally designated "healthy" averaged 71.0%. No priority market exceeded 80%.</p>
+  <h2>Two views, one story</h2>
+  <p>The March snapshot gives the most current reading. The 3-month average (Jan–Mar) smooths out month-to-month noise and reveals which signals are structural vs. one-time. Where both views agree, the finding is strong. Where they diverge, context matters.</p>
 
   <div class="stat-grid">
     <div class="stat">
       <div class="stat-value">68.3%</div>
-      <div class="stat-label">Priority market avg retention</div>
-      <div class="stat-delta delta-neu">20 markets</div>
+      <div class="stat-label">Priority avg retention<br><span style="color:var(--ink-3);">March only</span></div>
     </div>
     <div class="stat">
-      <div class="stat-value">71.0%</div>
-      <div class="stat-label">Healthy market avg retention</div>
-      <div class="stat-delta delta-pos">5 markets</div>
+      <div class="stat-value">68.2%</div>
+      <div class="stat-label">Priority avg retention<br><span style="color:var(--blue);">3-month avg</span></div>
+      <div class="stat-delta delta-neu">Confirms Mar reading</div>
     </div>
     <div class="stat">
-      <div class="stat-value">54%</div>
-      <div class="stat-label">Lowest priority market</div>
-      <div class="stat-delta delta-neg">San Jose, CA</div>
+      <div class="stat-value">5</div>
+      <div class="stat-label">Healthy markets<br>consistent in both views</div>
     </div>
     <div class="stat">
-      <div class="stat-value">76%</div>
-      <div class="stat-label">Highest priority market</div>
-      <div class="stat-delta delta-pos">Pittsburgh, PA</div>
+      <div class="stat-value">2</div>
+      <div class="stat-label">Markets flagged "Next?"<br>approaching healthy status</div>
+      <div class="stat-delta delta-pos">Austin + Nashville</div>
     </div>
   </div>
 
-  <h3>Priority markets — March 2026</h3>
+  <p>The 3-month average also resolves the Cincinnati anomaly: hunger drops from 46x (March) to 28x on a smoothed basis — still elevated, but less extreme. The March spike was likely a low-project month rather than a structural failure.</p>
+</section>
+
+<!-- SECTION 2: PRIORITY MARKET TABLE -->
+<section>
+  <p class="section-label">02</p>
+  <h2>Priority markets — both views side by side</h2>
+  <p>Markets shared across both views. Retention column shows March / 3-month average. Delta shows the difference — positive means the 3-month trend is stronger than March alone.</p>
+
   <table class="market-table">
     <thead>
       <tr>
-        <th>Market</th>
-        <th>Retention</th>
-        <th>Project pen.</th>
-        <th>Sub pen.</th>
-        <th>Hunger</th>
-        <th>GCs posting</th>
+        <th rowspan="2" style="vertical-align:bottom;">Market</th>
+        <th colspan="2" class="group-mar" style="text-align:center; border-bottom:none; padding-bottom:2px; font-size:9px; color:var(--ink-3);">MARCH ONLY</th>
+        <th colspan="3" class="group-3mo" style="text-align:center; border-bottom:none; padding-bottom:2px; font-size:9px; color:var(--blue);">3-MONTH AVG (JAN–MAR)</th>
+        <th rowspan="2" style="vertical-align:bottom; color:var(--ink-3); font-size:10px;">Δ Ret</th>
+      </tr>
+      <tr>
+        <th class="group-mar">Retention</th>
+        <th class="group-mar sep">Hunger</th>
+        <th class="group-3mo">Retention</th>
+        <th class="group-3mo">Hunger</th>
+        <th class="group-3mo sep">GCs posting</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>Pittsburgh, PA <span class="badge badge-p">P</span></td><td class="ret-high">76%</td><td>12%</td><td>5%</td><td>15x</td><td>13%</td></tr>
-      <tr><td>Raleigh, NC <span class="badge badge-h">H</span></td><td class="ret-high">73%</td><td>4%</td><td>9%</td><td>16x</td><td>19%</td></tr>
-      <tr><td>San Antonio, TX <span class="badge badge-h">H</span></td><td class="ret-high">72%</td><td>12%</td><td>8%</td><td>15x</td><td>19%</td></tr>
-      <tr><td>Nashville, TN <span class="badge badge-p">P</span></td><td class="ret-high">72%</td><td>6%</td><td>13%</td><td>18x</td><td>18%</td></tr>
-      <tr><td>Cincinnati, OH <span class="badge badge-p">P</span></td><td class="ret-mid">71%</td><td>5%</td><td>6%</td><td>46x ⚠</td><td>13%</td></tr>
-      <tr><td>Sacramento, CA <span class="badge badge-p">P</span></td><td class="ret-mid">71%</td><td>5%</td><td>4%</td><td>16x</td><td>10%</td></tr>
-      <tr><td>Charlotte, NC <span class="badge badge-h">H</span></td><td class="ret-mid">71%</td><td>7%</td><td>7%</td><td>15x</td><td>21%</td></tr>
-      <tr><td>Columbus, OH <span class="badge badge-p">P</span></td><td class="ret-mid">71%</td><td>5%</td><td>6%</td><td>21x</td><td>14%</td></tr>
-      <tr><td>Tampa, FL <span class="badge badge-h">H</span></td><td class="ret-mid">70%</td><td>12%</td><td>5%</td><td>10x</td><td>16%</td></tr>
-      <tr><td>Cleveland, OH <span class="badge badge-p">P</span></td><td class="ret-mid">70%</td><td>10%</td><td>5%</td><td>13x</td><td>15%</td></tr>
-      <tr><td>Jacksonville, FL <span class="badge badge-p">P</span></td><td class="ret-mid">70%</td><td>10%</td><td>5%</td><td>18x</td><td>16%</td></tr>
-      <tr><td>Atlanta, GA <span class="badge badge-h">H</span></td><td class="ret-mid">69%</td><td>8%</td><td>8%</td><td>18x</td><td>24%</td></tr>
-      <tr><td>Orlando, FL <span class="badge badge-p">P</span></td><td class="ret-mid">69%</td><td>7%</td><td>6%</td><td>15x</td><td>18%</td></tr>
-      <tr><td>Riverside, CA <span class="badge badge-p">P</span></td><td class="ret-mid">69%</td><td>3%</td><td>3%</td><td>27x</td><td>14%</td></tr>
-      <tr><td>Philadelphia, PA <span class="badge badge-p">P</span></td><td class="ret-mid">68%</td><td>8%</td><td>5%</td><td>20x</td><td>18%</td></tr>
-      <tr><td>Dallas, TX <span class="badge badge-p">P</span></td><td class="ret-mid">68%</td><td>—</td><td>—</td><td>14x</td><td>—</td></tr>
-      <tr><td>Houston, TX <span class="badge badge-p">P</span></td><td class="ret-mid">68%</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
-      <tr><td>San Francisco, CA <span class="badge badge-p">P</span></td><td class="ret-low">64%</td><td>5%</td><td>3%</td><td>75x</td><td>11%</td></tr>
-      <tr><td>New York, NY <span class="badge badge-p">P</span></td><td class="ret-low">62%</td><td>4%</td><td>5%</td><td>19x</td><td>12%</td></tr>
-      <tr><td>Los Angeles, CA <span class="badge badge-p">P</span></td><td class="ret-low">62%</td><td>6%</td><td>3%</td><td>16x</td><td>10%</td></tr>
-      <tr><td>San Diego, CA <span class="badge badge-p">P</span></td><td class="ret-low">62%</td><td>4%</td><td>3%</td><td>22x</td><td>12%</td></tr>
-      <tr><td>San Jose, CA <span class="badge badge-p">P</span></td><td class="ret-low">54%</td><td>4%</td><td>3%</td><td>20x</td><td>4%</td></tr>
+      <tr><td>Charlotte, NC <span class="badge badge-h">H</span></td><td>71%</td><td class="sep">15x</td><td class="ret-high">74%</td><td>17x</td><td class="sep">21%</td><td class="delta-up">+3pp</td></tr>
+      <tr><td>Raleigh, NC <span class="badge badge-h">H</span></td><td>73%</td><td class="sep">16x</td><td class="ret-high">74%</td><td>16x</td><td class="sep">21%</td><td class="delta-fl">+1pp</td></tr>
+      <tr><td>Austin, TX <span class="badge badge-n">Next?</span></td><td>—</td><td class="sep">—</td><td class="ret-high">76%</td><td>12x</td><td class="sep">18%</td><td class="delta-fl">—</td></tr>
+      <tr><td>Atlanta, GA <span class="badge badge-h">H</span></td><td>69%</td><td class="sep">18x</td><td class="ret-high">72%</td><td>19x</td><td class="sep">25%</td><td class="delta-up">+3pp</td></tr>
+      <tr><td>Nashville, TN <span class="badge badge-n">Next?</span></td><td>72%</td><td class="sep">18x</td><td class="ret-high">72%</td><td>19x</td><td class="sep">20%</td><td class="delta-fl">+0pp</td></tr>
+      <tr><td>San Antonio, TX <span class="badge badge-h">H</span></td><td>72%</td><td class="sep">15x</td><td class="ret-high">72%</td><td>16x</td><td class="sep">21%</td><td class="delta-fl">+0pp</td></tr>
+      <tr><td>Cincinnati, OH</td><td>71%</td><td class="sep">46x ⚠</td><td class="ret-mid">71%</td><td>28x</td><td class="sep">15%</td><td class="delta-fl">+0pp</td></tr>
+      <tr><td>Tampa, FL <span class="badge badge-h">H</span></td><td>70%</td><td class="sep">10x</td><td class="ret-mid">71%</td><td>12x</td><td class="sep">19%</td><td class="delta-fl">+1pp</td></tr>
+      <tr><td>Orlando, FL</td><td>69%</td><td class="sep">15x</td><td class="ret-mid">70%</td><td>16x</td><td class="sep">23%</td><td class="delta-fl">+1pp</td></tr>
+      <tr><td>Jacksonville, FL</td><td>70%</td><td class="sep">18x</td><td class="ret-mid">70%</td><td>16x</td><td class="sep">25%</td><td class="delta-fl">+0pp</td></tr>
+      <tr><td>Cleveland, OH</td><td>70%</td><td class="sep">13x</td><td class="ret-mid">67%</td><td>21x</td><td class="sep">18%</td><td class="delta-dn">−3pp</td></tr>
+      <tr><td>Sacramento, CA</td><td>71%</td><td class="sep">16x</td><td class="ret-mid">69%</td><td>31x</td><td class="sep">11%</td><td class="delta-dn">−2pp</td></tr>
+      <tr><td>Riverside, CA</td><td>69%</td><td class="sep">27x</td><td class="ret-mid">68%</td><td>35x</td><td class="sep">16%</td><td class="delta-dn">−1pp</td></tr>
+      <tr><td>Los Angeles, CA</td><td class="ret-low">62%</td><td class="sep">16x</td><td class="ret-low">62%</td><td>16x</td><td class="sep">16%</td><td class="delta-fl">+0pp</td></tr>
+      <tr><td>San Francisco, CA</td><td class="ret-low">64%</td><td class="sep">75x</td><td class="ret-low">62%</td><td>37x</td><td class="sep">6%</td><td class="delta-dn">−2pp</td></tr>
+      <tr><td>San Diego, CA</td><td class="ret-low">62%</td><td class="sep">22x</td><td class="ret-low">60%</td><td>22x</td><td class="sep">12%</td><td class="delta-dn">−2pp</td></tr>
+      <tr><td>San Jose, CA</td><td class="ret-low">54%</td><td class="sep">20x</td><td class="ret-low">56%</td><td>16x</td><td class="sep">4%</td><td class="delta-up">+2pp</td></tr>
     </tbody>
   </table>
-  <p class="chart-caption">⚠ Cincinnati hunger (46x) is under investigation — may reflect a data capture issue or critical supply failure.</p>
+  <p class="chart-caption">⚠ Cincinnati hunger drops from 46x (Mar) to 28x (3mo avg) — confirming the March spike was likely a single low-project month, not structural. Still elevated vs. healthy market benchmark of ≤18x. &nbsp;|&nbsp; "Next?" = approaching healthy status per the 3mo view.</p>
 </section>
 
-<!-- SECTION 2: WHAT PREDICTS RETENTION -->
+<!-- SECTION 3: CORRELATION COMPARISON -->
 <section>
-  <p class="section-label">02</p>
-  <h2>What actually predicts retention</h2>
-  <p>Cross-sectional correlation analysis across all 75 markets reveals which KPIs move with retention — and which don't. Several assumed leading indicators turn out to have no significant relationship.</p>
+  <p class="section-label">03</p>
+  <h2>Which signals get stronger with more data</h2>
+  <p>The 3-month average sharpens several correlations significantly. Where a signal was marginal in March, the smoothed view confirms whether it's real or noise. Four predictors strengthened materially.</p>
 
   <table class="corr-table">
     <thead>
       <tr>
         <th>KPI</th>
-        <th>Definition</th>
-        <th>Correlation</th>
-        <th>Significance</th>
+        <th>March r</th>
+        <th>3-month avg r</th>
+        <th>Verdict</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Active subs (paid %)</strong></td>
-        <td>% of active subs who are paying</td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:78%;"></div></div></div>
-          r = +0.39
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:78%;"></div></div>
+          +0.39 <span class="sig-star">★★★</span>
         </td>
-        <td><span class="sig-star">★★★</span> p&lt;0.001</td>
-      </tr>
-      <tr>
-        <td><strong>Active subs (all %)</strong></td>
-        <td>% of subs active out of last 12 months</td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:70%;"></div></div></div>
-          r = +0.35
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:96%;"></div></div>
+          +0.48 <span class="sig-star">★★★</span>
         </td>
-        <td><span class="sig-star">★★</span> p&lt;0.01</td>
-      </tr>
-      <tr>
-        <td><strong>Project penetration</strong></td>
-        <td>% of commercial permits → projects on PH</td>
-        <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:68%;"></div></div></div>
-          r = +0.34
-        </td>
-        <td><span class="sig-star">★★</span> p&lt;0.01</td>
+        <td><span class="stronger-tag">Stronger</span> Confirmed as #1 predictor</td>
       </tr>
       <tr>
         <td><strong>GCs posting recently</strong></td>
-        <td>% of GCs posted in last 90 days</td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:50%;"></div></div></div>
-          r = +0.25
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:50%;"></div></div>
+          +0.25 <span class="sig-star">★</span>
         </td>
-        <td><span class="sig-star">★</span> p&lt;0.05</td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:93%;"></div></div>
+          +0.47 <span class="sig-star">★★★</span>
+        </td>
+        <td><span class="stronger-tag">Much stronger</span> Jumps to 2nd predictor</td>
       </tr>
       <tr>
-        <td><strong>Sub penetration</strong></td>
-        <td>% of commercial subs who are active</td>
+        <td><strong>Project hunger</strong></td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:46%;"></div></div></div>
-          r = +0.23
+          <div class="bar-wrap"><div class="bar-fill bar-neg-weak" style="width:36%;"></div></div>
+          −0.18 <span style="color:var(--ink-3);">n.s.</span>
         </td>
-        <td><span class="sig-star">★</span> p&lt;0.05</td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-neg-strong" style="width:72%;"></div></div>
+          −0.36 <span class="sig-star">★★</span>
+        </td>
+        <td><span class="newsig-tag">Now significant</span> High hunger does hurt retention</td>
       </tr>
-      <tr style="opacity:0.5;">
-        <td>Project hunger</td>
-        <td>Subs searching per 1 commercial project</td>
+      <tr>
+        <td><strong>Active GCs %</strong></td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-neg" style="width:36%;"></div></div></div>
-          r = −0.18
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:16%;"></div></div>
+          +0.08 <span style="color:var(--ink-3);">n.s.</span>
         </td>
-        <td>Not significant</td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:60%;"></div></div>
+          +0.30 <span class="sig-star">★★</span>
+        </td>
+        <td><span class="newsig-tag">Now significant</span> GC activation does matter at scale</td>
       </tr>
-      <tr style="opacity:0.5;">
-        <td>Active GC count %</td>
-        <td>% of GCs active in last 12 months</td>
+      <tr>
+        <td><strong>Bids per project</strong></td>
         <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-pos" style="width:16%;"></div></div></div>
-          r = +0.08
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:44%;"></div></div>
+          +0.22 <span style="color:var(--ink-3);">n.s.</span>
         </td>
-        <td>Not significant</td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:64%;"></div></div>
+          +0.32 <span class="sig-star">★★</span>
+        </td>
+        <td><span class="newsig-tag">Now significant</span> Bid activity correlates with renewal</td>
+      </tr>
+      <tr>
+        <td><strong>Active subs (all %)</strong></td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:70%;"></div></div>
+          +0.35 <span class="sig-star">★★</span>
+        </td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:70%;"></div></div>
+          +0.35 <span class="sig-star">★★</span>
+        </td>
+        <td>Stable — consistent predictor</td>
+      </tr>
+      <tr>
+        <td><strong>Project penetration</strong></td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-strong" style="width:68%;"></div></div>
+          +0.34 <span class="sig-star">★★</span>
+        </td>
+        <td>
+          <div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:58%;"></div></div>
+          +0.29 <span class="sig-star">★</span>
+        </td>
+        <td>Slightly weaker — still significant</td>
       </tr>
       <tr style="opacity:0.5;">
         <td>Sub-to-GC ratio</td>
-        <td>Active subs per active GC</td>
-        <td>
-          <div class="bar-cell"><div class="bar-wrap"><div class="bar-fill bar-neg" style="width:22%;"></div></div></div>
-          r = −0.11
-        </td>
-        <td>Not significant</td>
+        <td><div class="bar-wrap"><div class="bar-fill bar-neg-weak" style="width:22%;"></div></div>−0.11 n.s.</td>
+        <td><div class="bar-wrap"><div class="bar-fill bar-pos-weak" style="width:6%;"></div></div>+0.03 n.s.</td>
+        <td>Not significant in either view</td>
       </tr>
     </tbody>
   </table>
-  <p>Faded rows are not statistically significant and should not be used as leading indicators.</p>
+  <p style="font-size:12px; color:var(--ink-3);">★ p&lt;0.05 &nbsp; ★★ p&lt;0.01 &nbsp; ★★★ p&lt;0.001 &nbsp; n.s. = not significant. Faded row should not be used as a leading indicator.</p>
 </section>
 
-<!-- SECTION 3: THE SIGNAL CHAIN -->
+<!-- SECTION 4: THE SIGNAL CHAIN -->
 <section>
-  <p class="section-label">03</p>
+  <p class="section-label">04</p>
   <h2>The answer to the original question</h2>
-  <p>The data reveals a causal chain. When you see the pattern below moving in a positive direction, retention should follow within one to two renewal cycles.</p>
+  <p>When you see <strong>these three KPI patterns moving positively</strong>, the data says retention should follow. The 3-month average confirms and strengthens the chain identified in the March snapshot.</p>
 
   <div class="signal-chain">
     <div class="signal-step">
       <div class="signal-step-label">Step 1 — earliest signal</div>
       <div class="signal-step-metric">GCs posting recently ↑</div>
-      <div class="signal-step-def">% of GCs posting in last 90 days rises above 19–20%</div>
+      <div class="signal-step-def">% of GCs who posted in last 90 days rises above 19–20%</div>
+      <div class="signal-step-r">3mo: r = +0.47 ★★★</div>
     </div>
     <div class="signal-arrow">→</div>
     <div class="signal-step">
       <div class="signal-step-label">Step 2 — intermediate</div>
       <div class="signal-step-metric">Project penetration ↑</div>
-      <div class="signal-step-def">% of commercial permits becoming projects climbs above 8–10%</div>
+      <div class="signal-step-def">% of commercial permits that become projects on PH rises above 7–10%</div>
+      <div class="signal-step-r">3mo: r = +0.29 ★</div>
     </div>
     <div class="signal-arrow">→</div>
     <div class="signal-step">
       <div class="signal-step-label">Step 3 — coincident</div>
       <div class="signal-step-metric">Active paid sub % ↑</div>
-      <div class="signal-step-def">Share of active subs who are paid rises above 35%</div>
+      <div class="signal-step-def">Share of active subs who are paid rises above 35–38%</div>
+      <div class="signal-step-r">3mo: r = +0.48 ★★★</div>
     </div>
     <div class="signal-arrow">→</div>
-    <div class="signal-step" style="background:#d4edd9; border-color:#2d6a4f40;">
-      <div class="signal-step-label" style="color:#2d6a4f;">Outcome</div>
-      <div class="signal-step-metric" style="color:#2d6a4f;">Retention ↑</div>
-      <div class="signal-step-def" style="color:#2d6a4f80;">% of paid subs still paying YoY improves</div>
+    <div class="signal-step signal-outcome">
+      <div class="signal-step-label">Outcome</div>
+      <div class="signal-step-metric">Retention improves</div>
+      <div class="signal-step-def">% of paid subs still paying YoY moves toward healthy benchmark of 71–74%</div>
     </div>
   </div>
 
-  <h3>Thresholds observed in healthy markets</h3>
-  <p>Every "healthy" market (Atlanta, Tampa, Charlotte, San Antonio, Raleigh) hits all three thresholds simultaneously. No healthy market misses more than one.</p>
-
+  <h3>Healthy market thresholds — confirmed across both views</h3>
   <table class="threshold-table">
     <thead>
       <tr>
         <th>KPI</th>
-        <th>Healthy market threshold</th>
-        <th>Priority market avg</th>
+        <th>Healthy threshold</th>
+        <th>Priority avg (Mar)</th>
+        <th>Priority avg (3mo)</th>
         <th>Expected retention impact</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>GCs posting in last 90 days</td>
-        <td>≥ 19%</td>
-        <td>17% avg</td>
-        <td>+2–4pp retention when crossed</td>
+        <td>≥ 19–20%</td>
+        <td>17%</td>
+        <td>17%</td>
+        <td>Strongest predictor in 3mo view (r=+0.47)</td>
       </tr>
       <tr>
         <td>Project penetration (permits → PH)</td>
         <td>≥ 7–10%</td>
-        <td>6.9% avg</td>
-        <td>+4.8pp retention gap (≥10% vs &lt;6%)</td>
+        <td>6.9%</td>
+        <td>5.1%</td>
+        <td>~5pp retention gap above/below threshold</td>
       </tr>
       <tr>
         <td>Active paid sub %</td>
         <td>≥ 35–38%</td>
-        <td>32% avg</td>
-        <td>Strongest single predictor (r=+0.39)</td>
+        <td>32%</td>
+        <td>32%</td>
+        <td>#1 predictor in both views (r=+0.39/0.48)</td>
       </tr>
       <tr>
         <td>Project hunger</td>
         <td>≤ 18x</td>
         <td>21.8x avg</td>
-        <td>Not significant alone — but all healthy markets are below 18x</td>
+        <td>21.1x avg</td>
+        <td>Now confirmed significant in 3mo (r=−0.36)</td>
       </tr>
     </tbody>
   </table>
 </section>
 
-<!-- SECTION 4: WHAT DOESN'T PREDICT RETENTION -->
-<section>
-  <p class="section-label">04</p>
-  <h2>What does <em>not</em> move the needle</h2>
-  <p>Several metrics that seem intuitively important show no statistically significant correlation with retention in this dataset. Acting on these without supporting evidence would be misallocating resources.</p>
-
-  <div class="finding warning">
-    <div class="finding-num">Counter-intuitive finding</div>
-    <h3>Project hunger does not significantly predict retention</h3>
-    <p>Hartford retains at 81% with 35x hunger. Milwaukee retains at 74% with 69x hunger. High scarcity does not automatically mean low retention. The relationship exists but is not statistically significant across 75 markets — meaning other factors dominate. Reducing hunger alone is not a reliable lever.</p>
-  </div>
-
-  <div class="finding warning">
-    <div class="finding-num">Counter-intuitive finding</div>
-    <h3>Active GC count % does not predict retention</h3>
-    <p>Simply having more GCs registered and active has no meaningful correlation with whether subs renew. What matters is whether those GCs are <em>posting projects</em> — a step further down the activation chain. GC acquisition without GC activation is not moving retention.</p>
-  </div>
-
-  <div class="finding warning">
-    <div class="finding-num">Counter-intuitive finding</div>
-    <h3>Sub-to-GC ratio does not predict retention</h3>
-    <p>The ratio of active subs to active GCs shows no significant correlation with retention (r=−0.11, not significant). The absolute supply-demand balance is less important than whether the GCs who are active are actually generating projects for subs to bid on.</p>
-  </div>
-</section>
-
-<!-- SECTION 5: KEY FINDINGS -->
+<!-- SECTION 5: MARKETS TO WATCH -->
 <section>
   <p class="section-label">05</p>
-  <h2>Six findings that require action</h2>
+  <h2>Markets to watch</h2>
 
-  <div class="finding critical">
-    <div class="finding-num">01 — Critical</div>
-    <h3>Project penetration is the most under-tracked metric in the portfolio</h3>
-    <p>Only 6.5% of commercial permits become posted projects on PH on average. Markets above 10% penetration retain at 72.6% vs 67.8% below 6% — a 4.8pp gap driven entirely by GC project posting behavior. This metric is not currently on the retention dashboard but has the clearest causal connection to renewal. 26 of 75 markets are below 5%.</p>
-  </div>
-
-  <div class="finding critical">
-    <div class="finding-num">02 — Needs investigation</div>
-    <h3>Cincinnati's hunger metric (46x) requires a manual data pull</h3>
-    <p>At 46 subs per commercial project, Cincinnati is more than twice the next highest priority market — yet it retains at 71%. This is either a data capture issue (commercial project count may be understated), or Cincinnati subs are renewing for reasons entirely unrelated to project matching. Either scenario needs resolution before Cincinnati data is used in any analysis.</p>
+  <div class="finding positive">
+    <div class="finding-num">Approaching healthy — Austin &amp; Nashville</div>
+    <h3>Two new "Next?" markets flagged in the 3-month view</h3>
+    <p>Austin retains at 76% with hunger of just 12x and GC posting at 18% — the profile of a market on the verge of healthy designation. Nashville holds steady at 72% with GC posting now at 20%, clearing the threshold. Both were not flagged in the March snapshot, suggesting the 3-month average is picking up improving momentum that a single month missed.</p>
   </div>
 
   <div class="finding warning">
-    <div class="finding-num">03 — Warning</div>
-    <h3>GC activation — not GC acquisition — is the actual bottleneck</h3>
-    <p>GCs are registering and becoming "active" without posting projects at the rate needed to sustain subs. GCs posting recently (the 90-day window) is a significant retention predictor; active GC count is not. The investment should shift from getting GCs on the platform to getting GCs to post from their permit pipeline.</p>
+    <div class="finding-num">Declining trend — Cleveland &amp; Sacramento</div>
+    <h3>Two priority markets show −2 to −3pp when smoothed</h3>
+    <p>Cleveland drops from 70% (Mar) to 67% (3mo avg) — a 3pp gap that suggests March was an unusually good month, not representative of the trend. Sacramento similarly drops from 71% to 69%, and its hunger rises from 16x to 31x on the smoothed view. Both markets warrant closer monitoring.</p>
+  </div>
+
+  <div class="finding critical">
+    <div class="finding-num">Persistent underperformer — San Francisco</div>
+    <h3>SF hunger (37x in 3mo) and GC posting (6%) are the worst in the portfolio</h3>
+    <p>The 3-month average actually worsens SF's picture on hunger (75x Mar → 37x smoothed, still the highest among priority markets) while confirming GC posting at just 6% — the lowest of any tracked market. With 64% retention in March falling to 62% in the 3mo view, SF has no improving momentum. Supply-side intervention is overdue.</p>
   </div>
 
   <div class="finding info">
-    <div class="finding-num">04 — Structural</div>
-    <h3>"Healthy" can now be formally defined</h3>
-    <p>The five healthy markets share a consistent profile: hunger ≤ 18x, active paid sub % ≥ 38%, project penetration ≥ 7%, and GCs posting rate ≥ 19%. This cluster is consistent enough to formalize as a benchmark. Any priority market hitting all four thresholds should graduate to "healthy" status. Markets missing two or more are at retention risk.</p>
+    <div class="finding-num">Confirmed healthy — Atlanta improved</div>
+    <h3>Atlanta's 3pp retention gain in the 3mo view validates its healthy status</h3>
+    <p>Atlanta moves from 69% (March) to 72% (3mo avg) — the largest positive delta of any market. Its GC posting rate of 25% is the highest among healthy markets. The smoothed view confirms this isn't a March anomaly: Atlanta is genuinely improving and represents a replicable model for other Southeast markets.</p>
+  </div>
+</section>
+
+<!-- SECTION 6: KEY FINDINGS -->
+<section>
+  <p class="section-label">06</p>
+  <h2>Six findings — confirmed or updated</h2>
+
+  <div class="finding critical">
+    <div class="finding-num">01 — Confirmed &amp; strengthened</div>
+    <h3>GC posting rate is the single most actionable leading indicator</h3>
+    <p>In the March snapshot, GCs posting recently had a moderate correlation (r=+0.25). In the 3-month average, it strengthens to r=+0.47 — nearly as strong as active paid sub %. This is the metric most under your direct control: GC activation campaigns, posting incentives, and permit-to-project workflows all move this number. Every healthy market posts above 19%. No market posting below 15% retains above 70%.</p>
+  </div>
+
+  <div class="finding critical">
+    <div class="finding-num">02 — Now confirmed</div>
+    <h3>High project hunger does hurt retention — the 3-month data makes it statistically clear</h3>
+    <p>In March, hunger showed a negative trend but wasn't statistically significant (r=−0.18, n.s.). Smoothed over 3 months, it strengthens to r=−0.36 with p&lt;0.01. The relationship is real: markets with too many subs competing for too few projects do churn more. The threshold appears to be around 18–20x — above that, retention pressure builds.</p>
   </div>
 
   <div class="finding warning">
-    <div class="finding-num">05 — Warning</div>
-    <h3>San Francisco's 75x project hunger is the most extreme in the portfolio</h3>
-    <p>SF has 75 subs searching for every 1 commercial project — the highest of any market, priority or otherwise. Combined with 64% retention (declining) and only 11% GC posting rate, SF is the market most urgently in need of supply-side intervention. Without GC activation, sub acquisition in SF accelerates churn, not revenue.</p>
+    <div class="finding-num">03 — Updated</div>
+    <h3>Cincinnati's 46x hunger in March was likely a data anomaly</h3>
+    <p>The 3-month average brings Cincinnati's hunger to 28x — still above the healthy benchmark of ≤18x, but no longer an extreme outlier. The March spike was most likely a single month with abnormally low commercial project postings. Cincinnati's 71% retention is consistent across both views, which confirms it's not in crisis — but the supply gap at 28x still warrants attention.</p>
+  </div>
+
+  <div class="finding info">
+    <div class="finding-num">04 — New finding from 3mo view</div>
+    <h3>Bids per project is now a significant retention predictor</h3>
+    <p>In March, bids per project showed no significant correlation with retention (r=+0.22, n.s.). In the 3-month view, it strengthens to r=+0.32 with p&lt;0.01. This suggests that markets where subs are actively bidding — not just searching — are the ones that renew. Bid submission rate may be a better proxy for "getting value" than simply being active on the platform.</p>
   </div>
 
   <div class="finding positive">
-    <div class="finding-num">06 — Opportunity</div>
-    <h3>Hartford and Milwaukee break the hunger-retention model — understand why</h3>
-    <p>Hartford retains at 81% with 35x hunger. Milwaukee at 74% with 69x hunger. Both significantly outperform their project scarcity levels. Something in those markets is creating renewal value that isn't captured by the marketplace metrics in this sheet. Identifying it — whether product features, local sales relationships, or market composition — would give a replicable playbook for supply-constrained markets.</p>
+    <div class="finding-num">05 — Actionable</div>
+    <h3>"Healthy" can be formally defined — and two markets are knocking on the door</h3>
+    <p>Healthy markets consistently share: hunger ≤ 18x, GC posting ≥ 19–20%, active paid sub % ≥ 38%, and project penetration ≥ 7%. The 3-month view adds Austin and Nashville as "Next?" — both hit 3 of 4 thresholds. A formal graduation criteria using these four metrics would give the team a clear target for each priority market.</p>
+  </div>
+
+  <div class="finding warning">
+    <div class="finding-num">06 — Open question</div>
+    <h3>The lag between KPI improvement and retention is still unmeasured</h3>
+    <p>Both views are cross-sectional snapshots — they show correlation but not lead time. The monthly time series data exists in the full Google Sheet and would allow quantifying how many months after GC posting rises above 19% we should expect to see retention move. That panel analysis would convert these directional signals into a predictive model. Recommend as next step.</p>
   </div>
 </section>
 
-<!-- SECTION 6: RECOMMENDED DASHBOARD -->
+<!-- SECTION 7: RECOMMENDED ACTIONS -->
 <section>
-  <p class="section-label">06</p>
+  <p class="section-label">07</p>
   <h2>Recommended leading indicator dashboard</h2>
-  <p>Based on correlation significance and actionability, these three KPIs should be tracked monthly per market as early warning signals for retention.</p>
+  <p>Track these four KPIs monthly per market. The 3-month average confirms all four are statistically significant retention predictors. The target thresholds below are derived from healthy market profiles.</p>
 
   <div class="stat-grid">
-    <div class="stat" style="border-left: 3px solid var(--accent);">
-      <div class="stat-value" style="font-size:1.6rem;">GCs posting<br>in 90 days</div>
-      <div class="stat-label" style="margin-top:0.75rem;"><strong>Target:</strong> ≥ 19% per market<br><strong>Current priority avg:</strong> 17%<br><strong>Signal lag:</strong> 1–2 renewal cycles<br><strong>r with retention:</strong> +0.25★</div>
+    <div class="stat" style="border-left:3px solid var(--accent);">
+      <div class="stat-value" style="font-size:1.4rem; line-height:1.2;">GCs posting<br>in 90 days</div>
+      <div class="stat-label" style="margin-top:0.75rem;">
+        <strong>Target:</strong> ≥ 19–20%<br>
+        <strong>Priority avg:</strong> 17%<br>
+        <strong>3mo correlation:</strong> r = +0.47 ★★★<br>
+        <strong>Why:</strong> Earliest signal in the chain
+      </div>
     </div>
-    <div class="stat" style="border-left: 3px solid var(--accent-2);">
-      <div class="stat-value" style="font-size:1.6rem;">Project<br>penetration</div>
-      <div class="stat-label" style="margin-top:0.75rem;"><strong>Target:</strong> ≥ 10% per market<br><strong>Current priority avg:</strong> 6.9%<br><strong>Signal lag:</strong> ~1 renewal cycle<br><strong>r with retention:</strong> +0.34★★</div>
+    <div class="stat" style="border-left:3px solid var(--accent-2);">
+      <div class="stat-value" style="font-size:1.4rem; line-height:1.2;">Active paid<br>sub %</div>
+      <div class="stat-label" style="margin-top:0.75rem;">
+        <strong>Target:</strong> ≥ 35–38%<br>
+        <strong>Priority avg:</strong> 32%<br>
+        <strong>3mo correlation:</strong> r = +0.48 ★★★<br>
+        <strong>Why:</strong> Strongest predictor overall
+      </div>
     </div>
-    <div class="stat" style="border-left: 3px solid var(--blue); grid-column: span 2;">
-      <div class="stat-value" style="font-size:1.6rem;">Active paid sub %</div>
-      <div class="stat-label" style="margin-top:0.75rem;"><strong>Target:</strong> ≥ 35% per market &nbsp;|&nbsp; <strong>Current priority avg:</strong> 32% &nbsp;|&nbsp; <strong>Signal lag:</strong> Coincident &nbsp;|&nbsp; <strong>r with retention:</strong> +0.39★★★ (strongest predictor)</div>
+    <div class="stat" style="border-left:3px solid var(--blue);">
+      <div class="stat-value" style="font-size:1.4rem; line-height:1.2;">Project<br>hunger</div>
+      <div class="stat-label" style="margin-top:0.75rem;">
+        <strong>Target:</strong> ≤ 18x<br>
+        <strong>Priority avg:</strong> 21x<br>
+        <strong>3mo correlation:</strong> r = −0.36 ★★<br>
+        <strong>Why:</strong> Newly confirmed signal
+      </div>
+    </div>
+    <div class="stat" style="border-left:3px solid var(--green);">
+      <div class="stat-value" style="font-size:1.4rem; line-height:1.2;">Project<br>penetration</div>
+      <div class="stat-label" style="margin-top:0.75rem;">
+        <strong>Target:</strong> ≥ 7–10%<br>
+        <strong>Priority avg:</strong> 5–7%<br>
+        <strong>3mo correlation:</strong> r = +0.29 ★<br>
+        <strong>Why:</strong> Permit → project conversion
+      </div>
     </div>
   </div>
 
-  <div style="background:var(--paper-2); border:1px solid var(--rule); padding:1.5rem; margin-top:1.5rem;">
-    <h3 style="margin-bottom:0.5rem;">Open question for next analysis</h3>
-    <p style="margin-bottom:0;">This report uses a single point-in-time cross-section (March 2026). The monthly time series data exists in the full Google Sheet and would allow quantification of the exact lag between KPI movement and retention change — sharpening these thresholds from directional to predictive. Recommend running the panel analysis against the monthly data as the next step.</p>
+  <div class="note-box">
+    <h3 style="font-size:1rem; margin-bottom:0.4rem;">Proposed healthy market graduation criteria</h3>
+    <p>A priority market should be considered "healthy" when it simultaneously hits: hunger ≤ 18x, GCs posting ≥ 19%, active paid sub % ≥ 38%, and project penetration ≥ 7%. Austin and Nashville are the two markets closest to clearing all four in Q1 2026. Recommend formalizing this as a trackable status in the monthly performance sheet.</p>
   </div>
 </section>
 
-<!-- CHART -->
+<!-- APPENDIX: CHART -->
 <section>
-  <p class="section-label">Appendix</p>
-  <h2>Project hunger vs retention — all 75 markets</h2>
-  <div class="chart-wrap" style="height:320px;">
-    <canvas id="scatterChart" role="img" aria-label="Scatter plot of project hunger vs retention across 75 markets">Scatter of project hunger vs retention. Priority markets in blue, healthy in green, others in gray.</canvas>
+  <p class="section-label">Appendix A</p>
+  <h2>Retention distribution — 3-month average, all markets</h2>
+  <div class="chart-wrap" style="height:300px;">
+    <canvas id="scatterChart" role="img" aria-label="Scatter plot of project hunger vs retention for all markets in 3-month average view">Project hunger vs retention, 3-month average. Priority markets blue, healthy green, Next? orange.</canvas>
   </div>
-  <p class="chart-caption">Blue = priority markets. Green triangle = healthy markets. Gray = all other markets. X-axis capped at 80x (SF=75x shown; Provo=142x off-chart). No single relationship — other factors dominate at market level.</p>
+  <p class="chart-caption">Blue = priority. Green ▲ = healthy. Orange ◆ = "Next?" markets (Austin, Nashville). Gray = all other markets. X-axis capped at 80x. SF = 37x hunger shown; Provo = 142x off-chart.</p>
+</section>
+
+<section>
+  <p class="section-label">Appendix B</p>
+  <h2>Correlation comparison — March vs 3-month average</h2>
+  <div class="chart-wrap" style="height:280px;">
+    <canvas id="corrChart" role="img" aria-label="Bar chart comparing correlation coefficients for each KPI between March and 3-month average">Grouped bar chart showing how correlation strength changes between March and 3-month average for each predictor.</canvas>
+  </div>
+  <p class="chart-caption">Where the 3-month bar is taller than March, the signal strengthens with more data — confirming it's structural, not noise.</p>
 </section>
 
 <footer>
   <div>
     Marketplace Monthly Performance — April 2026<br>
-    Analysis based on March 2026 snapshot, 75 CBSAs
+    Analysis: March 2026 snapshot + Jan–Mar 3-month average, 75–76 CBSAs
   </div>
   <div style="text-align:right;">
-    Internal document — for team review<br>
-    Data source: Performance (Mar) tab
+    Internal — for team review<br>
+    v2 · Both views compared
   </div>
 </footer>
 
 <script>
-const isDark = false;
 const tc = '#8a8a84';
 const gc = 'rgba(26,26,24,0.08)';
 
-const markets = [
-  {h:17,r:76,p:true,hl:false,n:'Pittsburgh'},{h:16,r:73,p:true,hl:true,n:'Raleigh'},{h:15,r:72,p:true,hl:true,n:'San Antonio'},{h:18,r:72,p:true,hl:false,n:'Nashville'},{h:46,r:71,p:true,hl:false,n:'Cincinnati ⚠'},{h:16,r:71,p:true,hl:false,n:'Sacramento'},{h:15,r:71,p:true,hl:true,n:'Charlotte'},{h:21,r:71,p:true,hl:false,n:'Columbus'},{h:10,r:70,p:true,hl:true,n:'Tampa'},{h:13,r:70,p:true,hl:false,n:'Cleveland'},{h:18,r:70,p:true,hl:false,n:'Jacksonville'},{h:18,r:69,p:true,hl:true,n:'Atlanta'},{h:15,r:69,p:true,hl:false,n:'Orlando'},{h:27,r:69,p:true,hl:false,n:'Riverside'},{h:20,r:68,p:true,hl:false,n:'Philadelphia'},{h:75,r:64,p:true,hl:false,n:'San Francisco'},{h:19,r:62,p:true,hl:false,n:'New York'},{h:16,r:62,p:true,hl:false,n:'Los Angeles'},{h:22,r:62,p:true,hl:false,n:'San Diego'},{h:20,r:54,p:true,hl:false,n:'San Jose'},
-  {h:35,r:81,p:false,hl:false,n:'Hartford'},{h:69,r:74,p:false,hl:false,n:'Milwaukee'},{h:34,r:79,p:false,hl:false,n:'Detroit'},{h:41,r:73,p:false,hl:false,n:'Grand Rapids'},{h:40,r:71,p:false,hl:false,n:'Virginia Beach'},{h:80,r:86,p:false,hl:false,n:'Myrtle Beach'},{h:21,r:80,p:false,hl:false,n:'Tucson'},{h:24,r:70,p:false,hl:false,n:'St Louis'},{h:25,r:69,p:false,hl:false,n:'Boston'},{h:43,r:69,p:false,hl:false,n:'Minneapolis'},{h:38,r:69,p:false,hl:false,n:'OKC'},{h:22,r:70,p:false,hl:false,n:'Knoxville'},{h:48,r:55,p:false,hl:false,n:'Portland'},{h:53,r:63,p:false,hl:false,n:'Salt Lake City'},{h:32,r:66,p:false,hl:false,n:'Seattle'},{h:23,r:60,p:false,hl:false,n:'Phoenix'},{h:60,r:60,p:false,hl:false,n:'Rochester'},{h:57,r:65,p:false,hl:false,n:'Omaha'},{h:34,r:65,p:false,hl:false,n:'Buffalo'},{h:32,r:67,p:false,hl:false,n:'Boise'},{h:24,r:67,p:false,hl:false,n:'Birmingham'},{h:25,r:67,p:false,hl:false,n:'Cape Coral'},{h:22,r:74,p:false,hl:false,n:'Winston-Salem'},{h:21,r:64,p:false,hl:false,n:'Des Moines'},{h:23,r:69,p:false,hl:false,n:'Fayetteville'},{h:15,r:72,p:false,hl:false,n:'Austin'},{h:14,r:68,p:false,hl:false,n:'Dallas'},{h:18,r:70,p:false,hl:false,n:'Nashville-other'},{h:12,r:71,p:false,hl:false,n:'Cincy-2'},{h:10,r:73,p:false,hl:false,n:'Hartford-2'},{h:8,r:70,p:false,hl:false,n:'Denver'},{h:9,r:69,p:false,hl:false,n:'Baltimore'},{h:13,r:72,p:false,hl:false,n:'Minneapolis-2'},{h:11,r:68,p:false,hl:false,n:'Kansas City'},{h:17,r:67,p:false,hl:false,n:'Tulsa'},{h:19,r:66,p:false,hl:false,n:'Indianapolis'}
+// SCATTER: 3mo avg hunger vs retention
+const markets3mo = [
+  {h:17,r:74,p:true,hl:false,nx:false,n:'Charlotte'},{h:16,r:74,p:true,hl:true,nx:false,n:'Raleigh'},{h:12,r:76,p:false,hl:false,nx:true,n:'Austin ◆'},{h:19,r:72,p:true,hl:true,nx:false,n:'Atlanta'},{h:19,r:72,p:false,hl:false,nx:true,n:'Nashville ◆'},{h:16,r:72,p:true,hl:true,nx:false,n:'San Antonio'},{h:28,r:71,p:true,hl:false,nx:false,n:'Cincinnati'},{h:12,r:71,p:true,hl:true,nx:false,n:'Tampa'},{h:16,r:70,p:true,hl:false,nx:false,n:'Orlando'},{h:16,r:70,p:true,hl:false,nx:false,n:'Jacksonville'},{h:21,r:67,p:true,hl:false,nx:false,n:'Cleveland'},{h:31,r:69,p:true,hl:false,nx:false,n:'Sacramento'},{h:35,r:68,p:true,hl:false,nx:false,n:'Riverside'},{h:16,r:62,p:true,hl:false,nx:false,n:'LA'},{h:37,r:62,p:true,hl:false,nx:false,n:'San Francisco'},{h:22,r:60,p:true,hl:false,nx:false,n:'San Diego'},{h:16,r:56,p:true,hl:false,nx:false,n:'San Jose'},
+  {h:35,r:81,p:false,hl:false,nx:false,n:'Hartford'},{h:69,r:74,p:false,hl:false,nx:false,n:'Milwaukee'},{h:34,r:79,p:false,hl:false,nx:false,n:'Detroit'},{h:41,r:73,p:false,hl:false,nx:false,n:'Grand Rapids'},{h:40,r:71,p:false,hl:false,nx:false,n:'Virginia Beach'},{h:80,r:86,p:false,hl:false,nx:false,n:'Myrtle Beach'},{h:21,r:80,p:false,hl:false,nx:false,n:'Tucson'},{h:24,r:70,p:false,hl:false,nx:false,n:'St Louis'},{h:25,r:69,p:false,hl:false,nx:false,n:'Boston'},{h:43,r:69,p:false,hl:false,nx:false,n:'Minneapolis'},{h:48,r:55,p:false,hl:false,nx:false,n:'Portland'},{h:53,r:63,p:false,hl:false,nx:false,n:'SLC'},{h:32,r:66,p:false,hl:false,nx:false,n:'Seattle'},{h:23,r:60,p:false,hl:false,nx:false,n:'Phoenix'},{h:57,r:65,p:false,hl:false,nx:false,n:'Omaha'},{h:34,r:65,p:false,hl:false,nx:false,n:'Buffalo'},{h:22,r:74,p:false,hl:false,nx:false,n:'Winston-Salem'},{h:21,r:64,p:false,hl:false,nx:false,n:'Des Moines'},{h:8,r:70,p:false,hl:false,nx:false,n:'Denver'},{h:9,r:70,p:false,hl:false,nx:false,n:'Baltimore'},{h:17,r:66,p:false,hl:false,nx:false,n:'Indianapolis'}
 ];
 
-const prData = markets.filter(m=>m.p&&!m.hl).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
-const hlData = markets.filter(m=>m.hl).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
-const otData = markets.filter(m=>!m.p&&!m.hl).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
+const prData  = markets3mo.filter(m=>m.p&&!m.hl&&!m.nx).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
+const hlData  = markets3mo.filter(m=>m.hl).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
+const nxData  = markets3mo.filter(m=>m.nx).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
+const otData  = markets3mo.filter(m=>!m.p&&!m.hl&&!m.nx).map(m=>({x:Math.min(m.h,80),y:m.r,label:m.n}));
 
 new Chart(document.getElementById('scatterChart'), {
   type: 'scatter',
   data: { datasets: [
-    { label:'Other markets', data:otData, backgroundColor:'rgba(138,138,132,0.35)', pointRadius:5, pointHoverRadius:7 },
+    { label:'Other markets', data:otData, backgroundColor:'rgba(138,138,132,0.3)', pointRadius:5, pointHoverRadius:7 },
     { label:'Priority', data:prData, backgroundColor:'rgba(26,74,122,0.8)', pointRadius:6, pointHoverRadius:8 },
+    { label:'Next? (Austin, Nashville)', data:nxData, backgroundColor:'rgba(200,130,20,0.9)', pointRadius:8, pointHoverRadius:10, pointStyle:'rectRot' },
     { label:'Healthy', data:hlData, backgroundColor:'rgba(45,106,79,0.9)', pointRadius:8, pointHoverRadius:10, pointStyle:'triangle' },
   ]},
   options: {
     responsive:true, maintainAspectRatio:false,
     plugins:{
-      legend:{ display:true, position:'top', labels:{ font:{size:12, family:'DM Sans'}, color:'#4a4a46', boxWidth:12, padding:20 }},
-      tooltip:{ callbacks:{ label: ctx => `${ctx.raw.label}: hunger=${ctx.raw.x}x, retention=${ctx.raw.y}%` }, bodyFont:{family:'DM Sans'} }
+      legend:{ display:true, position:'top', labels:{ font:{size:12,family:'DM Sans'}, color:'#4a4a46', boxWidth:12, padding:20 }},
+      tooltip:{ callbacks:{ label: ctx => `${ctx.raw.label}: ${ctx.raw.x}x hunger, ${ctx.raw.y}% retention` }, bodyFont:{family:'DM Sans'} }
     },
     scales:{
-      x:{ min:0, max:80, ticks:{color:tc, font:{size:11,family:'DM Sans'}, callback:v=>v+'x'}, grid:{color:gc}, title:{display:true,text:'Project hunger (subs searching per commercial project)',color:tc,font:{size:11,family:'DM Sans'}} },
-      y:{ min:50, max:92, ticks:{color:tc, font:{size:11,family:'DM Sans'}, callback:v=>v+'%'}, grid:{color:gc}, title:{display:true,text:'Retention (% paid subs still paying YoY)',color:tc,font:{size:11,family:'DM Sans'}} }
+      x:{ min:0, max:80, ticks:{color:tc,font:{size:11,family:'DM Sans'},callback:v=>v+'x'}, grid:{color:gc}, title:{display:true,text:'Project hunger — subs per commercial project (3-month avg)',color:tc,font:{size:11,family:'DM Sans'}} },
+      y:{ min:50, max:92, ticks:{color:tc,font:{size:11,family:'DM Sans'},callback:v=>v+'%'}, grid:{color:gc}, title:{display:true,text:'Retention — % paid subs still paying YoY',color:tc,font:{size:11,family:'DM Sans'}} }
+    }
+  }
+});
+
+// CORRELATION COMPARISON CHART
+const corrLabels = ['Active paid\nsub %','GCs\nposting','Active subs\n(all)','Project\npenetration','Hunger\n(inverse)','Bids per\nproject'];
+const marCorr  = [0.392, 0.254, 0.353, 0.342, 0.180, 0.222];
+const moCorr   = [0.480, 0.467, 0.352, 0.291, 0.364, 0.319];
+
+new Chart(document.getElementById('corrChart'), {
+  type: 'bar',
+  data: {
+    labels: corrLabels,
+    datasets: [
+      { label: 'March (single month)', data: marCorr, backgroundColor: 'rgba(138,138,132,0.5)', borderWidth:0 },
+      { label: '3-month avg (Jan–Mar)', data: moCorr, backgroundColor: 'rgba(26,74,122,0.8)', borderWidth:0 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ display:true, position:'top', labels:{ font:{size:12,family:'DM Sans'}, color:'#4a4a46', boxWidth:12, padding:20 }},
+      tooltip:{ callbacks:{ label: ctx => ctx.dataset.label+': r='+ctx.parsed.y.toFixed(2) }, bodyFont:{family:'DM Sans'} }
+    },
+    scales:{
+      x:{ ticks:{color:tc,font:{size:11,family:'DM Sans'},maxRotation:0}, grid:{display:false} },
+      y:{ min:0, max:0.55, ticks:{color:tc,font:{size:11,family:'DM Sans'},callback:v=>'r='+v.toFixed(1)}, grid:{color:gc}, title:{display:true,text:'Correlation coefficient |r|',color:tc,font:{size:11,family:'DM Sans'}} }
     }
   }
 });
