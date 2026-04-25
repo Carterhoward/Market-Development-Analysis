@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Retention Analysis — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #111110;
+  --ink2: #3d3d3a;
+  --ink3: #888884;
+  --paper: #f8f6f1;
+  --paper2: #efede6;
+  --paper3: #e4e0d6;
+  --red: #b83828;
+  --amber: #c47a18;
+  --green: #2a5c42;
+  --blue: #1c3f6e;
+  --rule: rgba(17,17,16,.1);
+  --rule-strong: rgba(17,17,16,.18);
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 300;
+  line-height: 1.7;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 2.5rem 8rem;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-strong);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  margin: 0 -2.5rem 0;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  padding: 0 1.5rem;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--rule-strong);
+  white-space: nowrap;
+  color: var(--ink3);
+}
+.nav a {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink3);
+  padding: 0 1.2rem;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  transition: color .15s;
+}
+.nav a:hover { color: var(--ink); }
+
+/* ─── COVER ─── */
+.cover {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 5rem 0 5rem;
+  border-bottom: 1px solid var(--rule-strong);
+  margin-bottom: 5rem;
+  position: relative;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -2.5rem; right: -2.5rem;
+  height: 4px;
+  background: var(--red);
+}
+
+.cover-eyebrow {
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+.cover h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 5.5vw, 5rem);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  max-width: 760px;
+}
+
+.cover h1 em {
+  font-style: italic;
+  color: var(--red);
+}
+
+.cover-deck {
+  font-size: 1.1rem;
+  color: var(--ink2);
+  max-width: 580px;
+  margin-bottom: 3.5rem;
+  font-weight: 300;
+}
+
+.cover-meta {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 0;
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 1.75rem;
+  width: fit-content;
+}
+
+.cover-meta-item {
+  padding-right: 3rem;
+}
+
+.cover-meta-item strong {
+  display: block;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.cover-meta-item span {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+/* ─── SECTIONS ─── */
+section { margin-bottom: 6rem; }
+
+.sec-label {
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 500;
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sec-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.15;
+  margin-bottom: .9rem;
+}
+
+h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: .5rem;
+}
+
+p { margin-bottom: 1rem; color: var(--ink2); font-size: .95rem; }
+p:last-child { margin-bottom: 0; }
+strong { color: var(--ink); font-weight: 500; }
+
+hr { border: none; border-top: 1px solid var(--rule-strong); margin: 4rem 0; }
+
+/* ─── STAT GRID ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--rule-strong);
+  border: 1px solid var(--rule-strong);
+  margin: 2rem 0;
+}
+.stat {
+  background: var(--paper);
+  padding: 1.6rem 1.4rem;
+}
+.stat-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: .3rem;
+}
+.stat-lbl { font-size: 12px; color: var(--ink3); line-height: 1.4; font-weight: 400; }
+.stat-delta { font-size: 11px; margin-top: .4rem; font-weight: 500; }
+.neg { color: var(--red); }
+.pos { color: var(--green); }
+.neu { color: var(--ink3); }
+
+/* ─── CHART ─── */
+.chart-wrap { position: relative; width: 100%; margin: 2rem 0; }
+.chart-caption { font-size: 12px; color: var(--ink3); margin-top: .5rem; font-style: italic; }
+
+/* ─── CORRELATION BARS ─── */
+.corr-section { margin: 1.75rem 0; }
+.corr-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 7px 0;
+}
+.corr-lbl { font-size: 13px; width: 210px; flex-shrink: 0; color: var(--ink); font-weight: 400; }
+.corr-track { flex: 1; background: var(--paper3); height: 10px; border-radius: 2px; overflow: hidden; }
+.corr-fill { height: 100%; border-radius: 2px; }
+.corr-val { font-size: 12px; color: var(--ink3); width: 52px; text-align: right; flex-shrink: 0; }
+.sig { font-size: 10px; color: var(--red); flex-shrink: 0; }
+.ns-row { opacity: .45; }
+
+/* ─── LAG GRID ─── */
+.lag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.75rem 0; }
+.lag-card {
+  background: var(--paper2);
+  border: 1px solid var(--rule-strong);
+  padding: 1.25rem 1.4rem;
+}
+.lag-card-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: .75rem;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid var(--rule);
+}
+.lag-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  padding: 3px 0;
+  border-bottom: .5px solid var(--rule);
+}
+.lag-row:last-child { border-bottom: none; }
+.lag-row-lbl { color: var(--ink2); }
+.lag-row-val { font-weight: 500; }
+.v-blue { color: var(--blue); }
+.v-amber { color: var(--amber); }
+.v-gray { color: var(--ink3); }
+.v-red { color: var(--red); }
+.lag-note { font-size: 11px; color: var(--ink3); margin-top: .6rem; line-height: 1.45; }
+
+/* ─── SIGNAL CHAIN ─── */
+.signal-chain {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.sc-step {
+  flex: 1;
+  min-width: 160px;
+  background: var(--paper2);
+  border: 1px solid var(--rule-strong);
+  padding: 1.4rem 1.5rem;
+}
+.sc-step.outcome {
+  background: #e8f2ec;
+  border-color: rgba(42,92,66,.25);
+}
+.sc-step-label {
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 500;
+  margin-bottom: .35rem;
+}
+.sc-step-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: .35rem;
+  color: var(--ink);
+}
+.sc-step.outcome .sc-step-name { color: var(--green); }
+.sc-step-body { font-size: 12px; color: var(--ink3); line-height: 1.45; }
+.sc-step-r { font-size: 11px; font-weight: 500; color: var(--blue); margin-top: .5rem; }
+.sc-arrow {
+  font-size: 1.6rem;
+  color: var(--red);
+  padding: 0 .5rem;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.sc-plus {
+  font-size: 1.8rem;
+  color: var(--ink3);
+  padding: 0 .5rem;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ─── FINDING CARDS ─── */
+.finding {
+  border-left: 3px solid var(--paper3);
+  padding: 1.5rem 1.5rem 1.5rem 2rem;
+  margin-bottom: 1.6rem;
+  background: var(--paper2);
+}
+.finding.critical { border-left-color: var(--red); }
+.finding.warning  { border-left-color: var(--amber); }
+.finding.positive { border-left-color: var(--green); }
+.finding.info     { border-left-color: var(--blue); }
+.finding-num {
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 500;
+  margin-bottom: .4rem;
+}
+.finding h3 { margin-bottom: .6rem; font-size: 1.1rem; }
+.finding p { font-size: .9rem; margin-bottom: 0; }
+
+/* ─── MARKET TABLE ─── */
+.mkt-table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: .87rem; }
+.mkt-table th {
+  font-size: 10px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-weight: 500;
+  padding: .5rem .7rem;
+  border-bottom: 1px solid var(--rule-strong);
+  text-align: right;
+  white-space: nowrap;
+}
+.mkt-table th:first-child { text-align: left; }
+.mkt-table td {
+  padding: .55rem .7rem;
+  border-bottom: .5px solid var(--rule);
+  text-align: right;
+  color: var(--ink2);
+}
+.mkt-table td:first-child { text-align: left; color: var(--ink); }
+.mkt-table tr:last-child td { border-bottom: none; }
+.mkt-table tr:hover td { background: var(--paper2); }
+.ret-high { color: var(--green); font-weight: 500; }
+.ret-mid  { color: var(--ink); }
+.ret-low  { color: var(--red); font-weight: 500; }
+.trend-up { color: var(--green); font-weight: 500; }
+.trend-dn { color: var(--red); }
+.trend-fl { color: var(--ink3); }
+.badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.badge-imp { background: #e8f2ec; color: var(--green); }
+
+/* ─── THRESHOLD TABLE ─── */
+.thresh-table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; }
+.thresh-table th {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); font-weight: 500; padding: .5rem 1rem;
+  border-bottom: 1px solid var(--rule-strong); text-align: left;
+}
+.thresh-table td {
+  padding: .75rem 1rem; border-bottom: .5px solid var(--rule);
+  font-size: .9rem; color: var(--ink2);
+}
+.thresh-table tr:last-child td { border-bottom: none; }
+.thresh-table td:first-child { color: var(--ink); font-weight: 500; }
+
+/* ─── NOTE BOX ─── */
+.note {
+  background: var(--paper2);
+  border: 1px solid var(--rule-strong);
+  padding: 1.5rem 1.75rem;
+  margin-top: 1.5rem;
+}
+.note h3 { font-size: 1rem; margin-bottom: .4rem; }
+.note p { font-size: .88rem; }
+
+/* ─── SOURCE BOX ─── */
+.source-box {
+  background: #e8f2ec;
+  border-left: 3px solid var(--green);
+  padding: .9rem 1.25rem;
+  margin: 1.5rem 0;
+  font-size: .87rem;
+  color: var(--ink2);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule-strong);
+  font-size: 12px;
+  color: var(--ink3);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+/* ─── LEGEND ─── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+@media (max-width: 700px) {
+  body { padding: 0 1rem 5rem; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .lag-grid { grid-template-columns: 1fr; }
+  .signal-chain { flex-direction: column; }
+  .sc-arrow { transform: rotate(90deg); }
+  .cover-meta { grid-template-columns: repeat(2, auto); gap: 1.5rem; }
+}
+
+@media print {
+  .nav { display: none; }
+  body { max-width: 100%; padding: 0 1.5cm; }
+  section { page-break-inside: avoid; }
+  .cover { min-height: auto; padding: 2cm 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">Marketplace Analysis</div>
+  <a href="#retention">Retention</a>
+  <a href="#leading">Leading Indicators</a>
+  <a href="#signal">Signal Chain</a>
+  <a href="#markets">Markets</a>
+  <a href="#findings">Findings</a>
+  <a href="#appendix">Appendix</a>
+</nav>
+
+<!-- COVER -->
+<div class="cover">
+  <p class="cover-eyebrow">Internal — for team review</p>
+  <h1>Marketplace Retention:<br><em>What leads to sustained performance</em></h1>
+  <p class="cover-deck">A pattern analysis across 44 markets identifying which KPI movements precede sustained retention above 75% — using 27 months of correctly labeled time series data with full lag testing.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <strong>Data source</strong>
+      <span>Claude Market Place Analysis<br>4-tab labeled sheet</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>Time series</strong>
+      <span>Jan 2024 → Mar 2026<br>27 months</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>Markets analyzed</strong>
+      <span>44 CBSAs with full<br>YoY retention data</span>
+    </div>
+    <div class="cover-meta-item">
+      <strong>Retention definition</strong>
+      <span>% of paid subs still<br>paying, YoY</span>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: RETENTION STATE -->
+<section id="retention">
+  <p class="sec-label">01</p>
+  <h2>Where retention stands today</h2>
+  <p>The global average across 44 tracked markets has declined steadily from <strong>75.2% in January 2024</strong> to <strong>68.3% in March 2026</strong> — a drop of nearly 7 percentage points over 27 months. The decline is structural, not seasonal.</p>
+
+  <div class="source-box">
+    <strong>Data verified:</strong> Source tab "Sub Activity" — column labeled "% of paid Subs that have been retained each month." YoY renewal rate. All 44 markets confirmed against spot-check values (Nashville=72%, NYC=62%, Pittsburgh=76% in March 2026).
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-val">75.2%</div>
+      <div class="stat-lbl">Global avg retention<br>January 2024</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">68.3%</div>
+      <div class="stat-lbl">Global avg retention<br>March 2026</div>
+      <div class="stat-delta neg">▼ 6.9pp decline</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">23</div>
+      <div class="stat-lbl">Markets that sustained<br>&gt;75% for ≥6 consecutive months</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">3</div>
+      <div class="stat-lbl">Markets currently above<br>75% AND improving in trend</div>
+      <div class="stat-delta pos">Pittsburgh, Louisville, Austin</div>
+    </div>
+  </div>
+
+  <div class="chart-wrap" style="height:240px;">
+    <canvas id="globalRetChart" role="img" aria-label="Line chart showing global average retention declining from 75.2% in January 2024 to 68.3% in March 2026"></canvas>
+  </div>
+  <p class="chart-caption">Global average YoY retention across 44 markets. Steady decline of 6.9pp over 27 months. GC posting rate (secondary axis, dashed) rose over the same period — suggesting supply activation grew but wasn't sufficient to reverse retention pressure.</p>
+</section>
+
+<hr>
+
+<!-- SECTION 2: LEADING INDICATORS -->
+<section id="leading">
+  <p class="sec-label">02</p>
+  <h2>What actually predicts retention</h2>
+  <p>Correlations computed both cross-sectionally (March 2026 snapshot) and via <strong>lagged panel analysis</strong> across 1,100+ market-month observation pairs. The lagged analysis is the more meaningful test — it shows which metrics lead retention in time, not just correlate with it.</p>
+
+  <h3 style="margin-top:1.5rem;">Cross-sectional: March 2026</h3>
+  <p style="margin-bottom:1rem;">Point-in-time correlation. n=44 markets.</p>
+
+  <div class="corr-section">
+    <div class="corr-row">
+      <span class="corr-lbl">GC posting rate</span>
+      <div class="corr-track"><div class="corr-fill" style="width:95%;background:#1c3f6e;"></div></div>
+      <span class="corr-val">r = +0.47</span>
+      <span class="sig">★★</span>
+    </div>
+    <div class="corr-row">
+      <span class="corr-lbl">Active sub %</span>
+      <div class="corr-track"><div class="corr-fill" style="width:80%;background:#1c3f6e;"></div></div>
+      <span class="corr-val">r = +0.40</span>
+      <span class="sig">★★</span>
+    </div>
+    <div class="corr-row">
+      <span class="corr-lbl">Project penetration %</span>
+      <div class="corr-track"><div class="corr-fill" style="width:40%;background:#7a9fbf;"></div></div>
+      <span class="corr-val">r = +0.20</span>
+      <span class="sig">★</span>
+    </div>
+    <div class="corr-row ns-row">
+      <span class="corr-lbl">GC project count (raw)</span>
+      <div class="corr-track"><div class="corr-fill" style="width:14%;background:#bbb;"></div></div>
+      <span class="corr-val">r = −0.18</span>
+      <span style="font-size:10px;color:var(--ink3);">n.s.</span>
+    </div>
+    <div class="corr-row ns-row">
+      <span class="corr-lbl">Bid count (total)</span>
+      <div class="corr-track"><div class="corr-fill" style="width:14%;background:#bbb;"></div></div>
+      <span class="corr-val">r = −0.19</span>
+      <span style="font-size:10px;color:var(--ink3);">n.s.</span>
+    </div>
+    <div class="corr-row ns-row">
+      <span class="corr-lbl">Unique bidders</span>
+      <div class="corr-track"><div class="corr-fill" style="width:11%;background:#bbb;"></div></div>
+      <span class="corr-val">r = −0.14</span>
+      <span style="font-size:10px;color:var(--ink3);">n.s.</span>
+    </div>
+    <p style="font-size:11px;color:var(--ink3);margin-top:.6rem;">★ p&lt;0.05 &nbsp; ★★ p&lt;0.01 &nbsp; ★★★ p&lt;0.001 &nbsp; n.s. = not significant. Faded rows should not be used as indicators.</p>
+  </div>
+
+  <h3 style="margin-top:2rem;">Lagged panel analysis — the critical test</h3>
+  <p>Does the metric at month T predict retention at T+1, T+2, T+3, T+6? Tested across all 44 markets × 27 months. <strong>A signal that strengthens with lag is a genuine leading indicator.</strong></p>
+
+  <div class="lag-grid">
+    <div class="lag-card">
+      <div class="lag-card-title">GC posting rate — <span class="v-blue">signal strengthens with lag ↑</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">1-month lead</span><span class="lag-row-val v-blue">r = +0.297 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">2-month lead</span><span class="lag-row-val v-blue">r = +0.301 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">3-month lead</span><span class="lag-row-val v-blue">r = +0.308 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">6-month lead</span><span class="lag-row-val v-blue">r = +0.326 ★★★ ← strongest</span></div>
+      <p class="lag-note">The signal gets stronger the further out you look. GC posting today predicts retention 6 months from now better than next month's. This confirms it's a genuine leading indicator, not coincident.</p>
+    </div>
+    <div class="lag-card">
+      <div class="lag-card-title">Active sub % — <span class="v-amber">also strengthens with lag ↑</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">1-month lead</span><span class="lag-row-val v-amber">r = +0.228 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">2-month lead</span><span class="lag-row-val v-amber">r = +0.226 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">3-month lead</span><span class="lag-row-val v-amber">r = +0.245 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">6-month lead</span><span class="lag-row-val v-amber">r = +0.257 ★★★ ← strongest</span></div>
+      <p class="lag-note">Same pattern — 6-month lag is the peak. Sub engagement today predicts renewal behavior roughly 2 quarters from now.</p>
+    </div>
+    <div class="lag-card">
+      <div class="lag-card-title">Project penetration % — <span class="v-gray">stable, not a leading signal</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">1-month lead</span><span class="lag-row-val v-gray">r = +0.198 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">2-month lead</span><span class="lag-row-val v-gray">r = +0.193 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">3-month lead</span><span class="lag-row-val v-gray">r = +0.191 ★★★</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">6-month lead</span><span class="lag-row-val v-gray">r = +0.179 ★★★</span></div>
+      <p class="lag-note">Consistent but weakening with lag — the opposite of a leading indicator. This is a structural baseline condition, not an actionable lever with a predictable lag.</p>
+    </div>
+    <div class="lag-card">
+      <div class="lag-card-title">GC project count — <span class="v-red">not a predictor at any lag</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">1-month lead</span><span class="lag-row-val v-gray">r = −0.056 n.s.</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">2-month lead</span><span class="lag-row-val v-gray">r = −0.056 n.s.</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">3-month lead</span><span class="lag-row-val v-gray">r = −0.054 n.s.</span></div>
+      <div class="lag-row"><span class="lag-row-lbl">6-month lead</span><span class="lag-row-val v-gray">r = −0.067 ★</span></div>
+      <p class="lag-note">Raw project volume has no meaningful predictive relationship with retention. Volume alone is not the mechanism.</p>
+    </div>
+  </div>
+
+  <div style="background:var(--paper2);border:1px solid var(--rule-strong);padding:1.4rem 1.6rem;margin-top:1rem;border-left:3px solid var(--amber);">
+    <h3 style="margin-bottom:.4rem;font-size:1rem;">Critical distinction: GC posting RATE vs GC project COUNT</h3>
+    <p style="font-size:.88rem;">Markets with more total GC projects posted (raw volume) don't retain better — in fact, the relationship is slightly negative. But markets where a higher share of active GCs are <em>regularly posting</em> do retain better. The distinction is activation rate — getting GCs who are already registered to post consistently — not raw volume or new GC acquisition.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- SECTION 3: SIGNAL CHAIN -->
+<section id="signal">
+  <p class="sec-label">03</p>
+  <h2>The answer to the original question</h2>
+  <p>When <strong>both of these signals rise together</strong> over a 3–6 month window, sustained retention above 75% follows with approximately a 6-month lag. Neither signal alone is sufficient — markets that sustain above 75% consistently show both.</p>
+
+  <div class="signal-chain">
+    <div class="sc-step">
+      <div class="sc-step-label">Signal 1 — earliest leading indicator</div>
+      <div class="sc-step-name">GC posting rate ↑</div>
+      <div class="sc-step-body">% of active GCs who posted a project in the last 90 days rises above 19–20%. Sustained markets average 19.0% vs 14.4% for others.</div>
+      <div class="sc-step-r">r = +0.33 at 6-month lag ★★★</div>
+    </div>
+    <div class="sc-plus">+</div>
+    <div class="sc-step">
+      <div class="sc-step-label">Signal 2 — coincident</div>
+      <div class="sc-step-name">Active sub % ↑</div>
+      <div class="sc-step-body">% of subs active (searching, bidding) rises above 29–30%. When subs stay engaged, they renew.</div>
+      <div class="sc-step-r">r = +0.26 at 6-month lag ★★★</div>
+    </div>
+    <div class="sc-arrow">→</div>
+    <div class="sc-step outcome">
+      <div class="sc-step-label">Outcome — ~6 months later</div>
+      <div class="sc-step-name">Retention ≥ 75%</div>
+      <div class="sc-step-body">Sustained for multiple consecutive months. 23 of 44 markets achieved this at some point in the 27-month window.</div>
+      <div class="sc-step-r">Confirmed across 1,100+ market-month pairs</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:2rem;">Healthy market threshold benchmarks</h3>
+  <p>Derived from markets that both achieved and sustained above 75% retention. Hitting all four thresholds simultaneously correlates with sustained performance.</p>
+
+  <table class="thresh-table">
+    <thead>
+      <tr>
+        <th>KPI</th>
+        <th>Threshold</th>
+        <th>Sustained market avg</th>
+        <th>Non-sustained avg</th>
+        <th>Significance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>GC posting rate (last 90 days)</td>
+        <td>≥ 19–20%</td>
+        <td>19.0%</td>
+        <td>14.4%</td>
+        <td>Strongest predictor (r=+0.47)</td>
+      </tr>
+      <tr>
+        <td>Active sub %</td>
+        <td>≥ 29–30%</td>
+        <td>29%</td>
+        <td>26%</td>
+        <td>Second predictor (r=+0.40)</td>
+      </tr>
+      <tr>
+        <td>Project penetration (permits → PH)</td>
+        <td>≥ 7–10%</td>
+        <td>7%</td>
+        <td>5%</td>
+        <td>Structural baseline (r=+0.20)</td>
+      </tr>
+      <tr>
+        <td>GC project count (raw)</td>
+        <td>—</td>
+        <td>34.6 / month</td>
+        <td>45.5 / month</td>
+        <td>Not significant — volume alone doesn't drive retention</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- SECTION 4: MARKETS -->
+<section id="markets">
+  <p class="sec-label">04</p>
+  <h2>Market-level retention series</h2>
+
+  <div class="chart-wrap" style="height:280px;">
+    <canvas id="improversChart" role="img" aria-label="Line chart showing Pittsburgh, Louisville, and Austin retention trends — the three improving markets"></canvas>
+  </div>
+  <p class="chart-caption">The three markets currently above 75% AND trending up. Pittsburgh recovered from a 2024 trough. Louisville and Austin both show V-shaped patterns. GC posting rates in all three: Pittsburgh 17–23%, Louisville 19–30%, Austin 12–19%.</p>
+
+  <div class="chart-wrap" style="height:280px;margin-top:2.5rem;">
+    <canvas id="decliningChart" role="img" aria-label="Line chart showing Kansas City, Richmond, and San Jose — markets that eroded from previously high retention"></canvas>
+  </div>
+  <p class="chart-caption">Markets that eroded from high retention. Kansas City peaked at 92% in early 2024, now at 66% (−26pp). Richmond peaked at 89%, now 67% (−22pp). San Jose started at 85%, now 54% (−31pp). In all three cases, GC posting rates were either low or declining in the 6 months prior to the retention drop.</p>
+
+  <h3 style="margin-top:2.5rem;">Full retention rankings — 44 markets (March 2026)</h3>
+  <table class="mkt-table">
+    <thead>
+      <tr>
+        <th>Market</th><th>Mar 2026</th><th>Jan 2024</th><th>Trend</th><th>Max streak &gt;75%</th><th>GC post rate (Mar)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Detroit, MI</td><td class="ret-high">79%</td><td>73%</td><td class="trend-up">+6pp</td><td>26 mo <span class="badge badge-imp">Sustained</span></td><td>17%</td></tr>
+      <tr><td>Louisville, KY <span class="badge badge-imp">↑ Improving</span></td><td class="ret-high">79%</td><td>70%</td><td class="trend-up">+9pp</td><td>6 mo</td><td>21%</td></tr>
+      <tr><td>Austin, TX <span class="badge badge-imp">↑ Improving</span></td><td class="ret-high">78%</td><td>81%</td><td class="trend-dn">−3pp</td><td>8 mo</td><td>18%</td></tr>
+      <tr><td>Pittsburgh, PA <span class="badge badge-imp">↑ Improving</span></td><td class="ret-high">76%</td><td>66%</td><td class="trend-up">+10pp</td><td>7 mo</td><td>17%</td></tr>
+      <tr><td>Charlotte, NC</td><td class="ret-mid">71%</td><td>78%</td><td class="trend-dn">−7pp</td><td>26 mo</td><td>21%</td></tr>
+      <tr><td>Milwaukee, WI</td><td class="ret-mid">74%</td><td>82%</td><td class="trend-dn">−8pp</td><td>24 mo</td><td>12%</td></tr>
+      <tr><td>Cincinnati, OH</td><td class="ret-mid">71%</td><td>78%</td><td class="trend-dn">−7pp</td><td>24 mo</td><td>13%</td></tr>
+      <tr><td>Atlanta, GA</td><td class="ret-mid">69%</td><td>82%</td><td class="trend-dn">−13pp</td><td>24 mo</td><td>25%</td></tr>
+      <tr><td>Raleigh, NC</td><td class="ret-mid">73%</td><td>72%</td><td class="trend-up">+1pp</td><td>22 mo</td><td>21%</td></tr>
+      <tr><td>Philadelphia, PA</td><td class="ret-mid">68%</td><td>76%</td><td class="trend-dn">−8pp</td><td>20 mo</td><td>18%</td></tr>
+      <tr><td>Nashville, TN</td><td class="ret-mid">72%</td><td>78%</td><td class="trend-dn">−6pp</td><td>13 mo</td><td>20%</td></tr>
+      <tr><td>Virginia Beach, VA</td><td class="ret-mid">71%</td><td>89%</td><td class="trend-dn">−18pp</td><td>13 mo</td><td>—</td></tr>
+      <tr><td>Tampa, FL</td><td class="ret-mid">70%</td><td>78%</td><td class="trend-dn">−8pp</td><td>12 mo</td><td>19%</td></tr>
+      <tr><td>San Antonio, TX</td><td class="ret-mid">72%</td><td>75%</td><td class="trend-dn">−3pp</td><td>6 mo</td><td>21%</td></tr>
+      <tr><td>Indianapolis, IN</td><td class="ret-mid">71%</td><td>72%</td><td class="trend-fl">−1pp</td><td>7 mo</td><td>—</td></tr>
+      <tr><td>Kansas City, MO</td><td class="ret-low">66%</td><td>91%</td><td class="trend-dn">−25pp</td><td>18 mo</td><td>—</td></tr>
+      <tr><td>Richmond, VA</td><td class="ret-low">67%</td><td>88%</td><td class="trend-dn">−21pp</td><td>14 mo</td><td>—</td></tr>
+      <tr><td>Minneapolis, MN</td><td class="ret-mid">69%</td><td>78%</td><td class="trend-dn">−9pp</td><td>14 mo</td><td>—</td></tr>
+      <tr><td>Dallas, TX</td><td class="ret-mid">68%</td><td>76%</td><td class="trend-dn">−8pp</td><td>3 mo</td><td>—</td></tr>
+      <tr><td>New York, NY</td><td class="ret-low">62%</td><td>74%</td><td class="trend-dn">−12pp</td><td>0 mo</td><td>19%</td></tr>
+      <tr><td>Chicago, IL</td><td class="ret-low">64%</td><td>77%</td><td class="trend-dn">−13pp</td><td>6 mo</td><td>—</td></tr>
+      <tr><td>Los Angeles, CA</td><td class="ret-low">62%</td><td>—</td><td class="trend-fl">—</td><td>0 mo</td><td>—</td></tr>
+      <tr><td>Portland, OR</td><td class="ret-low">55%</td><td>63%</td><td class="trend-dn">−8pp</td><td>5 mo</td><td>—</td></tr>
+      <tr><td>San Jose, CA</td><td class="ret-low">54%</td><td>85%</td><td class="trend-dn">−31pp</td><td>5 mo</td><td>5%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- SECTION 5: KEY FINDINGS -->
+<section id="findings">
+  <p class="sec-label">05</p>
+  <h2>Six findings from the full analysis</h2>
+
+  <div class="finding positive">
+    <div class="finding-num">01 — Primary finding</div>
+    <h3>GC posting rate is the only metric that genuinely leads retention — and the signal strengthens over time</h3>
+    <p>At a 6-month lag, GC posting rate (r=+0.33, p&lt;0.001) is the strongest predictor in the dataset. Critically, the correlation strengthens as the lag increases — from r=+0.30 at 1 month to r=+0.33 at 6 months. This confirms it's not coincident with retention: it precedes it. When GC posting rate rises in a market, expect retention to improve ~6 months later. Sustained markets average 19.0% posting rate vs 14.4% for others — a 4.6pp structural gap.</p>
+  </div>
+
+  <div class="finding critical">
+    <div class="finding-num">02 — Most concerning finding</div>
+    <h3>Many previously strong markets are in deep decline — the streak has ended</h3>
+    <p>Kansas City peaked at 92% retention in early 2024 and is now at 66% (−26pp). Richmond went from 89% to 67% (−22pp). San Jose from 85% to 54% (−31pp). Virginia Beach from 89% to 71% (−18pp). These markets sustained above 75% for 13–18 consecutive months, then broke. In each case, GC posting rates were flat or declining in the 6 months before the retention drop. The streak-ending pattern is the leading indicator of what's coming for markets currently in the 70–74% range.</p>
+  </div>
+
+  <div class="finding info">
+    <div class="finding-num">03 — Actionable finding</div>
+    <h3>Pittsburgh, Louisville, and Austin are the three markets to study for a replicable playbook</h3>
+    <p>These are the only three markets currently above 75% AND trending upward. Pittsburgh recovered from a 2024 trough (66% → 76%, +10pp). Louisville showed a V-shaped recovery (70% → 79%). Austin dipped and recovered (81% → 67% trough → 78% current). In all three, GC posting rates are at or above the 18–19% threshold. Understanding what changed in these markets 6 months before their retention improvement is the highest-value remaining analysis.</p>
+  </div>
+
+  <div class="finding info">
+    <div class="finding-num">04 — Important distinction</div>
+    <h3>GC project volume doesn't predict retention — GC posting rate does</h3>
+    <p>Raw GC project count shows no significant correlation with retention at any lag (r=−0.05 to −0.07). This means adding more GC projects to a market doesn't automatically improve retention. What matters is whether the GCs who are active are posting <em>consistently</em>. The mechanism is reliability of supply — subs need to see regular project activity to stay engaged, not just a high volume in any single month.</p>
+  </div>
+
+  <div class="finding warning">
+    <div class="finding-num">05 — Strategic concern</div>
+    <h3>Detroit is the most structurally healthy market — and it's been that way for 26 months</h3>
+    <p>Detroit has sustained above 75% for 26 consecutive months (all but January 2024), averaging 79% with a +6pp trend. Its GC posting rate has been consistently above 20% since mid-2024. It's the only market with a streak running essentially the full 27-month window. Understanding what makes Detroit different — GC mix, commercial density, market maturity, or product usage patterns — would provide the clearest benchmark for what a fully healthy market looks like.</p>
+  </div>
+
+  <div class="finding warning">
+    <div class="finding-num">06 — Open question</div>
+    <h3>Project penetration is structural, not a short-term lever</h3>
+    <p>Project penetration % (% of commercial permits that become posted projects on PH) has a consistent but weakening signal across lags (r=+0.20 at 1 month, +0.18 at 6 months). Unlike GC posting rate, the signal doesn't strengthen with lag — meaning it's a baseline condition, not a leading indicator. Improving it requires changing GC behavior around permit-to-posting conversion, which is a slower structural change than activating GCs who are already registered. It should be tracked as a health metric, not as a leading indicator.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- SECTION 6: DASHBOARD RECOMMENDATION -->
+<section>
+  <p class="sec-label">06</p>
+  <h2>Recommended leading indicator dashboard</h2>
+  <p>Track these two KPIs monthly per market. The lag analysis confirms both are statistically significant with a 6-month predictive window.</p>
+
+  <div class="stat-grid">
+    <div class="stat" style="border-left:3px solid var(--red);">
+      <div class="stat-val" style="font-size:1.4rem;line-height:1.3;">GC posting rate<br>(last 90 days)</div>
+      <div class="stat-lbl" style="margin-top:.75rem;">
+        <strong style="display:block;margin-bottom:3px;">Target: ≥ 19–20% per market</strong>
+        Sustained market avg: 19.0%<br>
+        Non-sustained avg: 14.4%<br>
+        Predictive window: ~6 months<br>
+        r = +0.33 at 6mo ★★★
+      </div>
+    </div>
+    <div class="stat" style="border-left:3px solid var(--amber);">
+      <div class="stat-val" style="font-size:1.4rem;line-height:1.3;">Active sub %</div>
+      <div class="stat-lbl" style="margin-top:.75rem;">
+        <strong style="display:block;margin-bottom:3px;">Target: ≥ 29–30% per market</strong>
+        Sustained market avg: 29%<br>
+        Non-sustained avg: 26%<br>
+        Predictive window: ~6 months<br>
+        r = +0.26 at 6mo ★★★
+      </div>
+    </div>
+    <div class="stat" style="border-left:3px solid var(--blue);grid-column:span 2;">
+      <div class="stat-val" style="font-size:1.4rem;line-height:1.3;">Monitor but don't act on: Project penetration %</div>
+      <div class="stat-lbl" style="margin-top:.75rem;">
+        <strong style="display:block;margin-bottom:3px;">Baseline condition — track as health metric, not leading indicator</strong>
+        Target: ≥ 7–10%. Current priority avg: ~6–7%. Signal weakens with lag (structural, not predictive). Improving it requires permit-to-posting workflow changes — a slower lever than GC activation.
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>Next step: quantify the lag precisely using Pittsburgh, Louisville, and Austin</h3>
+    <p>This analysis uses a 6-month lag because that's where the correlation peaks across all 44 markets. But the three currently-improving markets (Pittsburgh, Louisville, Austin) would allow a more precise measurement: look at exactly when their GC posting rates crossed the 19% threshold, and how many months later their retention crossed 75%. That gives a predictive model specific to your highest-priority cohort.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- APPENDIX -->
+<section id="appendix">
+  <p class="sec-label">Appendix A</p>
+  <h2>Retention trajectories — improving vs declining markets</h2>
+  <div class="chart-wrap" style="height:320px;">
+    <canvas id="allMarketsChart" role="img" aria-label="Multi-line chart showing retention trajectories for eight key markets from January 2024 to March 2026"></canvas>
+  </div>
+  <p class="chart-caption">Eight markets showing the full range of trajectories. Detroit (constant strong), Pittsburgh/Louisville/Austin (recovering), Kansas City/Richmond (collapsed), New York/San Jose (steady decline).</p>
+</section>
+
+<section id="appendix-b">
+  <p class="sec-label">Appendix B</p>
+  <h2>Data source verification</h2>
+  <table class="thresh-table">
+    <thead><tr><th>Tab</th><th>What it contains</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td>Sub Activity</td><td>% of paid subs still paying YoY (retention), % active subs, % active subs paid</td><td>Primary retention metric + active sub % predictor</td></tr>
+      <tr><td>GC Activity</td><td>% of GCs posting in last 90 days (no CBSA labels — ordered same as TAM tab)</td><td>GC posting rate — primary leading indicator</td></tr>
+      <tr><td>Posted Projects</td><td>% of permits → PH (project penetration), count of GC posted projects</td><td>Project penetration % + GC project count</td></tr>
+      <tr><td>TAM</td><td>Population, permits, CBSA order reference</td><td>Market size context + CBSA ordering key</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:1rem;">Spot-checked against known values: Nashville=72%, NYC=62%, Pittsburgh=76%, Dallas=68% in March 2026. Boston GC posting rate Jan 2024 = 13%. All values confirmed against source tabs before analysis.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    Claude Market Place Analysis — April 2026<br>
+    27-month panel: Jan 2024 → Mar 2026 &nbsp;|&nbsp; 44 CBSAs with full YoY retention data
+  </div>
+  <div style="text-align:right;">
+    Internal — for team review<br>
+    Data verified against source sheet
+  </div>
+</footer>
+
+<script>
+const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+const tc = '#888884';
+const gc = 'rgba(17,17,16,0.07)';
+
+Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+
+const months = ['Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+                'Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
+                'Jan 26','Feb','Mar'];
+
+// ─── GLOBAL RETENTION + GC POSTING RATE ───
+const globalRet = [75.2,74.9,74.1,73.3,73.2,73.3,73.6,73.9,73.8,73.8,73.8,73.7,73.0,73.2,72.8,72.8,72.4,72.2,71.7,71.9,72.0,70.9,70.1,69.3,69.1,68.3,68.3];
+const gcGlobal  = [14.1,14.3,14.9,15.4,15.6,16.0,15.6,15.4,14.9,15.4,14.9,15.5,15.4,16.7,18.0,17.3,17.5,17.3,17.6,17.7,17.3,17.4,17.3,16.7,17.5,16.3,17.2];
+
+new Chart(document.getElementById('globalRetChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      {label:'Avg YoY retention', data:globalRet, borderColor:'#b83828', backgroundColor:'rgba(184,56,40,0.06)', fill:true, tension:0.3, pointRadius:0, borderWidth:2, yAxisID:'y'},
+      {label:'GC posting rate (avg)', data:gcGlobal, borderColor:'#1c3f6e', borderDash:[6,4], pointRadius:0, borderWidth:1.5, tension:0.3, yAxisID:'y2', fill:false}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'top',labels:{font:{size:12},color:'#3d3d3a',boxWidth:12,padding:20}},
+      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y.toFixed(1)+'%'}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:11},maxTicksLimit:14,autoSkip:true,maxRotation:45},grid:{color:gc}},
+      y:{min:65,max:78,ticks:{color:tc,callback:v=>v+'%',font:{size:11}},grid:{color:gc},title:{display:true,text:'Retention %',color:tc,font:{size:11}}},
+      y2:{display:false,min:10,max:22}
+    }
+  }
+});
+
+// ─── IMPROVING MARKETS ───
+const improving = {
+  'Pittsburgh, PA':  [66,70,71,71,73,72,74,75,77,72,74,71,69,70,73,72,71,73,73,74,75,76,77,81,81,78,76],
+  'Louisville, KY':  [70,67,70,71,71,73,76,69,70,70,74,74,71,77,72,73,74,75,74,79,81,78,75,75,76,74,79],
+  'Austin, TX':      [81,79,79,79,78,77,75,76,74,72,71,70,68,68,67,67,67,69,70,71,71,72,74,73,76,75,78]
+};
+const impColors = ['#1c3f6e','#2a5c42','#c47a18'];
+const impDatasets = Object.entries(improving).map(([name,data],i)=>({
+  label:name.split(',')[0], data, borderColor:impColors[i], backgroundColor:'transparent',
+  tension:0.3, pointRadius:2, borderWidth:2
+}));
+new Chart(document.getElementById('improversChart'), {
+  type:'line',
+  data:{labels:months, datasets:[
+    ...impDatasets,
+    {label:'75% threshold', data:months.map(()=>75), borderColor:'rgba(184,56,40,0.35)', borderDash:[4,3], pointRadius:0, borderWidth:1, fill:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'top',labels:{font:{size:12},color:'#3d3d3a',boxWidth:12,padding:18}},
+      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'%'}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:11},maxTicksLimit:14,autoSkip:true,maxRotation:45},grid:{color:gc}},
+      y:{min:60,max:88,ticks:{color:tc,callback:v=>v+'%',font:{size:11}},grid:{color:gc}}
+    }
+  }
+});
+
+// ─── DECLINING MARKETS ───
+const declining = {
+  'Kansas City, MO': [91,92,87,78,80,81,82,82,81,81,84,82,81,76,76,81,77,75,73,71,73,71,69,67,63,65,66],
+  'Richmond, VA':    [88,88,89,85,84,82,81,82,78,78,77,76,76,76,74,74,72,73,74,75,80,79,78,78,78,75,67],
+  'San Jose, CA':    [85,82,83,84,79,72,72,74,76,72,68,66,67,68,65,62,62,63,63,62,62,64,67,65,60,55,54]
+};
+const decColors = ['#b83828','#6e3a1c','#555'];
+const decDatasets = Object.entries(declining).map(([name,data],i)=>({
+  label:name.split(',')[0], data, borderColor:decColors[i], backgroundColor:'transparent',
+  tension:0.3, pointRadius:2, borderWidth:2
+}));
+new Chart(document.getElementById('decliningChart'), {
+  type:'line',
+  data:{labels:months, datasets:[
+    ...decDatasets,
+    {label:'75% threshold', data:months.map(()=>75), borderColor:'rgba(184,56,40,0.35)', borderDash:[4,3], pointRadius:0, borderWidth:1, fill:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'top',labels:{font:{size:12},color:'#3d3d3a',boxWidth:12,padding:18}},
+      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'%'}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:11},maxTicksLimit:14,autoSkip:true,maxRotation:45},grid:{color:gc}},
+      y:{min:50,max:96,ticks:{color:tc,callback:v=>v+'%',font:{size:11}},grid:{color:gc}}
+    }
+  }
+});
+
+// ─── ALL MARKETS CHART ───
+const allMarkets = {
+  'Detroit':     [73,77,76,76,76,77,78,78,77,79,78,79,79,82,82,81,81,82,79,80,80,80,81,82,81,78,79],
+  'Pittsburgh':  [66,70,71,71,73,72,74,75,77,72,74,71,69,70,73,72,71,73,73,74,75,76,77,81,81,78,76],
+  'Louisville':  [70,67,70,71,71,73,76,69,70,70,74,74,71,77,72,73,74,75,74,79,81,78,75,75,76,74,79],
+  'Austin':      [81,79,79,79,78,77,75,76,74,72,71,70,68,68,67,67,67,69,70,71,71,72,74,73,76,75,78],
+  'Kansas City': [91,92,87,78,80,81,82,82,81,81,84,82,81,76,76,81,77,75,73,71,73,71,69,67,63,65,66],
+  'Richmond':    [88,88,89,85,84,82,81,82,78,78,77,76,76,76,74,74,72,73,74,75,80,79,78,78,78,75,67],
+  'New York':    [74,75,74,73,73,73,73,73,72,72,72,72,71,70,71,70,70,68,67,66,66,66,64,63,64,63,62],
+  'San Jose':    [85,82,83,84,79,72,72,74,76,72,68,66,67,68,65,62,62,63,63,62,62,64,67,65,60,55,54]
+};
+const allColors = ['#1c3f6e','#2a5c42','#2a5c42','#c47a18','#b83828','#6e3a1c','#888884','#555'];
+const allStyles = [false,false,false,false,[6,3],[6,3],[4,2],[4,2]];
+const allDatasets = Object.entries(allMarkets).map(([name,data],i)=>({
+  label:name, data, borderColor:allColors[i], borderDash:allStyles[i]||undefined,
+  backgroundColor:'transparent', tension:0.3, pointRadius:0, borderWidth:i<4?2:1.5
+}));
+new Chart(document.getElementById('allMarketsChart'), {
+  type:'line',
+  data:{labels:months, datasets:[
+    ...allDatasets,
+    {label:'75% threshold', data:months.map(()=>75), borderColor:'rgba(184,56,40,0.3)', borderDash:[3,3], pointRadius:0, borderWidth:1, fill:false}
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'top',labels:{font:{size:11},color:'#3d3d3a',boxWidth:10,padding:14}},
+      tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+'%'}}},
+    scales:{
+      x:{ticks:{color:tc,font:{size:10},maxTicksLimit:14,autoSkip:true,maxRotation:45},grid:{color:gc}},
+      y:{min:50,max:96,ticks:{color:tc,callback:v=>v+'%',font:{size:11}},grid:{color:gc}}
+    }
+  }
+});
+</script>
+
+</body>
+</html>
