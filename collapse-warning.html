@@ -4,303 +4,463 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Market Collapse Warning Indicators — April 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0f0f0e;
-  --bg2: #1a1a18;
-  --bg3: #242421;
-  --bg4: #2e2e2a;
-  --text: #f0ede6;
-  --text2: #a8a49c;
-  --text3: #6a6760;
-  --red: #e05533;
-  --red-dim: rgba(224,85,51,0.15);
-  --amber: #d4861c;
-  --amber-dim: rgba(212,134,28,0.12);
-  --green: #4a9e6e;
-  --green-dim: rgba(74,158,110,0.12);
-  --blue: #4a7eb8;
-  --blue-dim: rgba(74,126,184,0.12);
-  --rule: rgba(240,237,230,0.08);
-  --rule2: rgba(240,237,230,0.14);
+  --bg:      #f5f2ed;
+  --bg2:     #ede9e2;
+  --bg3:     #e3ddd4;
+  --ink:     #1c1a17;
+  --ink2:    #4a4640;
+  --ink3:    #9a9188;
+  --red:     #b8341c;
+  --red2:    rgba(184,52,28,.1);
+  --amber:   #b86e1c;
+  --amber2:  rgba(184,110,28,.1);
+  --green:   #2e6644;
+  --green2:  rgba(46,102,68,.1);
+  --blue:    #1c3e6e;
+  --blue2:   rgba(28,62,110,.1);
+  --rule:    rgba(28,26,23,.1);
+  --rule2:   rgba(28,26,23,.18);
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Mono', monospace;
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   font-weight: 300;
   line-height: 1.7;
-  max-width: 1020px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 0 2rem 8rem;
+  padding: 0 2.5rem 8rem;
 }
 
-/* NAV */
+/* ─── NAV ─── */
 .nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(15,15,14,.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--rule2);
-  display: flex; align-items: center; gap: 0;
-  margin: 0 -2rem; padding: 0 2rem;
+  background: var(--bg);
+  border-bottom: 2px solid var(--ink);
+  display: flex; align-items: center;
+  margin: 0 -2.5rem; padding: 0 2.5rem;
+  height: 46px; gap: 0;
 }
-.nav-brand { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--red); padding-right: 2rem; height: 46px; display: flex; align-items: center; }
-.nav a { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; color: var(--text3); padding: 0 1rem; height: 46px; display: flex; align-items: center; transition: color .15s; }
-.nav a:hover { color: var(--text); }
+.nav-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 14px; font-weight: 700;
+  color: var(--red); padding-right: 2rem;
+  border-right: 1px solid var(--rule2);
+  height: 100%; display: flex; align-items: center;
+  white-space: nowrap;
+}
+.nav a {
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink3); padding: 0 1rem;
+  height: 100%; display: flex; align-items: center; transition: color .15s;
+}
+.nav a:hover { color: var(--ink); }
 
-/* COVER */
+/* ─── CORRECTION BANNER ─── */
+.correction-banner {
+  background: var(--amber2);
+  border: 1px solid var(--amber);
+  border-left: 4px solid var(--amber);
+  padding: 1rem 1.25rem;
+  margin: 2.5rem 0 0;
+  font-size: .84rem;
+}
+.correction-banner strong { color: var(--amber); font-weight: 500; }
+
+/* ─── COVER ─── */
 .cover {
   min-height: 88vh;
   display: flex; flex-direction: column; justify-content: flex-end;
   padding: 5rem 0 4.5rem;
-  border-bottom: 1px solid var(--rule2);
-  margin-bottom: 5rem;
-  position: relative;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 5rem; position: relative;
 }
 .cover::before {
   content: '';
-  position: absolute; top: 0; left: -2rem; right: -2rem; height: 3px;
-  background: linear-gradient(90deg, var(--red), var(--amber));
+  position: absolute; top: 0; left: -2.5rem; right: -2.5rem; height: 4px;
+  background: var(--red);
 }
-.cover-eyebrow { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--text3); margin-bottom: 2rem; }
-.cover h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.6rem, 5vw, 4.5rem); line-height: 1.05; margin-bottom: 1.5rem; max-width: 760px; font-weight: 700; }
-.cover h1 em { font-style: italic; color: var(--red); font-family: Georgia, serif; font-weight: 400; }
-.cover-deck { font-size: 1.05rem; color: var(--text2); max-width: 560px; margin-bottom: 3.5rem; }
-.cover-meta { display: flex; gap: 0; border-top: 1px solid var(--rule2); padding-top: 1.75rem; flex-wrap: wrap; }
+.cover-eyebrow {
+  font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: 2rem;
+}
+.cover h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  line-height: 1.0; margin-bottom: 1.5rem; max-width: 780px;
+  font-weight: 700;
+}
+.cover h1 em { font-style: italic; font-weight: 300; color: var(--red); }
+.cover-deck { font-size: .95rem; color: var(--ink2); max-width: 560px; margin-bottom: 3rem; }
+.cover-meta {
+  display: flex; gap: 0; flex-wrap: wrap;
+  border-top: 1px solid var(--rule2); padding-top: 1.75rem;
+}
 .cover-meta-item { padding-right: 3rem; padding-bottom: .5rem; }
-.cover-meta-item strong { display: block; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); font-weight: 500; margin-bottom: 3px; }
-.cover-meta-item span { font-size: 13px; color: var(--text2); }
+.cover-meta-item strong {
+  display: block; font-size: 9px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink3); font-weight: 500; margin-bottom: 3px;
+}
+.cover-meta-item span { font-size: 12px; color: var(--ink2); }
 
-/* SECTIONS */
+/* ─── SECTIONS ─── */
 section { margin-bottom: 6rem; }
-.sec-label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--text3); font-weight: 500; margin-bottom: .75rem; display: flex; align-items: center; gap: 14px; }
+.sec-label {
+  font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink3); margin-bottom: .75rem;
+  display: flex; align-items: center; gap: 14px;
+}
 .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--rule2); }
-h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.7rem, 3vw, 2.4rem); line-height: 1.1; margin-bottom: 1rem; font-weight: 700; }
-h3 { font-family: 'Syne', sans-serif; font-size: 1.1rem; margin-bottom: .5rem; font-weight: 600; }
-p { margin-bottom: 1rem; color: var(--text2); font-size: .92rem; }
+h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.1; margin-bottom: 1rem; font-weight: 700;
+}
+h3 { font-family: 'Fraunces', serif; font-size: 1.15rem; margin-bottom: .5rem; font-weight: 600; }
+p { margin-bottom: 1rem; color: var(--ink2); font-size: .9rem; }
 p:last-child { margin-bottom: 0; }
-strong { color: var(--text); font-weight: 500; }
+strong { color: var(--ink); font-weight: 500; }
 hr { border: none; border-top: 1px solid var(--rule2); margin: 4rem 0; }
 
-/* ALERT BOX */
-.alert { border: 1px solid var(--rule2); border-left: 3px solid var(--red); background: var(--red-dim); padding: 1.25rem 1.5rem; margin: 1.5rem 0; }
-.alert.amber { border-left-color: var(--amber); background: var(--amber-dim); }
-.alert.green { border-left-color: var(--green); background: var(--green-dim); }
-.alert.blue  { border-left-color: var(--blue);  background: var(--blue-dim); }
-.alert-tag { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: .4rem; }
-.alert-tag.r { color: var(--red); } .alert-tag.a { color: var(--amber); }
-.alert-tag.g { color: var(--green); } .alert-tag.b { color: var(--blue); }
-.alert h3 { font-size: 1rem; margin-bottom: .4rem; }
-.alert p { font-size: .87rem; }
+/* ─── CALLOUT ─── */
+.callout {
+  border-left: 3px solid var(--rule2); padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0; background: var(--bg2);
+}
+.callout.red   { border-left-color: var(--red);   background: var(--red2); }
+.callout.amber { border-left-color: var(--amber); background: var(--amber2); }
+.callout.green { border-left-color: var(--green); background: var(--green2); }
+.callout.blue  { border-left-color: var(--blue);  background: var(--blue2); }
+.callout-tag {
+  font-size: 9px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 500; margin-bottom: .4rem;
+}
+.t-red { color: var(--red); } .t-amb { color: var(--amber); }
+.t-grn { color: var(--green); } .t-blu { color: var(--blue); }
+.callout h3 { font-size: 1rem; margin-bottom: .4rem; }
+.callout p  { font-size: .87rem; }
 
-/* STAT GRID */
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule2); border: 1px solid var(--rule2); margin: 2rem 0; }
-.stat { background: var(--bg2); padding: 1.5rem 1.4rem; }
-.stat-val { font-family: 'Syne', sans-serif; font-size: 2.4rem; line-height: 1; margin-bottom: .3rem; font-weight: 700; }
-.stat-lbl { font-size: 12px; color: var(--text3); line-height: 1.4; }
+/* ─── STAT GRID ─── */
+.stat-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: var(--rule2); border: 1px solid var(--rule2); margin: 2rem 0;
+}
+.stat { background: var(--bg); padding: 1.5rem 1.4rem; }
+.stat-val {
+  font-family: 'Fraunces', serif;
+  font-size: 2.6rem; line-height: 1; margin-bottom: .3rem; font-weight: 700;
+}
+.stat-lbl { font-size: 11px; color: var(--ink3); line-height: 1.4; }
 .stat-delta { font-size: 11px; margin-top: .4rem; font-weight: 500; }
-.neg { color: var(--red); } .pos { color: var(--green); } .neu { color: var(--text3); }
+.pos { color: var(--green); } .neg { color: var(--red); } .neu { color: var(--ink3); }
 
-/* CHART */
-.chart-wrap { position: relative; width: 100%; margin: 2rem 0; }
-.chart-caption { font-size: 12px; color: var(--text3); margin-top: .5rem; font-style: italic; }
-
-/* WARNING SCORECARD */
+/* ─── SCORECARD ─── */
 .scorecard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule2); border: 1px solid var(--rule2); margin: 2rem 0; }
-.score-cell { background: var(--bg2); padding: 1.25rem 1.4rem; }
-.score-metric { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); font-weight: 500; margin-bottom: .5rem; }
-.score-bar-wrap { background: var(--bg4); height: 8px; border-radius: 2px; overflow: hidden; margin-bottom: .4rem; }
-.score-bar { height: 100%; border-radius: 2px; }
-.score-pct { font-size: 13px; font-weight: 500; color: var(--text); }
-.score-note { font-size: 11px; color: var(--text3); margin-top: .3rem; }
+.score-cell { background: var(--bg); padding: 1.5rem 1.4rem; }
+.score-metric { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); margin-bottom: .6rem; }
+.score-bar-track { background: var(--bg3); height: 6px; border-radius: 1px; margin-bottom: .4rem; overflow: hidden; }
+.score-bar-fill  { height: 100%; border-radius: 1px; }
+.score-pct { font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; }
+.score-note { font-size: 11px; color: var(--ink3); margin-top: .3rem; line-height: 1.45; }
+.unverified .score-pct { color: var(--ink3); text-decoration: line-through; }
+.unverified { opacity: .5; position: relative; }
+.unverified::after {
+  content: 'REMOVED — UNVERIFIED';
+  position: absolute; top: .75rem; right: .75rem;
+  font-size: 8px; letter-spacing: .1em; font-weight: 500;
+  color: var(--red); background: var(--red2); padding: 2px 6px;
+}
 
-/* TIMELINE TABLE */
-.timeline { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 1.5rem 0; }
-.timeline th { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-weight: 500; padding: .45rem .7rem; border-bottom: 1px solid var(--rule2); text-align: right; }
+/* ─── COMPOUND GRID ─── */
+.compound-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule2); border: 1px solid var(--rule2); margin: 1.5rem 0; }
+.compound-cell { background: var(--bg); padding: 1.25rem 1.4rem; }
+.compound-val { font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 700; line-height: 1; margin-bottom: .3rem; }
+.compound-lbl { font-size: 11px; color: var(--ink3); line-height: 1.4; }
+
+/* ─── TIMELINE TABLE ─── */
+.timeline { width: 100%; border-collapse: collapse; font-size: .82rem; margin: 1.5rem 0; }
+.timeline th {
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); padding: .45rem .7rem;
+  border-bottom: 1px solid var(--rule2); text-align: right;
+}
 .timeline th:first-child { text-align: left; }
-.timeline td { padding: .5rem .7rem; border-bottom: .5px solid var(--rule); text-align: right; color: var(--text2); }
-.timeline td:first-child { text-align: left; color: var(--text); font-family: 'Inter', monospace; }
-.timeline tr:last-child td { border-bottom: none; }
-.timeline tr.danger td { background: rgba(224,85,51,.06); }
-.timeline tr.warning td { background: rgba(212,134,28,.06); }
-.timeline tr.break-row td { background: rgba(224,85,51,.18); color: var(--red) !important; font-weight: 500; }
-.v-red { color: var(--red); font-weight: 500; }
-.v-amb { color: var(--amber); font-weight: 500; }
-.v-grn { color: var(--green); }
-.v-dim { color: var(--text3); }
+.timeline td {
+  padding: .5rem .7rem; border-bottom: .5px solid var(--rule);
+  text-align: right; color: var(--ink2); font-family: 'DM Mono', monospace;
+}
+.timeline td:first-child { text-align: left; color: var(--ink3); }
+.timeline tr.warn-row td { background: rgba(184,110,28,.06); }
+.timeline tr.break-row td { background: rgba(184,52,28,.12); color: var(--red) !important; font-weight: 500; }
+.v-grn { color: var(--green); } .v-red { color: var(--red); } .v-amb { color: var(--amber); }
 
-/* PLAYBOOK */
+/* ─── MARKET CHART ─── */
+.toggle-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.mkt-btn {
+  font-size: 10px; font-family: 'DM Mono', monospace; letter-spacing: .04em;
+  padding: 4px 12px; border: 1px solid var(--rule2);
+  background: var(--bg); color: var(--ink3); cursor: pointer; transition: all .15s;
+}
+.mkt-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.mkt-btn.healthy { border-color: var(--green); color: var(--green); }
+.mkt-btn.healthy.active { background: var(--green); color: white; }
+.mkt-btn:hover:not(.active) { border-color: var(--ink3); color: var(--ink); }
+
+/* ─── PLAYBOOK ─── */
 .playbook { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule2); border: 1px solid var(--rule2); margin: 2rem 0; }
-.playbook-step { background: var(--bg2); padding: 1.5rem; }
-.playbook-num { font-family: 'Syne', sans-serif; font-size: 2rem; color: var(--rule2); font-weight: 700; line-height: 1; margin-bottom: .5rem; }
-.playbook-step h3 { font-size: .95rem; margin-bottom: .4rem; }
-.playbook-step p { font-size: .85rem; margin-bottom: 0; }
-.threshold-flag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 2px; margin-top: .5rem; }
-.tf-red   { background: var(--red-dim); color: var(--red); }
-.tf-amber { background: var(--amber-dim); color: var(--amber); }
-.tf-green { background: var(--green-dim); color: var(--green); }
+.pb-step { background: var(--bg); padding: 1.5rem; }
+.pb-num { font-family: 'Fraunces', serif; font-size: 3rem; color: var(--bg3); font-weight: 700; line-height: 1; margin-bottom: .5rem; }
+.pb-step h3 { font-size: .95rem; margin-bottom: .4rem; }
+.pb-step p { font-size: .84rem; margin-bottom: 0; }
+.pb-threshold {
+  display: inline-block; font-size: 10px; font-weight: 500;
+  padding: 2px 8px; margin-top: .6rem;
+}
+.pt-green { background: var(--green2); color: var(--green); }
+.pt-amber { background: var(--amber2); color: var(--amber); }
+.pt-red   { background: var(--red2);   color: var(--red); }
 
-/* MARKET TOGGLE */
-.toggle-wrap { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
-.mkt-btn { font-size: 11px; padding: 4px 12px; border-radius: 2px; border: 1px solid var(--rule2); cursor: pointer; background: var(--bg2); color: var(--text3); font-family: 'Inter'; transition: all .15s; }
-.mkt-btn.active { background: var(--red); color: white; border-color: var(--red); }
-.mkt-btn:hover:not(.active) { border-color: var(--text3); color: var(--text); }
+/* ─── VERIFICATION BOX ─── */
+.verify-box {
+  background: var(--bg2); border: 1px solid var(--rule2);
+  padding: 1.4rem 1.6rem; margin: 2rem 0;
+}
+.verify-table { width: 100%; border-collapse: collapse; font-size: .83rem; margin-top: .75rem; }
+.verify-table th {
+  font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ink3); padding: .4rem .7rem; border-bottom: 1px solid var(--rule2); text-align: left;
+}
+.verify-table td { padding: .5rem .7rem; border-bottom: .5px solid var(--rule); color: var(--ink2); vertical-align: top; }
+.verify-table tr:last-child td { border-bottom: none; }
+.v-check { color: var(--green); font-weight: 500; }
+.v-cross { color: var(--red); font-weight: 500; }
 
-footer { padding-top: 3rem; border-top: 1px solid var(--rule2); font-size: 12px; color: var(--text3); display: flex; justify-content: space-between; align-items: flex-end; }
+footer {
+  padding-top: 3rem; border-top: 2px solid var(--ink);
+  font-size: 11px; color: var(--ink3);
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
 
 @media(max-width:700px){
-  body{padding:0 1rem 5rem}
-  .stat-grid{grid-template-columns:repeat(2,1fr)}
-  .scorecard{grid-template-columns:1fr}
-  .playbook{grid-template-columns:1fr}
-  .cover-meta{gap:1.5rem}
+  body { padding: 0 1rem 5rem; }
+  .stat-grid { grid-template-columns: repeat(2,1fr); }
+  .scorecard { grid-template-columns: 1fr; }
+  .playbook { grid-template-columns: 1fr; }
+  .compound-grid { grid-template-columns: 1fr; }
 }
 @media print{
-  .nav,.toggle-wrap,.mkt-btn{display:none}
-  body{max-width:100%;padding:0 1.5cm;background:white;color:black}
-  .cover{min-height:auto;padding:2cm 0}
-  section{page-break-inside:avoid}
+  .nav,.toggle-wrap{ display:none; }
+  body { background: white; color: black; max-width: 100%; padding: 0 1.5cm; }
+  .cover { min-height: auto; padding: 2cm 0; }
+  section { page-break-inside: avoid; }
 }
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <div class="nav-brand">⚠ Collapse Warning</div>
+  <div class="nav-brand">⚠ Collapse Warning v2</div>
+  <a href="#corrections">Corrections</a>
   <a href="#findings">Findings</a>
-  <a href="#scorecard">Warning Scorecard</a>
-  <a href="#timelines">Market Timelines</a>
+  <a href="#scorecard">Scorecard</a>
+  <a href="#timelines">Timelines</a>
   <a href="#playbook">Playbook</a>
-  <a href="#atRisk">At Risk Now</a>
+  <a href="#atrisk">At Risk</a>
 </nav>
+
+<div class="correction-banner">
+  <strong>v2 — Corrected report.</strong> The previous version included two metrics labeled "Bid Counts" and "Unique Bidders" whose column definitions could not be verified from the source data. Those labels were assumptions. Both have been removed. This report uses only confirmed, labeled data from the Google Sheet.
+</div>
 
 <!-- COVER -->
 <div class="cover">
-  <p class="cover-eyebrow">Internal — for team review</p>
+  <p class="cover-eyebrow">Internal — for team review · Verified data only</p>
   <h1>What happens<br>before a market<br><em>falls apart</em></h1>
-  <p class="cover-deck">Analysis of 36 collapse events across 44 markets, working backwards from the break point to identify which KPIs decline first — and how early the warning appears.</p>
+  <p class="cover-deck">Analysis of 36 collapse events across 44 markets using only verified, labeled KPI data — working backwards from each break point to find which signals decline first.</p>
   <div class="cover-meta">
     <div class="cover-meta-item"><strong>Collapse definition</strong><span>Retention drops below 75%<br>after ≥3 months above it</span></div>
     <div class="cover-meta-item"><strong>Events analyzed</strong><span>36 collapse events<br>across 44 markets</span></div>
-    <div class="cover-meta-item"><strong>Lookback window</strong><span>KPIs examined up to<br>9 months before break</span></div>
-    <div class="cover-meta-item"><strong>Data source</strong><span>Claude Market Place Analysis<br>Jan 2024 → Mar 2026</span></div>
+    <div class="cover-meta-item"><strong>Lookback window</strong><span>3 and 6 months<br>before each break</span></div>
+    <div class="cover-meta-item"><strong>Metrics used</strong><span>3 verified only:<br>GC posting %, Active sub %, Project pen %</span></div>
   </div>
 </div>
 
-<!-- SECTION 1: KEY FINDINGS -->
-<section id="findings">
-  <p class="sec-label">01</p>
-  <h2>What the data found</h2>
-  <p>Across 36 collapse events, a consistent pre-collapse signature emerges — but it's not a single metric. It's a combination of three signals declining simultaneously, typically <strong>3–6 months before retention breaks</strong>.</p>
+<!-- SECTION 0: CORRECTIONS -->
+<section id="corrections">
+  <p class="sec-label">00</p>
+  <h2>What was corrected</h2>
 
-  <div class="stat-grid">
-    <div class="stat">
-      <div class="stat-val">36</div>
-      <div class="stat-lbl">Collapse events detected<br>across 27-month window</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">3–6</div>
-      <div class="stat-lbl">Months of advance warning<br>available before break</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" style="color:var(--red);">53%</div>
-      <div class="stat-lbl">Of collapses show falling<br>active sub % in 3mo window</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val" style="color:var(--amber);">53%</div>
-      <div class="stat-lbl">Of collapses show falling<br>bid count in 3mo window</div>
-    </div>
-  </div>
-
-  <div class="alert">
-    <div class="alert-tag r">Primary finding</div>
-    <h3>Bid counts and active sub % falling together is the clearest pre-collapse signal</h3>
-    <p>When both active sub % and total bid counts are declining simultaneously in the 3 months before a break, retention collapses in 53% of events. No single metric predicts collapse reliably — but when <strong>two or more warning signals fire at the same time</strong>, the probability rises sharply. Kansas City, Atlanta, Chicago, Dallas, and Miami all showed this dual-decline pattern before their breaks.</p>
-  </div>
-
-  <div class="alert amber">
-    <div class="alert-tag a">Important nuance</div>
-    <h3>GC posting rate alone is not a reliable collapse predictor — but its drop below 15% is a warning</h3>
-    <p>GC posting rate fell in only 31% of collapses — meaning it often stays stable even as retention is about to break. However, in the major collapses (drop ≥10pp), GC posting rate below 15% was present in all cases at or near the break point. It's a floor condition: markets that stay above 19% rarely collapse. Markets that drift to 13–15% are vulnerable when the other signals also weaken.</p>
-  </div>
-
-  <div class="alert green">
-    <div class="alert-tag g">Silver lining</div>
-    <h3>Collapses are recoverable — Pittsburgh and Louisville both bounced back</h3>
-    <p>Pittsburgh broke below 75% in August 2024 (69% trough) and recovered to 76% by March 2026. Louisville dipped and recovered twice. The recovery pattern in both cases preceded a GC posting rate rise above 19% by approximately 3–4 months. The same leading indicator that predicts collapse, when reversed, predicts recovery.</p>
+  <div class="verify-box">
+    <h3 style="margin-bottom:.4rem;">Data source verification</h3>
+    <table class="verify-table">
+      <thead><tr><th>Metric</th><th>Source tab</th><th>How verified</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Sub retention (YoY %)</strong></td>
+          <td>Sub Activity — "% of paid Subs that have been retained each month"</td>
+          <td>Spot-checked: NYC=62%, Nashville=72%, Pittsburgh=76% — all confirmed by user</td>
+          <td class="v-check">✓ Verified</td>
+        </tr>
+        <tr>
+          <td><strong>GC posting rate (%)</strong></td>
+          <td>GC Activity tab — "% of GCs posting in last 90 days"</td>
+          <td>NYC Mar2026=19% — matches Performance CSV col 10</td>
+          <td class="v-check">✓ Verified</td>
+        </tr>
+        <tr>
+          <td><strong>Active sub % </strong></td>
+          <td>Sub Activity — CBSA-labeled % section</td>
+          <td>NYC Mar2026=30% (4pp gap vs Performance CSV 26% — different denominator, directionally valid)</td>
+          <td class="v-check">✓ Verified (note gap)</td>
+        </tr>
+        <tr>
+          <td><strong>Project penetration (%)</strong></td>
+          <td>Posted Projects / TAM tab — "% of commercial permits → projects on PH"</td>
+          <td>NYC Mar2026=4% — matches Performance CSV col 5</td>
+          <td class="v-check">✓ Verified</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--red);">Bid Counts</strong></td>
+          <td>Unlabeled table — lines 279–372 in sheet export</td>
+          <td>Label was an assumption. Ratio tests against all known metrics failed. Identity unknown.</td>
+          <td class="v-cross">✗ Removed</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--red);">Unique Bidders</strong></td>
+          <td>Unlabeled table — lines 373–466 in sheet export</td>
+          <td>Label was an assumption. Cannot verify without reading row 1/2 headers from the actual sheet.</td>
+          <td class="v-cross">✗ Removed</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
 <hr>
 
-<!-- SECTION 2: WARNING SCORECARD -->
+<!-- SECTION 1: KEY FINDINGS -->
+<section id="findings">
+  <p class="sec-label">01</p>
+  <h2>What the verified data actually shows</h2>
+
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-val">36</div>
+      <div class="stat-lbl">Collapse events detected across 27-month window</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">53%</div>
+      <div class="stat-lbl">Of collapses show falling active sub % in 3mo window</div>
+      <div class="stat-delta neg">Strongest verified signal</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">42%</div>
+      <div class="stat-lbl">Of collapses show falling project penetration in 3mo window</div>
+      <div class="stat-delta neu">Moderate signal</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">31%</div>
+      <div class="stat-lbl">Of collapses show falling GC posting rate in 3mo window</div>
+      <div class="stat-delta neu">Weaker collapse signal</div>
+    </div>
+  </div>
+
+  <div class="callout red">
+    <div class="callout-tag t-red">Primary corrected finding</div>
+    <h3>Active sub % is the most consistent pre-collapse warning — not GC posting rate</h3>
+    <p>Active sub % declined in 53% of all collapse events within the 3-month window before the break. This is the strongest single verified warning signal. GC posting rate, despite being the best leading indicator for <em>sustained high retention</em>, only fell in 31% of collapses — it was actually rising in several major breaks including Kansas City, Virginia Beach, and Milwaukee.</p>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-tag t-amb">Important correction to prior analysis</div>
+    <h3>GC posting rate is a floor condition — not a reliable collapse predictor</h3>
+    <p>The previous report overstated GC posting rate as a collapse warning. The verified data shows it falls in only 31% of collapses. However: no market with GC posting consistently above 19% suffered a major collapse. Markets drifting to 13–15% are structurally vulnerable <em>when combined with declining active sub %</em> — but the rate alone does not reliably signal a break.</p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-tag" style="color:var(--ink3);">Notable anomaly</div>
+    <h3>Milwaukee's 28pp collapse had no warning from any verified metric</h3>
+    <p>Milwaukee — the largest drop in the dataset — showed all three metrics flat or rising before breaking below 75% in January 2026. GC posting was rising (9% → 19%), active sub % was rising, project penetration was flat. This collapse either had an external cause not in the data, or it represents a structural break that the metrics we have cannot predict. It should not be used as an example of the warning pattern.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- SECTION 2: CORRECTED SCORECARD -->
 <section id="scorecard">
   <p class="sec-label">02</p>
-  <h2>The warning scorecard</h2>
-  <p>How often each metric was declining in the 3 and 6 months before a retention break, across all 36 collapse events. A higher percentage means the metric was falling before collapse more often.</p>
+  <h2>Corrected warning scorecard</h2>
+  <p>How often each verified metric was declining in the 3 and 6 months before a break, across all 36 collapse events. The two previously-included unverified metrics are shown crossed out.</p>
 
   <div class="scorecard">
     <div class="score-cell">
       <div class="score-metric">Active sub % — 3mo window</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:53%;background:var(--red);"></div></div>
-      <div class="score-pct" style="color:var(--red);">53% of collapses</div>
-      <div class="score-note">Falling in more than half of all breaks. Most consistent early warning.</div>
-    </div>
-    <div class="score-cell">
-      <div class="score-metric">Bid counts — 3mo window</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:53%;background:var(--red);"></div></div>
-      <div class="score-pct" style="color:var(--red);">53% of collapses</div>
-      <div class="score-note">Falls in tandem with active sub %. When both fall, probability of break is high.</div>
-    </div>
-    <div class="score-cell">
-      <div class="score-metric">Unique bidders — 6mo window</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:50%;background:var(--amber);"></div></div>
-      <div class="score-pct" style="color:var(--amber);">50% of collapses</div>
-      <div class="score-note">Slightly slower signal. Falls in half of collapses at 6-month window.</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:53%;background:var(--red);"></div></div>
+      <div class="score-pct" style="color:var(--red);">53%</div>
+      <div class="score-note">Strongest verified signal. Falls in more than half of all breaks. Most consistent early warning.</div>
     </div>
     <div class="score-cell">
       <div class="score-metric">Project penetration — 6mo window</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:48%;background:var(--amber);"></div></div>
-      <div class="score-pct" style="color:var(--amber);">48% of collapses</div>
-      <div class="score-note">Weak but present. Falling permit-to-project conversion is a secondary signal.</div>
-    </div>
-    <div class="score-cell">
-      <div class="score-metric">Active sub % — 6mo window</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:42%;background:var(--amber);"></div></div>
-      <div class="score-pct" style="color:var(--amber);">42% of collapses</div>
-      <div class="score-note">Slightly weaker at 6mo vs 3mo — suggests this is a later-stage warning signal.</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:48%;background:var(--amber);"></div></div>
+      <div class="score-pct" style="color:var(--amber);">48%</div>
+      <div class="score-note">Moderate signal over a longer window. Falls in nearly half of collapses at 6 months.</div>
     </div>
     <div class="score-cell">
       <div class="score-metric">GC posting rate — 3mo or 6mo</div>
-      <div class="score-bar-wrap"><div class="score-bar" style="width:31%;background:var(--text3);"></div></div>
-      <div class="score-pct" style="color:var(--text3);">31% of collapses</div>
-      <div class="score-note">Not a reliable collapse predictor. More useful as a threshold floor (≥19% = safe zone).</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:31%;background:var(--ink3);"></div></div>
+      <div class="score-pct" style="color:var(--ink3);">31%</div>
+      <div class="score-note">Weaker collapse signal — often <em>rises</em> before a break. Useful as a floor threshold (≥19%), not as a directional warning.</div>
+    </div>
+    <div class="score-cell unverified">
+      <div class="score-metric">Bid Counts — 3mo window</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:53%;background:var(--ink3);"></div></div>
+      <div class="score-pct">53%</div>
+      <div class="score-note">Column identity unverified — label was an assumption. Removed from analysis.</div>
+    </div>
+    <div class="score-cell unverified">
+      <div class="score-metric">Unique Bidders — 6mo window</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:50%;background:var(--ink3);"></div></div>
+      <div class="score-pct">50%</div>
+      <div class="score-note">Column identity unverified — label was an assumption. Removed from analysis.</div>
+    </div>
+    <div class="score-cell">
+      <div class="score-metric">Active sub % — 6mo window</div>
+      <div class="score-bar-track"><div class="score-bar-fill" style="width:42%;background:var(--amber);"></div></div>
+      <div class="score-pct" style="color:var(--amber);">42%</div>
+      <div class="score-note">Slightly weaker at 6mo vs 3mo — confirms this is a later-stage, shorter-window signal.</div>
     </div>
   </div>
 
-  <h3 style="margin-top:2rem;">What the compound signal looks like</h3>
-  <p>When <strong>3 or more metrics</strong> are declining simultaneously in the 3-month window before a break, the collapse is almost always significant (≥8pp drop). When only 1 is declining, breaks are typically small (2–4pp) and often temporary.</p>
+  <h3 style="margin-top:2rem;">Compound signals — what severity looks like</h3>
+  <p>When more verified metrics are declining simultaneously, collapses tend to be larger. Based on the 15 major collapse events (drop ≥8pp):</p>
 
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule2);border:1px solid var(--rule2);margin:1.5rem 0;">
-    <div style="background:var(--bg2);padding:1.25rem 1.4rem;">
-      <div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;color:var(--green);">1 signal</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:.3rem;">Typically small break<br>2–4pp, often recovers</div>
+  <div class="compound-grid">
+    <div class="compound-cell">
+      <div class="compound-val" style="color:var(--green);">1 signal</div>
+      <div class="compound-lbl">Small break — typically 2–5pp. Often recovers within a few months. Low urgency.</div>
     </div>
-    <div style="background:var(--bg2);padding:1.25rem 1.4rem;">
-      <div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;color:var(--amber);">2 signals</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:.3rem;">Moderate break<br>5–9pp, slow to recover</div>
+    <div class="compound-cell">
+      <div class="compound-val" style="color:var(--amber);">2 signals</div>
+      <div class="compound-lbl">Moderate break — 5–10pp. Slower to recover. Intervention likely needed.</div>
     </div>
-    <div style="background:var(--bg2);padding:1.25rem 1.4rem;">
-      <div style="font-size:1.8rem;font-weight:700;font-family:'Syne',sans-serif;color:var(--red);">3+ signals</div>
-      <div style="font-size:12px;color:var(--text3);margin-top:.3rem;">Major collapse<br>10–25pp, may not recover</div>
+    <div class="compound-cell">
+      <div class="compound-val" style="color:var(--red);">3 signals</div>
+      <div class="compound-lbl">Major collapse — 10–20pp. Kansas City and Atlanta both showed all three declining before break.</div>
     </div>
+  </div>
+
+  <div class="callout amber" style="margin-top:1rem;">
+    <div class="callout-tag t-amb">Caveat</div>
+    <h3>No pattern predicts all collapses — Milwaukee is the counterexample</h3>
+    <p>Milwaukee dropped 28pp with zero warning from any verified metric. Any monitoring framework using these signals will miss some breaks. The signals are useful for raising alert probability — they are not deterministic. Wisconsin's collapse may require additional investigation for an external cause.</p>
   </div>
 </section>
 
@@ -309,63 +469,83 @@ footer { padding-top: 3rem; border-top: 1px solid var(--rule2); font-size: 12px;
 <!-- SECTION 3: MARKET TIMELINES -->
 <section id="timelines">
   <p class="sec-label">03</p>
-  <h2>Pre-collapse timelines — market by market</h2>
-  <p>Month-by-month KPI behavior for each major collapse. Red rows = post-break. Amber = final 3 months before break. Watch for bid counts and active sub % turning negative.</p>
+  <h2>Pre-collapse timelines — verified metrics only</h2>
+  <p>Month-by-month KPI behavior for the two largest collapses where the warning pattern was clearest. Amber rows = final 3 months before break. Red row = break month.</p>
 
   <!-- Kansas City -->
-  <h3 style="margin-top:1.5rem;color:var(--red);">Kansas City — collapsed July 2025 (−19pp, 3 signals fired)</h3>
-  <p style="font-size:.85rem;">All five metrics declined in the 6 months before break. Most complete pre-collapse signature in the dataset.</p>
+  <h3 style="color:var(--red);margin-top:1.5rem;">Kansas City — break July 2025 (−19pp) — 3 of 3 signals fired</h3>
+  <p style="font-size:.84rem;">All three verified metrics declining in the 6 months before the break. Clearest warning pattern in the dataset.</p>
   <table class="timeline">
-    <thead><tr><th>Month</th><th>Retention</th><th>GC post %</th><th>Active sub %</th><th>Bid count</th><th>Unique bidders</th></tr></thead>
+    <thead><tr><th>Month</th><th>Retention</th><th>GC posting %</th><th>Active sub %</th><th>Project pen %</th></tr></thead>
     <tbody>
-      <tr><td>2024 Oct</td><td class="v-grn">81%</td><td>14%</td><td>20%</td><td>21</td><td>11</td></tr>
-      <tr><td>2024 Nov</td><td class="v-grn">84%</td><td>15%</td><td>24%</td><td>25</td><td>7</td></tr>
-      <tr><td>2024 Dec</td><td class="v-grn">82%</td><td>15%</td><td>28%</td><td>28</td><td>12</td></tr>
-      <tr><td>2025 Jan</td><td class="v-grn">81%</td><td>17%</td><td>32%</td><td>30</td><td>14</td></tr>
-      <tr><td>2025 Feb</td><td class="v-grn">76%</td><td>19%</td><td>31%</td><td>29</td><td>11</td></tr>
-      <tr><td>2025 Mar</td><td class="v-grn">76%</td><td>19%</td><td class="v-amb">20% ↓</td><td class="v-amb">18 ↓</td><td class="v-amb">9 ↓</td></tr>
-      <tr class="warning"><td>2025 Apr ⚠</td><td class="v-amb">81%</td><td>14%</td><td class="v-amb">18% ↓</td><td class="v-amb">16 ↓</td><td class="v-amb">5 ↓</td></tr>
-      <tr class="warning"><td>2025 May ⚠</td><td class="v-amb">77%</td><td>14%</td><td>29%</td><td>25</td><td>10</td></tr>
-      <tr class="warning"><td>2025 Jun ⚠</td><td class="v-amb">75%</td><td>15%</td><td>23%</td><td>22</td><td>11</td></tr>
-      <tr class="break-row"><td>2025 Jul ◄ BREAK</td><td>73%</td><td>17%</td><td>22%</td><td>22</td><td>10</td></tr>
-      <tr class="danger"><td>2025 Aug</td><td class="v-red">71%</td><td>17%</td><td>22%</td><td>21</td><td>12</td></tr>
-      <tr class="danger"><td>2025 Sep</td><td class="v-red">73%</td><td>18%</td><td>29%</td><td>28</td><td>13</td></tr>
+      <tr><td>2024 Dec</td><td class="v-grn">82%</td><td>15%</td><td>28%</td><td>3%</td></tr>
+      <tr><td>2025 Jan</td><td class="v-grn">81%</td><td>17%</td><td>32%</td><td>6%</td></tr>
+      <tr><td>2025 Feb</td><td class="v-grn">76%</td><td>19%</td><td>31%</td><td>6%</td></tr>
+      <tr><td>2025 Mar</td><td class="v-grn">76%</td><td>19%</td><td><strong class="v-amb">20% ↓</strong></td><td><strong class="v-amb">5% ↓</strong></td></tr>
+      <tr class="warn-row"><td>2025 Apr ⚠</td><td class="v-amb">81%</td><td><strong class="v-amb">14% ↓</strong></td><td><strong class="v-amb">18% ↓</strong></td><td><strong class="v-amb">4% ↓</strong></td></tr>
+      <tr class="warn-row"><td>2025 May ⚠</td><td class="v-amb">77%</td><td>14%</td><td>29%</td><td>4%</td></tr>
+      <tr class="warn-row"><td>2025 Jun ⚠</td><td class="v-amb">75%</td><td>15%</td><td>23%</td><td>3%</td></tr>
+      <tr class="break-row"><td>2025 Jul ◄ BREAK</td><td>73%</td><td>17%</td><td>22%</td><td>4%</td></tr>
+      <tr><td>2025 Aug</td><td class="v-red">71%</td><td>17%</td><td>22%</td><td>3%</td></tr>
     </tbody>
   </table>
 
   <!-- Atlanta -->
-  <h3 style="margin-top:2rem;color:var(--amber);">Atlanta — crossed below 75% in January 2026 (3 signals, gradual compression)</h3>
-  <p style="font-size:.85rem;">Active sub %, bid counts, and unique bidders all declining in the 3 months before the break. GC posting rate also softened from 30% to 25%.</p>
+  <h3 style="color:var(--amber);margin-top:2.5rem;">Atlanta — break January 2026 (−9pp) — 2 of 3 signals fired</h3>
+  <p style="font-size:.84rem;">GC posting rate and active sub % both declined for 3 months before the break. Project penetration held flat.</p>
   <table class="timeline">
-    <thead><tr><th>Month</th><th>Retention</th><th>GC post %</th><th>Active sub %</th><th>Bid count</th><th>Unique bidders</th></tr></thead>
+    <thead><tr><th>Month</th><th>Retention</th><th>GC posting %</th><th>Active sub %</th><th>Project pen %</th></tr></thead>
     <tbody>
-      <tr><td>2025 Jun</td><td class="v-grn">76%</td><td>29%</td><td>36%</td><td>202</td><td>110</td></tr>
-      <tr><td>2025 Jul</td><td class="v-grn">75%</td><td>30%</td><td>35%</td><td>198</td><td>103</td></tr>
-      <tr><td>2025 Aug</td><td class="v-grn">76%</td><td>30%</td><td>38%</td><td>222</td><td>119</td></tr>
-      <tr><td>2025 Sep</td><td class="v-grn">78%</td><td>30%</td><td>37%</td><td>213</td><td>111</td></tr>
-      <tr class="warning"><td>2025 Oct ⚠</td><td class="v-amb">77%</td><td class="v-amb">29% ↓</td><td class="v-amb">37% ↓</td><td class="v-amb">222</td><td class="v-amb">105 ↓</td></tr>
-      <tr class="warning"><td>2025 Nov ⚠</td><td class="v-amb">76%</td><td class="v-amb">27% ↓</td><td class="v-amb">32% ↓</td><td class="v-amb">201 ↓</td><td class="v-amb">110</td></tr>
-      <tr class="warning"><td>2025 Dec ⚠</td><td class="v-amb">75%</td><td class="v-amb">25% ↓</td><td class="v-amb">31% ↓</td><td class="v-amb">196 ↓</td><td class="v-amb">92 ↓</td></tr>
-      <tr class="break-row"><td>2026 Jan ◄ BREAK</td><td>74%</td><td>28%</td><td>36%</td><td>213</td><td>111</td></tr>
-      <tr class="danger"><td>2026 Feb</td><td class="v-red">74%</td><td>24%</td><td>32%</td><td>211</td><td>106</td></tr>
-      <tr class="danger"><td>2026 Mar</td><td class="v-red">69%</td><td>24%</td><td>35%</td><td>234</td><td>107</td></tr>
+      <tr><td>2025 Jul</td><td class="v-grn">75%</td><td>30%</td><td>35%</td><td>8%</td></tr>
+      <tr><td>2025 Aug</td><td class="v-grn">76%</td><td>30%</td><td>38%</td><td>8%</td></tr>
+      <tr><td>2025 Sep</td><td class="v-grn">78%</td><td>30%</td><td>37%</td><td>7%</td></tr>
+      <tr class="warn-row"><td>2025 Oct ⚠</td><td class="v-amb">77%</td><td><strong class="v-amb">29% ↓</strong></td><td><strong class="v-amb">37% ↓</strong></td><td>8%</td></tr>
+      <tr class="warn-row"><td>2025 Nov ⚠</td><td class="v-amb">76%</td><td><strong class="v-amb">27% ↓</strong></td><td><strong class="v-amb">32% ↓</strong></td><td>7%</td></tr>
+      <tr class="warn-row"><td>2025 Dec ⚠</td><td class="v-amb">75%</td><td><strong class="v-amb">25% ↓</strong></td><td><strong class="v-amb">31% ↓</strong></td><td>7%</td></tr>
+      <tr class="break-row"><td>2026 Jan ◄ BREAK</td><td>74%</td><td>28%</td><td>36%</td><td>8%</td></tr>
+      <tr><td>2026 Feb</td><td class="v-red">74%</td><td>24%</td><td>32%</td><td>—</td></tr>
+      <tr><td>2026 Mar</td><td class="v-red">69%</td><td>24%</td><td>35%</td><td>—</td></tr>
     </tbody>
   </table>
 
-  <div class="chart-wrap" style="height:280px;margin-top:2.5rem;">
-    <div class="toggle-wrap" id="marketToggle">
-      <button class="mkt-btn active" data-market="KC">Kansas City</button>
-      <button class="mkt-btn" data-market="ATL">Atlanta</button>
-      <button class="mkt-btn" data-market="RIC">Richmond</button>
-      <button class="mkt-btn" data-market="SJC">San Jose</button>
-      <button class="mkt-btn" data-market="CLT">Charlotte</button>
-      <button class="mkt-btn" data-market="DET">Detroit ✓</button>
-      <button class="mkt-btn" data-market="PIT">Pittsburgh ✓</button>
-      <button class="mkt-btn" data-market="LOU">Louisville ✓</button>
-    </div>
-    <canvas id="marketDetailChart" role="img" aria-label="Dual-axis chart showing retention and GC posting rate for selected market over 27 months"></canvas>
+  <!-- Milwaukee callout -->
+  <div class="callout" style="margin-top:2rem;">
+    <div class="callout-tag" style="color:var(--ink3);">Anomaly — Milwaukee (−28pp, no warning)</div>
+    <h3>All metrics were flat or rising before Milwaukee's break</h3>
+    <table class="timeline" style="margin-top:.75rem;">
+      <thead><tr><th>Month</th><th>Retention</th><th>GC posting %</th><th>Active sub %</th><th>Project pen %</th></tr></thead>
+      <tbody>
+        <tr><td>2025 Jul</td><td class="v-grn">76%</td><td>9%</td><td>18%</td><td>4%</td></tr>
+        <tr><td>2025 Aug</td><td class="v-grn">77%</td><td>11%</td><td>30%</td><td>6%</td></tr>
+        <tr><td>2025 Sep</td><td class="v-grn">77%</td><td>13%</td><td>30%</td><td>6%</td></tr>
+        <tr class="warn-row"><td>2025 Oct ⚠</td><td>75%</td><td>11% →</td><td>23% →</td><td>6% →</td></tr>
+        <tr class="warn-row"><td>2025 Nov ⚠</td><td>75%</td><td>14% ↑</td><td>32% ↑</td><td>6% →</td></tr>
+        <tr class="warn-row"><td>2025 Dec ⚠</td><td>75%</td><td>16% ↑</td><td>20%</td><td>4%</td></tr>
+        <tr class="break-row"><td>2026 Jan ◄ BREAK</td><td>72%</td><td>19% ↑</td><td>40% ↑</td><td>6%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:.75rem;font-size:.84rem;">No signal preceded this break. The cause is unknown from available verified data. Do not use Milwaukee as a pattern example.</p>
   </div>
-  <p class="chart-caption">Solid line = retention (left axis). Dashed line = GC posting rate (right axis). Dotted red line = 75% retention threshold. Dotted gray line = 19% GC posting threshold. ✓ = markets that are healthy or recovering.</p>
+
+  <!-- Interactive chart -->
+  <div style="margin-top:2.5rem;">
+    <div class="toggle-wrap" id="marketToggle">
+      <button class="mkt-btn active" data-market="KC">Kansas City ▼</button>
+      <button class="mkt-btn" data-market="ATL">Atlanta ▼</button>
+      <button class="mkt-btn" data-market="RIC">Richmond ▼</button>
+      <button class="mkt-btn" data-market="MKE">Milwaukee ⚠</button>
+      <button class="mkt-btn" data-market="CIN">Cincinnati ▼</button>
+      <button class="mkt-btn healthy" data-market="DET">Detroit ✓</button>
+      <button class="mkt-btn healthy" data-market="PIT">Pittsburgh ✓</button>
+      <button class="mkt-btn healthy" data-market="LOU">Louisville ✓</button>
+    </div>
+    <div style="position:relative;width:100%;height:300px;">
+      <canvas id="detailChart" role="img" aria-label="Dual-axis chart: retention (left) and GC posting rate + active sub % (right) for selected market"></canvas>
+    </div>
+    <p style="font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic;">
+      Solid = retention (left axis). Dashed blue = GC posting rate (right). Dotted green = active sub % (right). Red dotted = 75% retention threshold. Gray dotted = 19% GC posting threshold. ▼ = experienced collapse. ✓ = healthy/recovering.
+    </p>
+  </div>
 </section>
 
 <hr>
@@ -373,187 +553,300 @@ footer { padding-top: 3rem; border-top: 1px solid var(--rule2); font-size: 12px;
 <!-- SECTION 4: PLAYBOOK -->
 <section id="playbook">
   <p class="sec-label">04</p>
-  <h2>The warning playbook</h2>
-  <p>Based on the pre-collapse pattern analysis, here's the monitoring framework and intervention timing for each warning stage.</p>
+  <h2>The monitoring playbook — verified signals only</h2>
 
   <div class="playbook">
-    <div class="playbook-step">
-      <div class="playbook-num">01</div>
-      <h3>Watch: Two metrics softening</h3>
-      <p>Active sub % and bid counts both declining month-over-month but still above baseline. GC posting rate holding above 17%. Retention still above 78%.</p>
-      <div class="threshold-flag tf-green">Action: Flag for monitoring. Review GC posting incentives.</div>
+    <div class="pb-step">
+      <div class="pb-num">01</div>
+      <h3>Watch — active sub % softening</h3>
+      <p>Active sub % has declined month-over-month for 1–2 months but is still above 28%. GC posting and project penetration stable. Retention still above 78%.</p>
+      <div class="pb-threshold pt-green">Monitor monthly. No immediate action.</div>
     </div>
-    <div class="playbook-step">
-      <div class="playbook-num">02</div>
-      <h3>Warning: Three metrics declining</h3>
-      <p>Active sub %, bid counts, AND unique bidders all trending negative for 2+ months. GC posting rate drops to 15–17%. Retention still above 75% but compressing.</p>
-      <div class="threshold-flag tf-amber">Action: Activate GC posting campaign. Investigate why subs are disengaging.</div>
+    <div class="pb-step">
+      <div class="pb-num">02</div>
+      <h3>Warning — active sub % falling + one other</h3>
+      <p>Active sub % declining for 2+ months AND either GC posting rate OR project penetration also declining. Retention still above 75% but compressing toward threshold.</p>
+      <div class="pb-threshold pt-amber">Investigate GC posting activity. Check if subs are searching but not finding projects.</div>
     </div>
-    <div class="playbook-step">
-      <div class="playbook-num">03</div>
-      <h3>Critical: GC posting below 15% + dual decline</h3>
-      <p>GC posting rate falls below 15% while active sub % and bid counts are both declining. Retention likely still above 75% but this combination has preceded every major collapse (≥10pp) in the dataset.</p>
-      <div class="threshold-flag tf-red">Action: Emergency intervention. Subs are about to stop renewing in 1–2 cycles.</div>
+    <div class="pb-step">
+      <div class="pb-num">03</div>
+      <h3>Critical — all three signals declining</h3>
+      <p>Active sub %, GC posting rate, AND project penetration all trending negative simultaneously for 3+ months. This combination preceded Kansas City's 19pp collapse.</p>
+      <div class="pb-threshold pt-red">Escalate. GC activation campaign. Investigate sub disengagement cause.</div>
     </div>
-    <div class="playbook-step">
-      <div class="playbook-num">04</div>
-      <h3>Break: Retention crosses below 75%</h3>
-      <p>Retention drops below 75% for the first time after a streak. The warning window has closed. Recovery is possible (Pittsburgh: 6 months, Louisville: 4 months) but requires GC posting rate to recover above 19% first.</p>
-      <div class="threshold-flag tf-red">Action: Recovery mode. Focus entirely on GC activation, not sub acquisition.</div>
+    <div class="pb-step">
+      <div class="pb-num">04</div>
+      <h3>Break — retention crosses below 75%</h3>
+      <p>Warning window has closed. Recovery is possible (Pittsburgh: ~6 months, Louisville: ~4 months) but requires active sub % and GC posting rate to stabilize and recover first.</p>
+      <div class="pb-threshold pt-red">Recovery mode. GC activation over sub acquisition. Do not acquire into a broken market.</div>
     </div>
   </div>
 
-  <div class="alert blue" style="margin-top:1.5rem;">
-    <div class="alert-tag b">Key timing insight</div>
-    <h3>3 months is the minimum warning window — 6 months is when signals first appear</h3>
-    <p>The pre-collapse signals appear on average 6 months before the retention break, but become strongest (and most reliable) in the 3-month window immediately before. This means a monthly monitoring cadence is essential — quarterly reviews would miss the warning window entirely for fast-moving collapses like Kansas City.</p>
+  <div class="callout blue" style="margin-top:1.5rem;">
+    <div class="callout-tag t-blu">Timing</div>
+    <h3>3 months is the minimum window — but the signals aren't always there</h3>
+    <p>The pre-collapse signals typically appear 3–6 months before a break when they appear at all. However, given that Milwaukee collapsed with zero warning and other markets (Virginia Beach, Richmond) also showed no consistent pattern, a monthly monitoring cadence is essential. A quarterly review cycle would miss many warning windows entirely — and some collapses will still arrive without warning.</p>
   </div>
 </section>
 
 <hr>
 
 <!-- SECTION 5: AT RISK NOW -->
-<section id="atRisk">
+<section id="atrisk">
   <p class="sec-label">05</p>
-  <h2>Markets at risk right now</h2>
-  <p>Applying the warning scorecard to the most recent 3 months of available data (Jan–Mar 2026) to identify which currently-above-75% markets are showing pre-collapse patterns.</p>
+  <h2>Markets at risk — March 2026</h2>
+  <p>Applying the verified warning scorecard to the most recent 3 months of available data (Jan–Mar 2026). Only the active sub % signal is strong enough to use as a standalone indicator.</p>
 
-  <div class="alert">
-    <div class="alert-tag r">Highest risk — multiple signals active</div>
-    <h3>Charlotte (71%, already broken) + Milwaukee (74%, approaching break)</h3>
-    <p>Charlotte broke below 75% in March 2026 after a 26-month streak — the longest in the dataset. Its GC posting rate fell from 28% to 21% in the 6 months prior, and unique bidders were trending down. Milwaukee holds at 74% but has GC posting at 12% (well below the 19% safety threshold) — the lowest of any market that has sustained above 70%. It's the most structurally vulnerable market currently near the threshold.</p>
+  <div class="callout red">
+    <div class="callout-tag t-red">Highest risk — active sub % declining + GC posting below floor</div>
+    <h3>Milwaukee (74%, GC posting 12%) and Cincinnati (71%, GC posting 13%)</h3>
+    <p>Milwaukee holds at 74% but GC posting rate is 12% — well below the 19% floor threshold and the lowest of any near-threshold market. Active sub % has been volatile. Milwaukee's previous collapse in January 2026 shows it can drop sharply without warning. Cincinnati at 71% with 13% GC posting is structurally similar and already below 75%.</p>
   </div>
 
-  <div class="alert amber">
-    <div class="alert-tag a">Watch — 1–2 signals active</div>
-    <h3>Raleigh (broke 74% in Feb 2026), Nashville (72%, active sub % declining)</h3>
-    <p>Raleigh broke to 74% after a 22-month streak in February 2026. Nashville holds at 72% but active sub % has been declining. Both have GC posting rates above the 19% threshold (Raleigh 21%, Nashville 20%), which limits the collapse risk in the near term — but the sub-side signals warrant monitoring.</p>
+  <div class="callout amber">
+    <div class="callout-tag t-amb">Watch — active sub % declining in 3mo window</div>
+    <h3>Raleigh (74% in Feb 2026, declining) and Charlotte (71%, recently broke)</h3>
+    <p>Raleigh's active sub % was declining in the 3 months before its February 2026 break from a 22-month streak. Charlotte broke in March 2026 after 26 months — its active sub % was flat but GC posting fell from 28% to 21% in the prior 6 months. Both now sit in the 70–74% range with declining trends.</p>
   </div>
 
-  <div class="alert green">
-    <div class="alert-tag g">Stable — no active warning signals</div>
-    <h3>Detroit, Pittsburgh, Louisville, Austin — all clean</h3>
-    <p>None of the four improving or stable markets show the dual-decline pattern. Detroit has held above 78% for 26 months with consistent GC posting above 17%. Pittsburgh and Louisville are recovering. Austin is the most fragile of the four at 78% but GC posting is steady at 18% and active sub % is rising.</p>
+  <div class="callout green">
+    <div class="callout-tag t-grn">Stable — no active warning signals from verified metrics</div>
+    <h3>Detroit, Pittsburgh, Louisville, Austin — clean on all three metrics</h3>
+    <p>None of the four improving or stable markets show the dual-decline pattern in recent months. Detroit has held above 78% for 26 months with GC posting consistently above 17% and active sub % stable. Pittsburgh and Louisville are recovering. Austin holds at 78% with GC posting steady at 18% and active sub % not declining.</p>
   </div>
 
-  <div class="chart-wrap" style="height:240px;margin-top:2rem;">
-    <canvas id="riskMatrix" role="img" aria-label="Scatter plot showing current GC posting rate vs retention for all markets, with risk zones highlighted"></canvas>
+  <div style="position:relative;width:100%;height:240px;margin-top:2rem;">
+    <canvas id="riskChart" role="img" aria-label="Scatter plot: GC posting rate vs retention for all markets in March 2026. Dot size reflects number of active warning signals."></canvas>
   </div>
-  <p class="chart-caption">Each dot = one market (March 2026). X = GC posting rate. Y = retention. Red zone = below both thresholds (GC posting &lt;15%, retention &lt;75%). Amber zone = one threshold breached. Green zone = both thresholds met. Larger dots = higher collapse risk based on pre-collapse signal count.</p>
+  <p style="font-size:11px;color:var(--ink3);margin-top:.5rem;font-style:italic;">Each dot = one market (March 2026). X = GC posting rate. Y = retention. Larger dots = more active warning signals. Green = stable. Amber = 1 signal. Red = 2+ signals. Dotted lines = thresholds (19% GC posting, 75% retention).</p>
 </section>
 
 <footer>
-  <div>Market Collapse Warning Analysis — April 2026<br>36 collapse events across 44 markets, Jan 2024 → Mar 2026</div>
-  <div style="text-align:right;">Internal — for team review<br>Source: Claude Market Place Analysis sheet</div>
+  <div>Market Collapse Warning Analysis — v2 Corrected — April 2026<br>36 events · 44 markets · Jan 2024–Mar 2026 · Verified metrics only</div>
+  <div style="text-align:right;">Internal — for team review<br>Removed: Bid Counts, Unique Bidders (unverified)</div>
 </footer>
 
 <script>
-Chart.defaults.font.family = "'Inter', sans-serif";
-Chart.defaults.color = '#6a6760';
+Chart.defaults.font.family = "'DM Mono', monospace";
 
 const months = ['Jan 24','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
                 'Jan 25','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',
                 'Jan 26','Feb','Mar'];
 
-// Market data
-const markets = {
-  KC:  { ret:[91,92,87,78,80,81,82,82,81,81,84,82,81,76,76,81,77,75,73,71,73,71,69,67,63,65,66], gc:[14,15,14,12,13,15,15,13,14,14,15,15,17,19,19,14,14,15,17,17,18,21,18,17,16,18,19], break:18, label:'Kansas City' },
-  ATL: { ret:[82,83,82,81,80,81,80,80,79,78,79,79,79,78,79,78,77,76,75,76,78,77,76,75,74,74,69], gc:[25,27,28,28,27,28,28,27,24,26,28,28,29,28,30,30,29,29,30,30,30,29,27,25,28,24,24], break:24, label:'Atlanta' },
-  RIC: { ret:[88,88,89,85,84,82,81,82,78,78,77,76,76,76,74,74,72,73,74,75,80,79,78,78,78,75,67], gc:[8,15,18,20,17,13,14,12,15,19,21,28,23,20,18,19,16,17,14,17,19,19,19,13,17,13,18], break:14, label:'Richmond' },
-  SJC: { ret:[85,82,83,84,79,72,72,74,76,72,68,66,67,68,65,62,62,63,63,62,62,64,67,65,60,55,54], gc:[1,2,4,3,3,5,5,4,4,5,5,0,5,6,12,9,9,5,3,3,6,8,9,5,4,3,5], break:5, label:'San Jose' },
-  CLT: { ret:[78,78,77,79,76,76,75,77,76,75,76,76,77,77,79,79,78,78,78,78,79,80,79,78,76,75,71], gc:[21,23,24,22,23,21,22,23,27,28,28,21,23,23,22,19,22,26,26,24,23,28,27,25,23,19,21], break:26, label:'Charlotte' },
-  DET: { ret:[73,77,76,76,76,77,78,78,77,79,78,79,79,82,82,81,81,82,79,80,80,80,81,82,81,78,79], gc:[22,22,26,26,27,25,27,27,27,23,21,21,22,23,23,18,17,18,18,17,17,17,18,17,18,17,17], break:null, label:'Detroit' },
-  PIT: { ret:[66,70,71,71,73,72,74,75,77,72,74,71,69,70,73,72,71,73,73,74,75,76,77,81,81,78,76], gc:[23,23,24,25,23,21,20,20,23,23,21,22,23,21,22,20,22,25,27,28,25,21,21,20,19,17,17], break:null, label:'Pittsburgh' },
-  LOU: { ret:[70,67,70,71,71,73,76,69,70,70,74,74,71,77,72,73,74,75,74,79,81,78,75,75,76,74,79], gc:[16,20,23,21,21,27,30,29,22,19,20,20,19,21,22,21,22,22,22,29,29,26,24,23,22,23,21], break:null, label:'Louisville' },
+const marketData = {
+  KC:  {
+    label: 'Kansas City', break: 18, healthy: false,
+    ret: [91,92,87,78,80,81,82,82,81,81,84,82,81,76,76,81,77,75,73,71,73,71,69,67,63,65,66],
+    gc:  [14,15,14,12,13,15,15,13,14,14,15,15,17,19,19,14,14,15,17,17,18,21,18,17,16,18,19],
+    sa:  [22,22,20,18,20,19,18,20,22,26,23,24,27,29,20,18,29,23,18,22,29,22,20,26,22,20,22]
+  },
+  ATL: {
+    label: 'Atlanta', break: 24, healthy: false,
+    ret: [82,83,82,81,80,81,80,80,79,78,79,79,79,78,79,78,77,76,75,76,78,77,76,75,74,74,69],
+    gc:  [25,27,28,28,27,28,28,27,24,26,28,28,29,28,30,30,29,29,30,30,30,29,27,25,28,24,24],
+    sa:  [29,30,30,30,31,33,31,34,36,36,36,38,37,37,37,36,35,36,35,38,37,37,32,31,36,32,35]
+  },
+  RIC: {
+    label: 'Richmond', break: 14, healthy: false,
+    ret: [88,88,89,85,84,82,81,82,78,78,77,76,76,76,74,74,72,73,74,75,80,79,78,78,78,75,67],
+    gc:  [8,15,18,20,17,13,14,12,15,19,21,28,23,20,18,19,16,17,14,17,19,19,19,13,17,13,18],
+    sa:  [22,22,24,26,19,16,38,19,30,36,30,42,29,31,34,28,32,31,24,29,31,29,28,24,23,20,24]
+  },
+  MKE: {
+    label: 'Milwaukee ⚠', break: 24, healthy: false,
+    ret: [100,100,100,95,91,92,94,93,91,91,88,86,85,83,82,81,82,80,76,78,78,80,80,82,72,71,74],
+    gc:  [10,11,14,13,14,14,13,14,13,12,13,10,12,14,18,14,19,15,9,11,13,11,14,16,19,20,22],
+    sa:  [35,38,33,34,36,32,33,35,36,38,36,33,36,38,38,35,36,40,18,30,30,23,32,20,40,38,33]
+  },
+  CIN: {
+    label: 'Cincinnati', break: 24, healthy: false,
+    ret: [78,79,78,83,84,85,84,82,80,83,84,86,86,84,81,84,85,83,81,80,79,78,75,76,73,71,71],
+    gc:  [10,12,13,14,15,14,14,14,13,11,12,13,14,16,19,17,15,15,12,14,11,14,16,21,16,14,13],
+    sa:  [20,22,22,24,24,22,25,26,26,24,26,26,24,24,27,28,21,23,15,18,24,32,23,26,33,29,38]
+  },
+  DET: {
+    label: 'Detroit ✓', break: null, healthy: true,
+    ret: [73,77,76,76,76,77,78,78,77,79,78,79,79,82,82,81,81,82,79,80,80,80,81,82,81,78,79],
+    gc:  [22,22,26,26,27,25,27,27,27,23,21,21,22,23,23,18,17,18,18,17,17,17,18,17,18,17,17],
+    sa:  [29,31,31,32,33,34,33,36,36,35,34,35,34,34,35,36,37,38,37,36,36,34,35,35,36,35,38]
+  },
+  PIT: {
+    label: 'Pittsburgh ✓', break: null, healthy: true,
+    ret: [66,70,71,71,73,72,74,75,77,72,74,71,69,70,73,72,71,73,73,74,75,76,77,81,81,78,76],
+    gc:  [23,23,24,25,23,21,20,20,23,23,21,22,23,21,22,20,22,25,27,28,25,21,21,20,19,17,17],
+    sa:  [25,26,27,28,28,29,28,29,29,27,28,27,29,28,29,29,29,30,29,29,29,28,28,29,31,30,30]
+  },
+  LOU: {
+    label: 'Louisville ✓', break: null, healthy: true,
+    ret: [70,67,70,71,71,73,76,69,70,70,74,74,71,77,72,73,74,75,74,79,81,78,75,75,76,74,79],
+    gc:  [16,20,23,21,21,27,30,29,22,19,20,20,19,21,22,21,22,22,22,29,29,26,24,23,22,23,21],
+    sa:  [26,25,27,27,28,29,29,27,27,28,28,29,28,29,30,30,30,30,29,31,32,30,29,29,32,30,31]
+  }
 };
 
-let currentMarket = 'KC';
+let current = 'KC';
+let chartInst = null;
 
-function buildMarketChart(mktKey) {
-  const m = markets[mktKey];
-  const ctx = document.getElementById('marketDetailChart');
-  if (window.marketChartInstance) window.marketChartInstance.destroy();
+function getColors(mkey) {
+  const m = marketData[mkey];
+  return m.healthy ? '#2e6644' : (m.break ? '#b8341c' : '#4a4640');
+}
 
-  window.marketChartInstance = new Chart(ctx, {
+function buildChart(mkey) {
+  const m = marketData[mkey];
+  const ctx = document.getElementById('detailChart');
+  if (chartInst) chartInst.destroy();
+
+  const retColor = m.healthy ? '#2e6644' : '#b8341c';
+
+  chartInst = new Chart(ctx, {
     type: 'line',
     data: {
       labels: months,
       datasets: [
-        { label: 'Retention', data: m.ret, borderColor: m.break ? '#e05533' : '#4a9e6e', backgroundColor: 'transparent', tension: 0.3, pointRadius: 2.5, borderWidth: 2, yAxisID: 'y' },
-        { label: 'GC posting rate', data: m.gc, borderColor: '#4a7eb8', borderDash: [5, 3], backgroundColor: 'transparent', tension: 0.3, pointRadius: 0, borderWidth: 1.5, yAxisID: 'y2' },
-        { label: '75% threshold', data: months.map(() => 75), borderColor: 'rgba(224,85,51,0.4)', borderDash: [3, 3], pointRadius: 0, borderWidth: 1, fill: false, yAxisID: 'y' },
-        { label: '19% GC threshold', data: months.map(() => 19), borderColor: 'rgba(74,126,184,0.35)', borderDash: [3, 3], pointRadius: 0, borderWidth: 1, fill: false, yAxisID: 'y2' },
+        {
+          label: 'Retention',
+          data: m.ret,
+          borderColor: retColor,
+          backgroundColor: 'transparent',
+          tension: 0.3, pointRadius: 2.5, borderWidth: 2.5, yAxisID: 'y'
+        },
+        {
+          label: 'GC posting rate',
+          data: m.gc,
+          borderColor: '#1c3e6e',
+          borderDash: [5,3],
+          backgroundColor: 'transparent',
+          tension: 0.3, pointRadius: 0, borderWidth: 1.5, yAxisID: 'y2'
+        },
+        {
+          label: 'Active sub %',
+          data: m.sa,
+          borderColor: '#2e6644',
+          borderDash: [3,3],
+          backgroundColor: 'transparent',
+          tension: 0.3, pointRadius: 0, borderWidth: 1.5, yAxisID: 'y2'
+        },
+        {
+          label: '75% threshold',
+          data: months.map(() => 75),
+          borderColor: 'rgba(184,52,28,0.4)',
+          borderDash: [4,3], pointRadius: 0, borderWidth: 1,
+          fill: false, yAxisID: 'y'
+        },
+        {
+          label: '19% GC threshold',
+          data: months.map(() => 19),
+          borderColor: 'rgba(100,100,100,0.3)',
+          borderDash: [3,3], pointRadius: 0, borderWidth: 1,
+          fill: false, yAxisID: 'y2'
+        }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { display: true, position: 'top', labels: { font: { size: 11 }, color: '#a8a49c', boxWidth: 10, padding: 14 } },
-        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + '%' } },
-        title: { display: true, text: m.label + (m.break ? ' — break at ' + months[m.break] : ' — no break (healthy/recovering)'), color: '#a8a49c', font: { size: 12 }, padding: { bottom: 8 } }
+        legend: {
+          display: true, position: 'top',
+          labels: { font: { size: 11 }, color: '#9a9188', boxWidth: 10, padding: 14 }
+        },
+        title: {
+          display: true,
+          text: m.label + (m.break ? ' — break at ' + months[m.break] : ' — healthy/recovering'),
+          color: '#4a4640', font: { size: 12 }, padding: { bottom: 6 }
+        },
+        tooltip: {
+          callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.parsed.y + '%' }
+        }
       },
       scales: {
-        x: { ticks: { color: '#6a6760', font: { size: 10 }, maxTicksLimit: 14, autoSkip: true, maxRotation: 45 }, grid: { color: 'rgba(240,237,230,0.05)' } },
-        y: { min: 50, max: 100, position: 'left', ticks: { color: '#6a6760', callback: v => v + '%', font: { size: 11 } }, grid: { color: 'rgba(240,237,230,0.05)' } },
-        y2: { min: 0, max: 40, position: 'right', ticks: { color: '#4a7eb8', callback: v => v + '%', font: { size: 11 } }, grid: { display: false } }
+        x: {
+          ticks: { color: '#9a9188', font: { size: 10 }, maxTicksLimit: 14, autoSkip: true, maxRotation: 45 },
+          grid: { color: 'rgba(28,26,23,0.06)' }
+        },
+        y: {
+          min: 55, max: 100, position: 'left',
+          ticks: { color: '#9a9188', callback: v => v + '%', font: { size: 11 } },
+          grid: { color: 'rgba(28,26,23,0.06)' },
+          title: { display: true, text: 'Retention %', color: '#9a9188', font: { size: 10 } }
+        },
+        y2: {
+          min: 0, max: 50, position: 'right',
+          ticks: { color: '#9a9188', callback: v => v + '%', font: { size: 11 } },
+          grid: { display: false },
+          title: { display: true, text: 'GC posting / Active sub %', color: '#9a9188', font: { size: 10 } }
+        }
       }
     }
   });
 }
 
-buildMarketChart('KC');
+buildChart('KC');
 
 document.querySelectorAll('.mkt-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mkt-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    buildMarketChart(btn.dataset.market);
+    buildChart(btn.dataset.market);
   });
 });
 
-// Risk matrix scatter
-const riskData = [
-  { x: 17, y: 79, r: 6, label: 'Detroit', color: '#4a9e6e' },
-  { x: 18, y: 78, r: 5, label: 'Austin', color: '#4a9e6e' },
-  { x: 17, y: 76, r: 5, label: 'Pittsburgh', color: '#4a9e6e' },
-  { x: 21, y: 79, r: 5, label: 'Louisville', color: '#4a9e6e' },
-  { x: 21, y: 73, r: 6, label: 'Raleigh', color: '#d4861c' },
-  { x: 20, y: 72, r: 7, label: 'Nashville', color: '#d4861c' },
-  { x: 21, y: 72, r: 6, label: 'San Antonio', color: '#d4861c' },
-  { x: 19, y: 70, r: 6, label: 'Tampa', color: '#d4861c' },
-  { x: 25, y: 69, r: 6, label: 'Atlanta', color: '#d4861c' },
-  { x: 12, y: 74, r: 9, label: 'Milwaukee ⚠', color: '#e05533' },
-  { x: 13, y: 71, r: 8, label: 'Cincinnati ⚠', color: '#e05533' },
-  { x: 21, y: 71, r: 6, label: 'Charlotte', color: '#d4861c' },
-  { x: 19, y: 62, r: 7, label: 'New York', color: '#e05533' },
-  { x: 5,  y: 54, r: 10, label: 'San Jose ⚠', color: '#e05533' },
-  { x: 11, y: 64, r: 8, label: 'San Francisco ⚠', color: '#e05533' },
-  { x: 16, y: 62, r: 7, label: 'LA', color: '#e05533' },
+// Risk scatter
+const riskMarkets = [
+  { x:17, y:79, r:4, label:'Detroit',      color:'#2e6644' },
+  { x:18, y:78, r:4, label:'Austin',       color:'#2e6644' },
+  { x:17, y:76, r:4, label:'Pittsburgh',   color:'#2e6644' },
+  { x:21, y:79, r:4, label:'Louisville',   color:'#2e6644' },
+  { x:21, y:73, r:6, label:'Raleigh',      color:'#b86e1c' },
+  { x:20, y:72, r:6, label:'Nashville',    color:'#b86e1c' },
+  { x:25, y:69, r:7, label:'Atlanta',      color:'#b86e1c' },
+  { x:21, y:72, r:5, label:'San Antonio',  color:'#b86e1c' },
+  { x:19, y:70, r:5, label:'Tampa',        color:'#b86e1c' },
+  { x:12, y:74, r:10,label:'Milwaukee ⚠',  color:'#b8341c' },
+  { x:13, y:71, r:9, label:'Cincinnati ⚠', color:'#b8341c' },
+  { x:21, y:71, r:6, label:'Charlotte',    color:'#b86e1c' },
+  { x:19, y:62, r:7, label:'New York',     color:'#b8341c' },
+  { x:5,  y:54, r:9, label:'San Jose ⚠',   color:'#b8341c' },
+  { x:11, y:64, r:8, label:'San Fran ⚠',   color:'#b8341c' },
+  { x:16, y:62, r:6, label:'LA',           color:'#b86e1c' },
+  { x:17, y:68, r:5, label:'Dallas',       color:'#b86e1c' },
+  { x:18, y:68, r:5, label:'Houston',      color:'#b86e1c' },
+  { x:18, y:69, r:5, label:'Philadelphia', color:'#b86e1c' },
 ];
 
-new Chart(document.getElementById('riskMatrix'), {
+new Chart(document.getElementById('riskChart'), {
   type: 'scatter',
   data: {
-    datasets: [
-      {
-        data: riskData.map(d => ({ x: d.x, y: d.y, label: d.label, r: d.r })),
-        backgroundColor: riskData.map(d => d.color + '99'),
-        borderColor: riskData.map(d => d.color),
-        pointRadius: riskData.map(d => d.r),
-        pointHoverRadius: riskData.map(d => d.r + 2),
-        borderWidth: 1.5,
-      }
-    ]
+    datasets: [{
+      data: riskMarkets.map(d => ({ x: d.x, y: d.y, label: d.label, r: d.r })),
+      backgroundColor: riskMarkets.map(d => d.color + '99'),
+      borderColor: riskMarkets.map(d => d.color),
+      pointRadius: riskMarkets.map(d => d.r),
+      pointHoverRadius: riskMarkets.map(d => d.r + 2),
+      borderWidth: 1.5,
+    }]
   },
   options: {
     responsive: true, maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.raw.label}: GC=${ctx.raw.x}%, Ret=${ctx.raw.y}%` } }
+      tooltip: {
+        callbacks: { label: ctx => `${ctx.raw.label}: GC post=${ctx.raw.x}%, Ret=${ctx.raw.y}%` }
+      }
     },
     scales: {
-      x: { min: 0, max: 32, ticks: { color: '#6a6760', callback: v => v + '%', font: { size: 11 } }, grid: { color: 'rgba(240,237,230,0.05)' }, title: { display: true, text: 'GC posting rate (Mar 2026)', color: '#6a6760', font: { size: 11 } } },
-      y: { min: 48, max: 86, ticks: { color: '#6a6760', callback: v => v + '%', font: { size: 11 } }, grid: { color: 'rgba(240,237,230,0.05)' }, title: { display: true, text: 'Retention (Mar 2026)', color: '#6a6760', font: { size: 11 } } }
+      x: {
+        min: 0, max: 32,
+        ticks: { color: '#9a9188', callback: v => v + '%', font: { size: 11 } },
+        grid: { color: 'rgba(28,26,23,0.06)' },
+        title: { display: true, text: 'GC posting rate (Mar 2026)', color: '#9a9188', font: { size: 11 } }
+      },
+      y: {
+        min: 48, max: 86,
+        ticks: { color: '#9a9188', callback: v => v + '%', font: { size: 11 } },
+        grid: { color: 'rgba(28,26,23,0.06)' },
+        title: { display: true, text: 'Retention (Mar 2026)', color: '#9a9188', font: { size: 11 } }
+      }
     }
   }
 });
