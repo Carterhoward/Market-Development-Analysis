@@ -474,6 +474,11 @@ footer {
   <a href="#appendix">Appendix</a>
 </nav>
 
+<!-- CORRECTION BANNER -->
+<div style="background:#fff8e6;border-bottom:1px solid #c47a18;padding:.75rem 2.5rem;margin:0 -2.5rem;font-size:.84rem;color:#4a4640;">
+  <strong style="color:#c47a18;">v2 — Corrected.</strong> Two unverified metrics ("Bid count" and "Unique bidders") removed from cross-sectional analysis. Finding 02 corrected: GC posting rate was NOT declining before all collapses — only Kansas City showed a full pre-collapse signal pattern. All lagged correlations and threshold values verified correct. <a href="collapse-warning.html" style="color:#c47a18;">See companion collapse warning report →</a>
+</div>
+
 <!-- COVER -->
 <div class="cover">
   <p class="cover-eyebrow">Internal — for team review</p>
@@ -572,19 +577,10 @@ footer {
       <span class="corr-val">r = −0.18</span>
       <span style="font-size:10px;color:var(--ink3);">n.s.</span>
     </div>
-    <div class="corr-row ns-row">
-      <span class="corr-lbl">Bid count (total)</span>
-      <div class="corr-track"><div class="corr-fill" style="width:14%;background:#bbb;"></div></div>
-      <span class="corr-val">r = −0.19</span>
-      <span style="font-size:10px;color:var(--ink3);">n.s.</span>
+    <p style="font-size:11px;color:var(--ink3);margin-top:.6rem;">★ p&lt;0.05 &nbsp; ★★ p&lt;0.01 &nbsp; ★★★ p&lt;0.001 &nbsp; n.s. = not significant. Faded rows should not be used as leading indicators.</p>
+    <div style="background:#fff8e6;border-left:3px solid var(--amber);padding:.75rem 1rem;margin-top:.75rem;font-size:.84rem;color:var(--ink2);">
+      <strong style="color:var(--amber);">v2 correction:</strong> Two previously listed metrics ("Bid count" and "Unique bidders") have been removed. Their column identities could not be verified from the source sheet — the labels were assumptions based on value ranges, not confirmed definitions. They should not be cited.
     </div>
-    <div class="corr-row ns-row">
-      <span class="corr-lbl">Unique bidders</span>
-      <div class="corr-track"><div class="corr-fill" style="width:11%;background:#bbb;"></div></div>
-      <span class="corr-val">r = −0.14</span>
-      <span style="font-size:10px;color:var(--ink3);">n.s.</span>
-    </div>
-    <p style="font-size:11px;color:var(--ink3);margin-top:.6rem;">★ p&lt;0.05 &nbsp; ★★ p&lt;0.01 &nbsp; ★★★ p&lt;0.001 &nbsp; n.s. = not significant. Faded rows should not be used as indicators.</p>
   </div>
 
   <h3 style="margin-top:2rem;">Lagged panel analysis — the critical test</h3>
@@ -723,7 +719,7 @@ footer {
   <div class="chart-wrap" style="height:280px;margin-top:2.5rem;">
     <canvas id="decliningChart" role="img" aria-label="Line chart showing Kansas City, Richmond, and San Jose — markets that eroded from previously high retention"></canvas>
   </div>
-  <p class="chart-caption">Markets that eroded from high retention. Kansas City peaked at 92% in early 2024, now at 66% (−26pp). Richmond peaked at 89%, now 67% (−22pp). San Jose started at 85%, now 54% (−31pp). In all three cases, GC posting rates were either low or declining in the 6 months prior to the retention drop.</p>
+  <p class="chart-caption">Markets that eroded from high retention. Kansas City peaked at 92% in early 2024, now at 66% (−26pp). Richmond peaked at 89%, now 67% (−22pp). San Jose started at 85%, now 54% (−31pp). Kansas City showed declining GC posting and active sub % before its break. Richmond and San Jose's breaks were preceded by low GC posting rates (13–18%), but GC posting was not declining — the collapses happened despite stable supply-side metrics.</p>
 
   <h3 style="margin-top:2.5rem;">Full retention rankings — 44 markets (March 2026)</h3>
   <table class="mkt-table">
@@ -777,7 +773,7 @@ footer {
   <div class="finding critical">
     <div class="finding-num">02 — Most concerning finding</div>
     <h3>Many previously strong markets are in deep decline — the streak has ended</h3>
-    <p>Kansas City peaked at 92% retention in early 2024 and is now at 66% (−26pp). Richmond went from 89% to 67% (−22pp). San Jose from 85% to 54% (−31pp). Virginia Beach from 89% to 71% (−18pp). These markets sustained above 75% for 13–18 consecutive months, then broke. In each case, GC posting rates were flat or declining in the 6 months before the retention drop. The streak-ending pattern is the leading indicator of what's coming for markets currently in the 70–74% range.</p>
+    <p>Kansas City peaked at 92% retention in early 2024 and is now at 66% (−26pp). Richmond went from 89% to 67% (−22pp). San Jose from 85% to 54% (−31pp). Virginia Beach from 89% to 71% (−18pp). These markets sustained above 75% for 13–18 consecutive months, then broke. <strong>Kansas City</strong> showed all three verified KPIs declining before its break — the clearest pre-collapse pattern in the dataset. However, Richmond, Virginia Beach, and Milwaukee all had <em>rising or stable</em> GC posting rates before their collapses, meaning GC posting rate alone is not a reliable collapse predictor. Active sub % declining in the 3-month window is the most consistent warning signal (present in 53% of collapses). Some breaks — including Milwaukee's 28pp drop — showed no warning from any verified metric.</p>
   </div>
 
   <div class="finding info">
@@ -879,12 +875,12 @@ footer {
 <!-- FOOTER -->
 <footer>
   <div>
-    Claude Market Place Analysis — April 2026<br>
+    Claude Market Place Analysis — April 2026 — <strong>v2 Corrected</strong><br>
     27-month panel: Jan 2024 → Mar 2026 &nbsp;|&nbsp; 44 CBSAs with full YoY retention data
   </div>
   <div style="text-align:right;">
     Internal — for team review<br>
-    Data verified against source sheet
+    Removed: Bid Counts, Unique Bidders (unverified)
   </div>
 </footer>
 
